@@ -10,8 +10,8 @@
 ![ACID](.锁_images/fbca1b5a.png)
 
 隔离级别：
-![](.高性能mysql_images/c666c246.png)
-![](.高性能mysql_images/1d681298.png)
+![隔离级别](.高性能mysql_images/c666c246.png)
+![隔离级别](.高性能mysql_images/1d681298.png)
 
 ## READ UNCOMMITTED(未提交读)
 
