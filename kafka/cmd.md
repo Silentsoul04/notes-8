@@ -1,3 +1,62 @@
+---
+# kafka的基本命令
+
+
+```shell script
+ssh -p36000 kafka-00.ag.awsor
+
+
+# 创建主题
+bin/kafka-topics.sh --create --zookeeper 192.168.1.100:2181 --replication-factor 2 --partitions 2 --topic partopic
+
+# 主题信息
+bin/kafka-topics.sh --describe --zookeeper 192.168.1.100:2181 --topic partopic
+
+# 命令行生产者
+./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic mykafka
+
+# 消费者
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mykafka --from-beginning
+
+# 获取主题情况
+bin/kafka-topics.sh --zookeeper 172.16.8.4:2181 --list
+
+# 获取消费者消费情况
+bin/kafka-consumer-groups.sh --describe --bootstrap-server localhost:9092 --group common
+
+# 更改topic的配置
+kafka-topics.sh --zookeeper 172.16.8.4:2181 --alter --topic <topic name> --config retention.ms=1000
+
+# 获取topic的配置
+kafka-configs --zookeeper 172.16.8.4:2181 --entity-type topics --describe --entity-name web_log
+
+# e.g.:
+kafka-consumer-groups.sh --bootstrap-server <kafka_broker_host:9091> --group <group_name> --reset-offsets --to-offset 1000 --topic <my-topic> --execute
+
+
+--topic t1:0,1,2（为指定的topic分区调整位移）
+
+--to-earliest
+--to-latest
+--to-offset 100
+--shift-by -10
+
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group common --reset-offsets --to-offset 100 --topic addata.ad_heat --execute    
+
+
+
+./bin/kafka-topics.sh --describe --zookeeper 172.19.33.30:2181/kafka/ag --topic binlog-db40-adData-ad-heat
+
+./bin/kafka-consumer-groups.sh --describe --bootstrap-server 172.19.33.10:9092 --group common
+
+./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group common --reset-offsets --shift-by -10 --topic binlog-db40-adData-ad-heat:0 --execute
+
+```
+
+
+----
+# production
+
 ssh -p36000 kafka-00.ag.alishh
 
 
