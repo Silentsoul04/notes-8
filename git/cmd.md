@@ -1,0 +1,55 @@
+```text
+git remote -v                    # 查看远程服务器地址和仓库名称
+git remote show origin           # 查看远程服务器仓库状态
+git remote add origin git@github.com:username/robbin_site.git         # 添加远程仓库地址
+git remote set-url origin git@ github.com:robbin/robbin_site.git # 设置远程仓库地址(用于修改远程仓库地址)
+git remote rm <repository>       # 删除远程仓库
+```
+
+---
+# git branch
+* 分支重命名
+
+`git branch -m <oldname> <newname>`
+
+
+---
+# git rm
+
+如下，我把src里的pyc文件全部移除，但是本地文件还保留。
+
+```
+//-r 包括子目录
+//--cached 索引库中删除，并没有删除本机文件
+git rm -r -n --cached  */src/\*      //-n：加上这个参数，执行命令时，是不会删除任何文件，而是展示此命令要删除的文件列表预览。
+
+git rm -r --cached  *.pyc      //最终执行命令.
+
+git add -A	//将添加所有改动的已跟踪文件和未跟踪文件。
+git commit -m"移除pyc"    //提交
+
+git push origin master   //提交到远程服务器
+```
+
+# 删除远程不存在的本地分支
+
+[参考链接](https://stackoverflow.com/questions/13064613/how-to-prune-local-tracking-branches-that-do-not-exist-on-remote-anymore)
+
+```
+git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -d
+```
+
+---
+# git flow 删除feature分支
+
+git branch -D feature/brand 删除后start不成功原因应该是： git flow 存了某个配置
+可以通过git flow feature delete 删除， 但删除后start成功后的记录不是最新的，原因是：
+git branch -a | grep brand 发现本地分支虽然去了，但是远程分支还在
+通过git remote prune origin 删除本地分支不在，远程分支依然存在的分支
+
+---
+# tag回滚
+
+git checkout v1.0
+
+git checkout -b 
