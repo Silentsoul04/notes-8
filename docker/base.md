@@ -1,3 +1,4 @@
+---
 docker build -t registry.umlife.net:443/adxmi/migo:yg --build-arg SRV=yugong .
 
 
@@ -11,7 +12,6 @@ docker tag 2f16c2609583 registry.umlife.net:443/mt-service/schema/elasticsearch-
 docker push registry.umlife.net:443/mt-service/schema/elasticsearch-ik:5.5.3
 
 
----
 ## kafka
 ```
 docker run -d --name zookeeper -p 2181:2181 -t wurstmeister/zookeeper
