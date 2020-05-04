@@ -1,3 +1,14 @@
+# 删除没跟踪的文件
+
+git clean -f
+
+git clean -df
+
+
+
+
+
+-------
 ```text
 git remote -v                    # 查看远程服务器地址和仓库名称
 git remote show origin           # 查看远程服务器仓库状态
