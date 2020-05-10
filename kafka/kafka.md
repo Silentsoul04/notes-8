@@ -51,3 +51,15 @@ push模式很难适应**消费速率不同的消费者**，因为消息发送速
 
 - http://www.jasongj.com/2015/03/10/KafkaColumn1/
 - [Kafka分区与消费者的关系](https://www.cnblogs.com/cjsblog/p/9664536.html)
+
+
+## Kafka创建Topic时如何将分区放置到不同的Broker中？
+
+1）副本因子不能大于 Broker 的个数；
+
+2）第一个分区（编号为0）的第一个副本放置位置是随机从 brokerList 选择的；
+
+3）其他分区的第一个副本放置位置相对于第0个分区依次往后移。也就是如果我们有5个 Broker，5个分区，假设第一个分区放在第四个 Broker 上，那么第二个分区将会放在第五个 Broker 上；第三个分区将会放在第一个 Broker 上；第四个分区将会放在第二个 Broker 上，依次类推；
+
+4）剩余的副本相对于第一个副本放置位置其实是由 nextReplicaShift 决定的，而这个数也是随机产生的；
+

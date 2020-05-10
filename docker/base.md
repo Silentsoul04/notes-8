@@ -252,6 +252,9 @@ docker run  --name my_django -p 8099:8099 -v /home/youmi/vhost/ag-business/venv/
 
 docker run --name ag-business --env CFGENV=feature --env CFGAUTH=ag-apollo:XX --env CFGAPP=ag-business -p 8099:80 ag-business:1.0.0
 
+
+docker run -i --env CFGENV=LOCAL --env CFGAUTH=ag-apollo:XX --env CFGAPP=ag-test-config --rm registry.umlife.net:443/mt-service/ag-www/cli:feature_media shell
+
 python scripts/docker/app-config.py --app "ag-auth" --env feature --auth "ag-apollo:XX"
 
 echo `` |  docker login -u chenziqing registry.umlife.net:443 --password-stdin
