@@ -1,1 +1,10 @@
+# ClickHouse 数据压缩与解压
+
+那么为什么LZ4解压缩成为一个瓶颈呢？LZ4看起来是一种非常轻的算法:数据解压缩速率通常是每个处理器内核1到3 GB/s，具体取决于数据。这比典型的磁盘子系统快得多。此外，我们使用所有可用的中央处理器内核，解压缩在所有物理内核之间线性扩展。
+
+首先，如果数据压缩率很高，则磁盘上数据占用空间就很小，在读取数据时磁盘IO会比较低，但是如果待解压的数据量很大则会影响到CPU使用率。在LZ4的情况下，解压缩数据所需的工作量几乎与解压缩数据本身的量成正比；其次，如果数据被缓存，你可能根本不需要从磁盘读取数据。可以依赖页面缓存或使用自己的缓存。缓存在面向列的数据库中更有效，因为只有经常使用的列保留在缓存中。这就是为什么LZ4经常成为CPU负载的瓶颈。
+
+
 - [ClickHouse 在趣头条的实践](https://mp.weixin.qq.com/s/lP9quNJuhpXHxP-n8W0maw)
+- [ClickHouse 数据压缩与解压](https://knifefly.cn/2019/08/25/ClickHouse%E5%8E%8B%E7%BC%A9%E4%B8%8E%E8%A7%A3%E5%8E%8B/)
+- [How to speed up LZ4 decompression in ClickHouse](https://habr.com/en/company/yandex/blog/457612/)

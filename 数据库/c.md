@@ -4,5 +4,5 @@
 - [万亿级日志与行为数据存储查询技术剖析](https://www.infoq.cn/article/trillion-log-and-data-storage-query-techniques/)
 - [经典论文翻译导读之《Dremel: Interactive Analysis of WebScale Datasets》](http://blog.sae.sina.com.cn/archives/794)
 - [游程编码 Run Length Encoding](https://zh.wikipedia.org/wiki/%E6%B8%B8%E7%A8%8B%E7%BC%96%E7%A0%81)
-- [差分编码 Delta Encoding](https://zh.wikipedia.org/wiki/%E6%B8%B8%E7%A8%8B%E7%BC%96%E7%A0%81)
+- [差分编码 Delta Encoding](https://zh.wikipedia.org/wiki/%E5%B7%AE%E5%88%86%E7%B7%A8%E7%A2%BC)
 - [全面了解大数据“三驾马车”的开源实现](https://www.infoq.cn/article/x8QUfV7vtuJNOv*xQu4t)
