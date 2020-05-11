@@ -36,6 +36,8 @@
 # 第一个数，跟所有数交换，
 # 然后，往下走，第二个数跟 第二以后的数交换
 # 最后完成后，交换回来
+
+
 class Solution:
     def permute(self, nums):
         """
@@ -61,4 +63,5 @@ class Solution:
         backtrack()
         return output
 
-print(Solution().permute([1,2,3]))
+
+print(Solution().permute([1, 2, 3]))
