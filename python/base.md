@@ -17,6 +17,11 @@ The ususal way is to override the __call__ method of the metaclass.
 - [元类](https://www.jianshu.com/p/2e2ee316cfd0)
 
 
+### 元类
+元类的高级编程实现ORM
+
+- [使用元类](https://www.liaoxuefeng.com/wiki/1016959663602400/1017592449371072)
+
 
 ---
 ### pythonic-way-to-create-a-long-multi-line-string
