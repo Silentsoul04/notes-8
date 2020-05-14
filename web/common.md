@@ -219,8 +219,9 @@ uwsgi_pass使用uwsgi协议。 proxy_pass使用普通的HTTP与uWSGI服务器联
 ## http http-socket
 
 http 和 http-socket的使用上有一些区别:
+
 [原生HTTP支持](https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/HTTP.html)
-- http: 自己会产生一个http进程(可以认为与nginx同一层, 有路由器/代理/负载均衡器)负责路由http请求给worker, http进程和worker之间使用的是uwsgi协议
+- http: 自己会产生一个额外的http进程(可以认为与nginx同一层, 有路由器/代理/负载均衡器)负责路由http请求给worker, http进程和worker之间使用的是uwsgi协议
 - http-socket: 不会产生http进程, 一般用于在前端webserver不支持uwsgi而仅支持http时使用, 他产生的worker使用的是http协议
 - socket:  客户端的请求支持uwsgi, 则直接使用socket即可(tcp or unix)
 
