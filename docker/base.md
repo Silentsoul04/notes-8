@@ -1,6 +1,9 @@
 ---
 docker build -t registry.umlife.net:443/adxmi/migo:yg --build-arg SRV=yugong .
 
+直接进入镜像交互
+docker run -it --env CFGENV=LOCAL --env CFGAUTH=ag-apollo:xx --env CFGAPP=ag-test-config --rm --entrypoint /bin/sh registry.umlife.net:443/mt-service/ag-www/cli:feature_media
+
 
 ## ES
 docker build -t yzs/myes build/elasticsearch-ik/.
