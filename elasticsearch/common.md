@@ -1,12 +1,34 @@
-https://help.aliyun.com/document_detail/132255.html?spm=a2c4g.11186623.6.558.569f6525Uv6MCc
+---
+## 阿里云产品定价
+
+[产品定价](https://help.aliyun.com/document_detail/132255.html?spm=a2c4g.11186623.6.558.569f6525Uv6MCc)
 
 ---
-## 亚马逊的建议
+## 调整 Amazon ES 域大小
 
-如何提高我的 Elasticsearch 集群上的索引性能？
+- 计算存储要求
+- 选择分片数量
+- 选择实例类型和测试
 
-<https://aws.amazon.com/cn/premiumsupport/knowledge-center/elasticsearch-indexing-performance/>
-<https://amazonaws-china.com/cn/premiumsupport/knowledge-center/high-jvm-memory-pressure-elasticsearch/>
+-[调整 Amazon ES 域大小](https://docs.aws.amazon.com/zh_cn/elasticsearch-service/latest/developerguide/sizing-domains.html)
+
+
+---
+## es_rejected_execution_exception
+
+### 简短描述
+es_rejected_execution_exception[bulk] 是批量队列错误。当对 Elasticsearch 集群的请求数超过批量队列大小 (threadpool.bulk.queue_size) 时，会发生此问题。每个节点上的批量队列可以容纳 50 到 200 个请求，具体取决于您使用的 Elasticsearch 版本。队列已满时，将拒绝新请求。
+
+### 解决方法
+注意：对于大多数 Amazon ES 版本，您并无法增加批量队列大小。之所以设置队列是为了将请求限制在可管理的数量之类。有关更多信息，请参阅 Elasticsearch 文档中的 Threadpool Section。
+
+使用以下方法之一解决 es_rejected_execution_exception 错误：
+
+- 添加更多节点：每个节点都有一个批量队列，因此添加更多节点可以为您提供更大的队列容量。要添加节点，请参阅配置 Amazon ES 域（控制台）。注意：如果**没有足够的活跃索引分片**分配到新节点，添加更多数据节点并无济于事。“活跃索引分片”是在**最近 5 分钟内收到至少一个索引请求的分片**。
+- 切换到更大的实例类型：批量请求的每个节点上的线程池中的线程数等于**可用处理器的数量**。切换到具有更多虚拟 CPU (vCPU) 的实例可获取更多线程来处理批量请求。有关更多信息，请参阅选择实例类型和测试。
+- 提高索引性能：当文档索引速度更快时，批量队列达到容量限制的可能性就会降低。有关性能调整的更多信息，请参阅如何提高我的 Elasticsearch 集群上的索引性能？
+
+
 
 ---
 ## time与request_timeout的区别
