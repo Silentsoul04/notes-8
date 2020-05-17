@@ -7,25 +7,6 @@ A: character set， 即字符集，对 Unicode 的一套编码。collation, 即�
 
 
 ---
-Q: 索引, 主键索引, 联合索引, 覆盖索引介绍, NULL值对于索引的关系
-
-A: 
-对于NULL值列上的B树索引导致了is null/is not null不走索引？应该是新版有优化，5.6,5.7都可以走索引。https://dev.mysql.com/doc/refman/5.7/en/is-null-optimization.html
-
-对MySQL来说，null是一个特殊的值，Conceptually, NULL means “a missing unknown value” and it is treated somewhat differently from other values。比如：不能使用=,<,>这样的运算符，对null做算术运算的结果都是null，count时不会包括null行等，null比空字符串需要更多的存储空间等。
-
-
----
-Q: datetime / timestamp 字段类型区别, 时区/日期/时间戳几个概念的理清, `default current_timestamp update current_timestamp` 的使用场合和局限性
-
-A: 首先 DATETIM 和 TIMESTAMP 类型所占的存储空间不同，前者 8 个字节，后者 4 个字节，这样造成的后果是两者能表示的时间范围不同。前者范围为 1000-01-01 00:00:00 ~ 9999-12-31 23:59:59，后者范围为 1970-01-01 08:00:01 到 2038-01-19 11:14:07。所以可以看到 TIMESTAMP 支持的范围比 DATATIME 要小,容易出现超出的情况. 
-
-一般存储都是时间戳，避免时区转换，业务取数据时候进行处理。
-
-`update current_timestamp`使用场合： 获取增量更新数据？ 局限性？
-
-
----
 Q: 建表时`int(11)`, `decimal(5,2)`, `varchar(32)` 后面的数字有什么用
 
 A: 仅仅是显示宽度

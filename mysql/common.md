@@ -1,15 +1,3 @@
----
-# 索引失效
-
-MySQL对varchar型字段的索引，字段类型不同造成的隐式转换，导致索引失效
-
-例子： usename 和 site_product_id 的查询
-
-- https://makandracards.com/makandra/14955-mysql-will-not-use-indexes-if-you-query-the-wrong-data-type
-
----
-# 更新锁
-没有命中索引导致更新操作锁了全表
 
 ---
 # group by 
@@ -51,15 +39,6 @@ SET GLOBAL general_log_file = 'XX';
 
 配置文件修改:
 ```
-
----
-# order by null
-It's for performance; adding ORDER BY NULL after a GROUP BY clause will make your query faster.
-
-django的ORM会自动添加order by null
-
-参考链接:
-* https://stackoverflow.com/questions/5231907/order-by-null-in-mysql
 
 ---
 # mysqldump
@@ -156,6 +135,7 @@ dla的ad
 
 ---
 ## 增量更新的套路
+
 ```sql
 
 create table tbl (
@@ -184,19 +164,6 @@ select ... from tbl where modify_time > @last_modify_time and modify_time <= now
 
 每小时跑该小时的数据, 具体也有类似的错误？
 
----
-
-
-如何优化mysql批量更新操作
-
-通过事务,默认是一条更新一条事务。所以不仅仅更新操作，还有一些事务的相关操作。
-
-如何将批量的合成一个事务进行更新会快些。但是会阻止别人更新，当并发更新的时候有可能会阻塞。
-
-所以先小批量数据合成事务进行更新操作。避免长事务
-
-
-- https://dba.stackexchange.com/a/30842
 
 ----
 
@@ -213,12 +180,3 @@ pt online schema change的工作原理是创建要更改的表的空副本，根
 为了安全起见，除非指定--execute选项（默认情况下未启用），否则该工具不会修改表。该工具支持多种其他措施来防止不需要的负载或其他问题，包括自动检测副本、连接到副本。
 
 如果为--alter指定的语句试图添加唯一索引，请避免运行pt online schema change。由于pt online schema change使用INSERT IGNORE将行复制到新表中，如果正在写入的行产生重复的键，那么它将以静默方式失败，并且数据将丢失。
-
----
-# 生产中的SQL优化案例
-1. 获取全量和增量数据，避免数据量过大时的慢查询语句。使用分页器，django的orm自带有个Paginator的分页获取数据的东西。这个的原理是获取到查询语句的总数，然后进行limit, offset 的翻页操作。当数据量过大后，翻都后面的页效率很差。故改成primary key > 上页最后的offset limit 10000 order by primary key 这样分批获取数据。其实还可以通过子查询进行优化，获取到相应的primary_key的值范围后，在进行列数据的获取，减少回查。
-
-2. 自增溢出问题，insert ignore 因为自增锁的特性，会导致自增主键溢出的问题。
-可以通过一个互斥表去进行优化，生产环境则比较直接，先查，不存在再插。
-
-https://www.percona.com/blog/2011/11/29/avoiding-auto-increment-holes-on-innodb-with-insert-ignore/
