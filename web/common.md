@@ -109,55 +109,6 @@ patch方法用来更新局部资源，这句话我们该如何理解？
 
 (1) pid文件的内容：pid文件为文本文件，内容只有一行, 记录了该进程的ID。用cat命令可以看到。(2) pid文件的作用：防止进程启动多个副本。只有获得pid文件(固定路径固定文件名)写入权限(F_WRLCK)的进程才能正常启动并把自身的PID写入该文件中。其它同一个程序的多余进程则自动退出。
 
----
-# CGI
-
-于是Web服务器可以解析这个HTTP请求，然后把这个请求的各种参数写进进程的环境变量，比如REQUEST_METHOD，PATH_INFO之类的。之后呢，服务器会调用相应的程序来处理这个请求，这个程序也就是我们所要写的CGI程序了。它会负责生成动态内容，然后返回给服务器，再由服务器转交给客户端。服务器和CGI程序之间通信，一般是通过进程的环境变量和管道。
-
-
-WSGI是一种Web服务器网关接口。它是一个Web服务器（如nginx，uWSGI等服务器）与web应用（如用Flask框架写的程序）通信的一种规范。
-
-uWSGI是一个Web服务器，它实现了WSGI协议、uwsgi、http等协议。Nginx中HttpUwsgiModule的作用是与uWSGI服务器进行交换。
-要注意 WSGI / uwsgi / uWSGI 这三个概念的区分。
-WSGI看过前面小节的同学很清楚了，是一种通信协议。
-uwsgi是一种线路协议而不是通信协议，在此常用于在uWSGI服务器与其他网络服务器的数据通信。
-而uWSGI是实现了uwsgi和WSGI两种协议的Web服务器。
-uwsgi协议是一个uWSGI服务器自有的协议，它用于定义传输信息的类型（type of information），每一个uwsgi packet前4byte为传输信息类型描述，它与WSGI相比是两样东西。
-
-
----
-# web 模型
-
-https://www.v2ex.com/t/347421#r_4135228
-
-说下我对这 python 这几种 web 模型的理解吧： 
-
-首先是 http server + wsgi server(container) + wsgi application 这种传统模型吧： 
-http server 指的是类似于 nginx 或 apache 的服务 
-wsgi server 指的是类似 gunicorn 和 uwsgi 这样的服务 
-wsgi application 指的是 flask django 这样的基于 wsgi 接口的框架运行起来的实例 
-最初这种模型只是为了方便 web 框架的开发者，不需要每个框架层面都去实现一遍 http server ，就增加了一个 WSGI 中间层协议，框架只要实现这个协议的客户端就可以，然后用 wsgi server 去实现 http 协议的解析并去调用客户端(wsgi application)。 
-
-为了方便开发，每个框架都内置了一个简易的 wsgi server ，为什么还要用专门的 wsgi server 呢？ 
-wsgi 除了解析 http 协议以及 http 端口侦听外，还负责了流量转发以及 wsgi application 进程管理的功能。一般 wsgi 框架内置的 wsgi server 都是一个单进程，一次只能处理一个请求。而目的通用的 wsgi server(gunicorn, uwsgi)都至少支持 pre fork 模型，这种模型会起一个 master 来侦听请求，并启动多个 slave(每个 slave 是一个 wsgi application)， master 负责把请求转发到空闲的 slave 上。除了这种传统的基于进程的 pre fork 同步模型，不同的 wsgi server 也会支持一些其它模型，有基于线程的同步模型，也有基于 asyncio 的异步模型。 
-
-这种模型下怎样写异步代码呢？ 
-1. 直接用传统的异步编程(进程，线程，协程)，虽然有些 wsgi server 支持 asynio 模型，但是这也需要用户所写的代码做相应的支持。这就导致了如果我们在 wsgi application 的时候不能随便使用线程和异步 IO ，如果用了就需要配置 wsgi server 使其支持我们自己的写法。因此为了使得我们缩写的 application 能部署在任意的 wsgi server(container)中，我们就只能写同步代码了。 
-2. 使用分布式异步编程，使用类似 celery 的方式，将需要异步处理的东西发送到 worker 去处理。 
-
-既然有了 wsgi server ，为什么还要有一个 http server 呢？ 
-主要是因为 wsgi server 支持的并发量比较低，一般会用一个专门的 http server 来做一层缓冲，避免并发量过大时直接服务挂掉。 
-
-
-python 传统的这种 wsgi 模型，主要是为了方便框架开发者只需要专注框架层面，而非 http 处理层面。但这样却增加了服务部署的复杂度，需要同时部署和配置 http server 和 wsgi server ，如果想支持异步还要部署 worker ，而使用 tornado 或 go 开发的应用因为自己实现了高效 http 处理的应用只需要部署自己就可以了。 
-
-
-接下来是 tornado 和 twisted 这种模型： 
-这种模型和上面的传统模型处于一个时期，这种模型和 nodejs 差不多，都是基于回调的模型，适用于高 IO 低 CPU 的场景。这种模型自己实现了一个基于回调 http server(event loop)，每一个请求都被注册成一个异步函数来处理，然后主循环来不断的循环这些函数。这样就和 pre fork 模型有了区别， pre fork 模型中每一个 slave 都是一个 wsgi application ，一个 wsgi application 都只能处理一个请求，而回调模型只有一个线程，不仅极大的减少了内存的分配还减小了进城以及线程间的切换开销，从而可以支持高 IO 并发。但是这种模型也有很明显的缺点，就是一旦应用程序有大量的 CPU 计算，就会让这个线程堵住，所有的请求都会收到影响，如果应用在处理一个请求时崩溃，所有的请求也都会收到影响。 
-
-
-接下来时 aiohttp/sanic 这种模型： 
-这种模型和 tornada 模型的改进，但实质上是一样的，因为回调的写法不易读也容易出错，于是将回调的写法改成了同步的写法。这种模型和 koa2 和 go net/http 查不多， asyncio 提供了类似 go coroutine 的功能和写法，而 aiohttp 则提供了类似 go 中的 net/http 的 http 处理库。
 
 ---
 # 网络请求
