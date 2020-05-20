@@ -249,6 +249,8 @@ docker exec -it my_django bash
 
 RUN apt-get update && apt-get install vim -y
 
+apk add --no-cache
+
 
 docker run  --name my_django -p 8099:8099 -v /home/youmi/vhost/ag-business/venv/lib/python3.7/site-packages:/usr/local/lib/python3.7/site-packages -v /home/youmi/vhost/ag-business:/home/webapp test:v1
 
