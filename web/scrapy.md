@@ -1,6 +1,7 @@
 In some cases you may be interested in passing arguments to those callback functions so you can receive the arguments later, in the second callback. You can use the Request.meta attribute for that.
 
 Here’s an example of how to pass an item using this mechanism, to populate different fields from different pages:
+```
 def parse_page1(self, response):
     item = MyItem()
     item['main_url'] = response.url
@@ -13,15 +14,8 @@ def parse_page2(self, response):
     item = response.meta['item']
     item['other_url'] = response.url
     return item
+```
 
-
-``````````````````````````````````````````````````````````````````````````````````````````````````````````````````
-
-
-num = int(follower_num) if follower_num else 0
-
-
-``````````````````````````````````````````````````````````````````````````````````````````````````````````````````
 mongodb的例子在item pipeline中有一个，说明如何使用 from_crawler ;         Write items to MongoDB
 
 ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````

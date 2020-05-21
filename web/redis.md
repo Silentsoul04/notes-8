@@ -34,3 +34,9 @@ I/O 多路复用模块收到数据包之后将其丢给后面多个 I/O 线程�
 # 参考链接：
 
 - [为什么 Redis 选择单线程模型](https://draveness.me/whys-the-design-redis-single-thread/)
+
+
+---
+
+- [redis基础](https://juejin.im/post/5db66ed9e51d452a2f15d833#heading-24)
+

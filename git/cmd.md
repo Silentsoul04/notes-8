@@ -1,3 +1,10 @@
+---
+# 切换标签
+git checkout tag_name 
+
+git checkout -b branch_name tag_name
+
+---
 # 删除没跟踪的文件
 
 git clean -f
