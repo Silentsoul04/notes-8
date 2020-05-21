@@ -1,23 +1,3 @@
----
-# 跨域请求
-
-在 HTML 中，`<a>, <form>, <img>, <script>, <iframe>, <link>` 等标签以及 Ajax 都可以指向一个资源地址，而所谓的跨域请求就是指：当前发起请求的域与该请求指向的资源所在的域不一样。这里的域指的是这样的一个概念：我们认为若协议 + 域名 + 端口号均相同，那么就是同域。
-
-## 跨域请求的安全问题
-​ 通常，浏览器会对上面提到的跨域请求作出限制。浏览器之所以要对跨域请求作出限制，是出于安全方面的考虑，因为跨域请求有可能被不法分子利用来发动 CSRF攻击。
-
-### CSRF攻击
-​ CSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。CSRF攻击者在用户已经登录目标网站之后，诱使用户访问一个攻击页面，利用目标网站对用户的信任，以用户身份在攻击页面对目标网站发起伪造用户操作的请求，达到攻击目的。
-
-链接：　
-- [什么是跨域请求以及实现跨域的方案](https://www.jianshu.com/p/f880878c1398)
-
-## 为什么form表单提交没有跨域问题，但ajax提交有跨域问题？
-
-因为原页面用 form 提交到另一个域名之后，**原页面的脚本无法获取新页面中的内容**。所以浏览器认为这是安全的。而 AJAX 是可以读取响应内容的，因此浏览器不能允许你这样做。如果你细心的话你会发现，其实请求已经发送出去了，你只是拿不到响应而已。所以浏览器这个策略的本质是，一个域名的 JS ，在未经允许的情况下，不得读取另一个域名的内容。但浏览器并不阻止你向另一个域名发送请求。
-> form表单会刷新页面，不会把结果返回给js，所以相对安全。重放攻击？
-- [跨域](https://www.zhihu.com/question/31592553/answer/190789780)
-
 
 ---
 # CORS和JSONP
@@ -139,18 +119,6 @@ patch方法用来更新局部资源，这句话我们该如何理解？
 ### 解决办法
 uwsgi的sock需要nginx才能解析，uwsgi直接启动监听端口。减少nginx和反爬虫的解析后观察情况
 
----
-# 缓存失效问题
-比如我们现在拥有这么一个集群，集群里面有个缓存服务，集群中每个程序都会用到这个缓存，如果此时缓存中有一项缓存过期了，在大并发环境下，同一时刻中许许多多的服务都过来访问缓存，获取缓存中的数据，发现缓存过期，就要再去数据库取，然后更新到缓存服务中去。但是其实我们仅仅只需要一个请求过来数据库去更新缓存即可，然后这个场景，我们该怎么去做
-
-作者：说出你的愿望吧丷
-链接：https://juejin.im/post/5d113660e51d45773d468640
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
-1. 主动刷新缓存？失效前的一段时间去主动查询替换
-
-2. 分布式锁
 
 ---
 # 微服务如何处理分布式事务？
@@ -174,65 +142,3 @@ auth请求各个企业管理
 至于用户的组别的权限更改，是不同服务的，可以通过订单系统发送一个信号进行异步更改，或者业务相关服务监控某个信号进行更改。对于一些非强一致性的，可以有延迟。
 
 对于强一致性的接口（具体？）需要分布式锁去进行控制。
-
-
----
-# uwsgi
-
-## uwsgi-pass proxy-pass
-uWSGI原生支持HTTP, FastCGI, SCGI及其特定的名为”uwsgi”的协议
-
-uwsgi_pass 127.0.0.1:3031;
-这表示“传递每一个请求给绑定到3031端口并使用uwsgi协议的服务器”。
-uwsgi_pass使用uwsgi协议。 proxy_pass使用普通的HTTP与uWSGI服务器联系。uWSGI文档声称该协议更好，更快，并且可以从uWSGI的所有特殊功能（插件uWSGI plugin）中受益。 
-
-
-## http http-socket
-
-http 和 http-socket的使用上有一些区别:
-
-[原生HTTP支持](https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/HTTP.html)
-- http: 自己会产生一个额外的http进程(可以认为与nginx同一层, 有路由器/代理/负载均衡器)负责路由http请求给worker, http进程和worker之间使用的是uwsgi协议
-- http-socket: 不会产生http进程, 一般用于在前端webserver不支持uwsgi而仅支持http时使用, 他产生的worker使用的是http协议
-- socket:  客户端的请求支持uwsgi, 则直接使用socket即可(tcp or unix)
-
-Official documents recommend using http for a public server and http-socket for web-server after Nginx or Apache if you want use http in network.
-
-
-因此, http 一般是作为独立部署的选项; http-socket 在前端webserver不支持uwsgi时使用,
-如果前端webserver支持uwsgi, 则直接使用socket即可(tcp or unix)
-
-
-uwsgi://127.0.0.1:8091
-
-
-```
-socket = /home/youmi/tmp/ag-auth.sock
-http = 0.0.0.0:10181
-启动得到:
-uWSGI http bound on 0.0.0.0:10181 fd 3
-uwsgi socket 0 bound to UNIX address /home/youmi/tmp/ag-auth.sock fd 6
-...
-spawned uWSGI master process (pid: 28872)
-spawned uWSGI worker 1 (pid: 28876, cores: 1)
-spawned uWSGI worker 2 (pid: 28877, cores: 1)
-spawned uWSGI http 1 (pid: 28878)
-
-
----
-socket = /home/youmi/tmp/ag-auth.sock
-http-socket = 0.0.0.0:10181
-启动得到:
-uwsgi socket 0 inherited UNIX address /home/youmi/tmp/ag-auth.sock fd 6
-uwsgi socket 1 bound to TCP address 0.0.0.0:10181 fd 3
-...
-gracefully (RE)spawned uWSGI master process (pid: 28872)
-spawned uWSGI worker 1 (pid: 28955, cores: 1)
-spawned uWSGI worker 2 (pid: 28956, cores: 1)
-
-```
-
-- [The uwsgi Protocol](https://uwsgi-docs.readthedocs.io/en/latest/Protocol.html)
-- [Nginx支持uwsgi](https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/Nginx.html)
-- [difference-between-uwsgi-pass-and-proxy-pass-in-nginx](https://stackoverflow.com/questions/34562730/difference-between-uwsgi-pass-and-proxy-pass-in-nginx)
-

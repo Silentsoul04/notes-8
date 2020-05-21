@@ -105,6 +105,7 @@ location / {
 ```
 这表示“传递每一个请求给绑定到3031端口并使用uwsgi协议的服务器。
 
+uwsgi_pass使用uwsgi协议。 proxy_pass使用普通的HTTP与uWSGI服务器联系。uWSGI文档声称该协议更好，更快，并且可以从uWSGI的所有特殊功能（插件uWSGI plugin）中受益。 
 
 
 ---
@@ -151,7 +152,6 @@ location / {
 
 http 和 http-socket的使用上有一些区别:
 
-[原生HTTP支持](https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/HTTP.html)
 - http: 自己会产生一个额外的http进程(可以认为与nginx同一层, 有路由器/代理/负载均衡器)负责路由http请求给worker, http进程和worker之间使用的是uwsgi协议
 - http-socket: 不会产生http进程, 一般用于在前端webserver不支持uwsgi而仅支持http时使用, 他产生的worker使用的是http协议
 - socket:  客户端的请求支持uwsgi, 则直接使用socket即可(tcp or unix)
@@ -162,5 +162,36 @@ Official documents recommend using http for a public server and http-socket for 
 因此, http 一般是作为独立部署的选项; http-socket 在前端webserver不支持uwsgi时使用,
 如果前端webserver支持uwsgi, 则直接使用socket即可(tcp or unix)
 
-
 uwsgi://127.0.0.1:8091
+
+
+```
+socket = /home/youmi/tmp/ag-auth.sock
+http = 0.0.0.0:10181
+启动得到:
+uWSGI http bound on 0.0.0.0:10181 fd 3
+uwsgi socket 0 bound to UNIX address /home/youmi/tmp/ag-auth.sock fd 6
+...
+spawned uWSGI master process (pid: 28872)
+spawned uWSGI worker 1 (pid: 28876, cores: 1)
+spawned uWSGI worker 2 (pid: 28877, cores: 1)
+spawned uWSGI http 1 (pid: 28878)
+
+
+---
+socket = /home/youmi/tmp/ag-auth.sock
+http-socket = 0.0.0.0:10181
+启动得到:
+uwsgi socket 0 inherited UNIX address /home/youmi/tmp/ag-auth.sock fd 6
+uwsgi socket 1 bound to TCP address 0.0.0.0:10181 fd 3
+...
+gracefully (RE)spawned uWSGI master process (pid: 28872)
+spawned uWSGI worker 1 (pid: 28955, cores: 1)
+spawned uWSGI worker 2 (pid: 28956, cores: 1)
+
+```
+
+- [原生HTTP支持](https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/HTTP.html)
+- [The uwsgi Protocol](https://uwsgi-docs.readthedocs.io/en/latest/Protocol.html)
+- [Nginx支持uwsgi](https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/Nginx.html)
+- [difference-between-uwsgi-pass-and-proxy-pass-in-nginx](https://stackoverflow.com/questions/34562730/difference-between-uwsgi-pass-and-proxy-pass-in-nginx)
