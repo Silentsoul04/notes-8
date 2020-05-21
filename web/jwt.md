@@ -76,6 +76,10 @@ AOtbon6CebgO4WO9iJ4r6ASUl1pACYUetSIww-GQ72w
 "不过，把jwt变成有状态替代session确实没啥必要。"
 
 
+续签问题：完善 refreshToken，借鉴 oauth2 的设计，返回给客户端一个 refreshToken，允许客户端主动刷新 jwt。一般而言，jwt 的过期时间可以设置为数小时，而 refreshToken 的过期时间设置为数天。我认为该方案并可行性是存在的，但是为了解决 jwt 的续签把整个流程改变了，为什么不考虑下 oauth2 的 password 模式和 client 模式呢？
+
+- [理解JWT的使用场景和优劣](http://blog.didispace.com/learn-how-to-use-jwt-xjf/)
+
 ---
 
 # 项目
@@ -88,3 +92,6 @@ AOtbon6CebgO4WO9iJ4r6ASUl1pACYUetSIww-GQ72w
 
 
 但因为还需要进行单点登录的限制，所以我们还是将jwt进行有状态，存了session在mysql上（待迁移redis），每次校验需要进行当前session的校验，也就没有上面所说的过期与黑名单问题。其实上面的uid-time键值对这个思路也是差不多，不过提供了另一个思路。
+
+没有续签问题，过期一个月。
+
