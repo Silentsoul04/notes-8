@@ -110,3 +110,19 @@ http://www.doc88.com/p-9139615174722.html
 
 
 - [美团前端安全系列（二）：如何防止CSRF攻击？](https://www.freebuf.com/articles/web/186880.html)
+
+----
+
+# 本地项目测试
+
+因为jwt存在cookie上，所以表单提交存在跨域的危险。
+```html
+<form action="http://172.16.8.4:8890/api/favorites/keywords/cancel" method="POST">
+    <input type="text" id="keyword" name="keyword">
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+```
+请求是带着cookie过来了。不过还好约定的内容是application/json，改成json就不是简单请求了，会有跨域问题。所以存在风险，但还没造成影响。
+
+但一不小心支持表单的类型，伪造一个钓鱼网站，诱导AE点击一下，把我提交到某个企业里面。所以还是把风险关闭才行。改成header获取提交把token带上。

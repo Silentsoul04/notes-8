@@ -254,7 +254,7 @@ apk add --no-cache
 
 docker run  --name my_django -p 8099:8099 -v /home/youmi/vhost/ag-business/venv/lib/python3.7/site-packages:/usr/local/lib/python3.7/site-packages -v /home/youmi/vhost/ag-business:/home/webapp test:v1
 
-
+# ag-business
 docker run --name ag-business --env CFGENV=feature --env CFGAUTH=ag-apollo:XX --env CFGAPP=ag-business -p 8099:80 ag-business:1.0.0
 
 
@@ -271,6 +271,21 @@ docker build -t registry.umlife.net:443/mt-service/ag-business:feature-init-1.0.
 docker build -t registry.umlife.net:443/adxmi/migo:fix-yg .
 
 docker push registry.umlife.net:443/mt-service/ag-business:feature-init-1.0.0
+
+# ag-permission
+
+```
+ git checkout -b v1.4.4
+ python scripts/docker/app-config.py --host=https://apollo-alishh.umlife.net --app=ag-permission-uni --env=preview  --auth=ag-apollo:xx -d=./config/settings
+ python scripts/docker/app-config.py --host=https://apollo-alishh.umlife.net --app=ag-permission-uni --env=preview  --auth=ag-apollo:xx -d=./cli --ns permission_config.json
+ python cli/acl.py
+
+docker run -p 8003:80 --env CFGHOST=https://apollo-alishh.umlife.net  --env CFGENV=ag-permission-uni-local --env CFGAUTH=ag-apollo:tRZ62Exi7J0EZ06v --env CFGAPP=ag-test-config --rm registry.umlife.net:443/mt-service/ag-permission:1.4.4 
+
+
+
+```
+
 
 # 本地docker部署
 git apply local_docker.diff
