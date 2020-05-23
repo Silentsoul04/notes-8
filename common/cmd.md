@@ -1,3 +1,28 @@
+--------
+# pyenv
+
+pyenv install --list
+
+pyenv install 2.7.6
+
+pyenv-virtualenv
+
+pyenv virtualenvs
+
+制定版本创建virtualenv
+pyenv virtualenv 2.7.13 venv27
+
+pyenv virtualenvs
+
+pyenv activate <name>
+
+pyenv deactivate
+
+pyenv uninstall my-virtual-env
+
+pyenv virtualenv-delete my-virtual-env
+
+
 ---
 
 virtualenv --python=/home/youmi/.pyenv/shims/python utils/venv
@@ -154,6 +179,9 @@ INFO 2017-09-06 14:19:22,714 sms_code:(281) sms_code: ip=[183.156.71.189] telpho
 
 ````text
 for i in `ls config/localsettings/*.default`; do cp $i `echo ~/tmp/$i| sed "s/.default//g"` ; done
+
+for i in `ls config/*.sample`; do cp $i `echo ./$i| sed "s/.sample//g"` ; done
+
 ````
 
 ---

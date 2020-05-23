@@ -1,3 +1,13 @@
+# 发版本压缩
+
+git flow release finish -S
+
+---
+# 回滚
+
+git reflog
+
+
 ---
 # 切换标签
 git checkout tag_name 

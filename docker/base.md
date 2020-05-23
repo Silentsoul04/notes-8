@@ -280,7 +280,7 @@ docker push registry.umlife.net:443/mt-service/ag-business:feature-init-1.0.0
  python scripts/docker/app-config.py --host=https://apollo-alishh.umlife.net --app=ag-permission-uni --env=preview  --auth=ag-apollo:xx -d=./cli --ns permission_config.json
  python cli/acl.py
 
-docker run -p 8003:80 --env CFGHOST=https://apollo-alishh.umlife.net  --env CFGENV=ag-permission-uni-local --env CFGAUTH=ag-apollo:tRZ62Exi7J0EZ06v --env CFGAPP=ag-test-config --rm registry.umlife.net:443/mt-service/ag-permission:1.4.4 
+docker run -p 8003:80 --env CFGHOST=https://apollo-alishh.umlife.net  --env CFGENV=ag-permission-uni-local --env CFGAUTH=ag-apollo:xx --env CFGAPP=ag-test-config --rm registry.umlife.net:443/mt-service/ag-permission:1.4.4 
 
 
 
