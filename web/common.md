@@ -125,15 +125,6 @@ uwsgi的sock需要nginx才能解析，uwsgi直接启动监听端口。减少ngin
 
 
 ---
-# 微服务如何处理分布式事务？
-
-两阶段提交?
-
-https://www.zhihu.com/question/64921387/answer/225784480
-https://www.cnblogs.com/barrywxx/p/8506512.html
-
-
----
 # none
 auth请求各个企业管理
 改为企业管理对外，然后请求相应的auth

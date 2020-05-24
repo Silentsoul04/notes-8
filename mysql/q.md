@@ -1,4 +1,8 @@
 # MySQL Quiz
+Q： 高可用Mysql。主库挂了
+- [五大常见的MySQL高可用方案](https://zhuanlan.zhihu.com/p/25960208)
+> 好像大多数的数据库的一致性无法得到保证？
+
 
 ---
 Q: 什么是charset以及collation, 为什么(不)建议统一使用 `default charset 'utf8mb4' collate 'utf8mb4_bin`; 为什么建议字段名, 甚至表名统一小写? 
