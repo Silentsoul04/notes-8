@@ -51,8 +51,7 @@ docker run -d -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_6 consul agen
 docker exec consul_server_1 consul members Node Address Status Type Build Protocol DC Segment 1 
 
 ```
-- [Docker - 容器部署 Consul 集群
-](https://www.cnblogs.com/lfzm/p/10633595.html)
+- [Docker - 容器部署 Consul 集群](https://www.cnblogs.com/lfzm/p/10633595.html)
 
 ---
 
