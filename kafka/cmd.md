@@ -75,7 +75,11 @@ ssh -p36000 kafka-00.ag.awsor
 ----
 # 本地
 
+cd opt/kafka
+
 ./bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group common --reset-offsets --to-latest --all-topics --execute
+
+./bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group common --reset-offsets --shift-by -1 --topic addata.ad_heat:0 --execute
 
 ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic bin_qs
 
@@ -97,19 +101,29 @@ ssh -p36000 kafka-00.ag.awsor
 
 # 国内
 
+cd bin/kakfa
+
 ## 重置
-./kafka/bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group ag_ec_sync_product_qs --reset-offsets --to-latest --all-topics --execute
+./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group ag_ec_sync_product_qs --reset-offsets --to-latest --all-topics --execute
 
 ## 描述
-~/kafka/bin/kafka-consumer-groups.sh --describe --bootstrap-server 172.19.33.10:9092 --group ag_ec_sync_product_qs
+./bin/kafka-consumer-groups.sh --describe --bootstrap-server 172.19.33.10:9092 --group ag_ec_sync_product_qs
+./bin/kafka-consumer-groups.sh --describe --bootstrap-server 172.19.33.10:9092 --group test_ag_web_uni
 
 ## 消费消息
-~/kafka/bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --from-beginning
+./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --from-beginning 
 
-~/kafka/bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --max-messages 10
+### 消费最多10个消息
+./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --max-messages 10
+
+./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db40-adData-ad-heat --max-messages 10  --consumer-property group.id=test_ag_web_uni
+
 
 
 ## 偏移
 ./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group common --reset-offsets --shift-by -10 --topic binlog-db40-adData-ad-heat:0 --execute
 
+./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group test_ag_web_uni --reset-offsets --shift-by -10 --topic binlog-db40-adData-ad-heat:0 --execute
+
+./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group ag_web_uni --reset-offsets --to-latest --topic binlog-db40-adData-ad-heat --execute
 
