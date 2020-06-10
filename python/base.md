@@ -1,3 +1,5 @@
+- [TODO:《流畅的python》阅读笔记](https://juejin.im/entry/59e4754951882578e27b1e7c)
+
 ---
 ## init new
 
