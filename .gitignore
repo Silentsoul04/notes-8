@@ -1,1 +1,12 @@
+*.[a|o]
+*~
+*.swp
+*.swo
+*.psd
+*.pyc
+.DS_Store
+.python-version
 .idea/
+.vscode/
+venv/
+__pycache__/
