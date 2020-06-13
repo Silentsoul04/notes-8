@@ -198,3 +198,62 @@ TODO:
 - tornado 异步原理？
 
 > 所以是listen的时候，socket默认就能进行epoll的模式，能够监听新来的多个客户端链接的?所以只有一个线程监听epoll？
+
+
+---
+
+- [Go 语言设计与实现：调度器](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-goroutine/#comment)
+
+Q: go语言是封装了epoll
+A: Go 语言里面有个东西叫网络轮询器 netpoller，下一节会介绍
+Q: go启动后独立的一个线程?
+A: 没有独立的线程做这个事情，但是会在一些时间点触发，例如：调度、GC 等
+Q: epoll_await阻塞？
+A: epoll_wait 有等待时间的，如果没有可读或者可写的文件，就会返回 0
+
+Q: 如果都是系统调用在并发高的情况下，每个G和M都会经过阻塞调用，性能是不是就跟普通的多线程运行没有什么差别了？
+A: I/O 操作再慢也会结束的，很难会达到 10000 个线程。理论上肯定存在边界，但是实践中很难达到，极端情况就是退化到跟使用 Thread 差不多或者稍微差一点。之前的回复里也没有说只进行计算，CPU 和 I/O 两种资源肯定都会使用的。
+
+Q: 还是说通过网络io的程序因为epoll的存在不会做线程上下文切换？
+A: 一旦发生了系统调用，运行时就可能调用 runtime.handoffp 创建新的线程来执行 Goroutine，触发的时机可能包括 — 垃圾回收、系统监控等。
+
+
+
+**需要澄清一下整个 io 过程**：[](#bookmark)
+
+- io 与系统调用不能混淆，一个 io 过程可能包括多次系统调用。
+（经过一个系统调用发现文件描述符还未可用而）阻塞的 io 首先会导致 G 的挂起，此时 G 与 M 分离，且不在任何 P 的运行队列中，当前的 P 会调度下一个 G，这个阶- 段不涉及新线程的创建。
+- 被 io 挂起的 G 由网络轮询器维护，直到文件描述符可用。
+- 网络轮询器既会被（在独立线程中的）系统监控 Goroutine 触发，也会被其他各个活跃线程上的 Goroutine 触发。
+- 当文件描述符可用时，G 会重新加入到原来的 P 中等待被调度。
+- 当 G 被重新调度时，会重新发起读/写系统调用。
+- 当 G 进行系统调用的时候，对应的 M 和 P 也阻塞在系统调用，并不会立刻发生抢占，只有当这个阻塞持续时间过长（10 ms）时，才会将 P（及之上的其他 G）抢占并分配到空闲的 M 上，此时如果没有空闲的，才会创建新的线程。
+
+通过以上过程可见，密集的 io 通常并不会产生过多的线程。
+
+> 理解：阻塞IO会导致G的挂起，分离G与M。并通过网络轮询器(调度和系统调用)进行唤醒，加入运行队列。除此之外，系统调用，只有阻塞调用过长(10 ms)才会抢占分配或创建新的线程。
+
+Q: 请问，这个G与M分离，是M主动分离还是P的调度主动分离？
+A: 如果文件描述符不可读或者不可写，当前 Goroutine 就会执行 runtime.poll_runtime_pollWait 检查 runtime.pollDesc 的状态并调用 runtime.netpollblock 等待文件描述符的可读或者可写：runtime.netpollblock 是 Goroutine 等待 I/O 事件的关键函数，它会使用运行时提供的 runtime.gopark **让出**当前线程，将 Goroutine 转换到**休眠状态并等待运行时的唤醒**。
+A: 每一个M在执行的时候都有可能处理epoll事件轮询器的G。
+
+---
+# netpoller [](#bookmark)
+
+- [netpoller](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-netpoller)
+
+## 轮询等待
+Go 语言的运行时会在调度或者系统监控中调用 runtime.netpoll 轮询网络，该函数的执行过程可以分成以下几个部分：
+
+- 根据传入的 delay 计算 epoll 系统调用需要等待的时间；
+- 调用 epollwait 等待可读或者可写事件的发生；
+- 在循环中依次处理 epollevent 事件；
+
+runtime.netpollunblock 会在读写事件发生时，将 runtime.pollDesc 中的读或者写信号量转换成 pdReady 并返回其中存储的 Goroutine；如果返回的 Goroutine 不会为空，那么该 Goroutine 就会被加入 toRun 列表，运行时会将列表中的全部 Goroutine 加入运行队列并等待调度器的调度。
+
+
+## 小结
+
+网络轮询器并不是由运行时中的**某一个线程独立**运行的，运行时中的**调度和系统调用**会通过 runtime.netpoll 与网络轮询器**交换消息**，获取待执行的 Goroutine 列表，并将待执行的 Goroutine **加入运行队列等待处理**。
+
+**所有的文件 I/O、网络 I/O 和计时器**都是由**网络轮询器**管理的，它是 Go 语言运行时重要的组成部分。我们在本节中详细介绍了网络轮询器的设计与实现原理，相信各位读者对这个重要组件也有了比较深入的理解。
