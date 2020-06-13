@@ -1,3 +1,11 @@
+Git warning of file overwriting due to (supposedly) untracked files
+
+```
+ll `git rebase develop 2>&1 | sed "s/^[^\t].*/ /g" `
+rm `git rebase develop 2>&1 | sed "s/^[^\t].*/ /g" `
+```
+
+---
 # 发版本压缩
 
 git flow release finish -S
