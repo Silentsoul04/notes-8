@@ -108,7 +108,7 @@ def wait(self, watcher):
 > 回头看一下这个过程，其实也很简单的：当我们需要等待一个事件发生时——比如需要等待 1 秒钟的计时器事件，我们就把当前的执行栈跟这个事件做一个绑定（watcher.start(waiter.switch)），然后把执行权交给 hub；hub 则会在事件发生后，根据注册的记录尽快回到原来的断点继续执行。
 
 
-hub 一旦拿到执行权，就可以做很多事情了，比如切换到别的 greenlet 去执行一些其他的任务，直到这些 greenlet 又主动把执行权交回给 hub。宏观的来看，就是这样的：一个 hub，好多个其他的任务 greenlet（其中没准就包括 main），hub 负责总调度，去依次调用各个任务 greenlet；任务 greenlet 则在执行至下一次断点时，主动切换回 hub。这样一来，许多个任务 greenlet 就可以看似并行地同步运行了，这种任务调度方式叫做协作式的任务调度（cooperative scheduling）。
+hub 一旦拿到执行权，就可以做很多事情了，比如切换到别的 greenlet 去执行一些其他的任务，直到这些 greenlet 又主动把执行权交回给 hub。宏观的来看，就是这样的：一个 hub，好多个其他的任务 greenlet（其中没准就包括 main），hub 负责总调度，去依次调用各个任务 greenlet；任务 greenlet 则在执行至下一次断点时，主动切换回 hub。这样一来，许多个任务 greenlet 就可以看似并行地同步运行了，这种任务调度方式叫做**协作式的任务调度**（cooperative scheduling）。
 
 > 个人理解： 也就是通过单例get_hub获取到hub 和 loop。loop 是 Gevent 的核心部件，也就是主循环核心。hub 则是一个 greenlet，里面跑着 loop。然后hub是总的，负责切换到其他的greenlet去执行任务，直到这些 greenlet 又主动把执行权交回给 hub。通过loop进行注册。wait进行交换控制权
 
