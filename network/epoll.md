@@ -161,6 +161,25 @@ Q: 那究竟是如何实现异步的？epoll不是也要wait吗？为什么还�
 A: 有等待时间
 
 
+---
+## epoll缺陷 [](#bookmark)
+
+但 epoll 就没有缺陷吗？答案是否定的：
+
+**epoll 目前只支持 pipe, 网络等操作产生的 fd，暂不支持文件系统产生的 fd。**
+
+异步 I/O上面介绍的，无论是阻塞 I/O 还是 非阻塞 I/O 还是 I/O 多路复用，都是同步 I/O。都需要**用户等待 I/O操作完成，并接收返回的内容**(阻塞)。而操作系统本身也提供了异步 I/O 的方案，对应到不同的操作系统：Linuxaio，目前比较被诟病，比较大缺陷是只支持 Direct I/O（文件操作）io_uring， Linux Kernel 在 5.1 版本加入的新东西，被认为是 Linux 异步 I/O 的新归宿windowsiocp，作为 libuv 在 windows 之上的异步处理方案。（笔者对 windows 研究不多，不多做介绍了。）至此，介绍了常见的几种 I/O 模型。而目前在 Linux 上比较推荐的方案还是 epoll 的机制。但 epoll 不支持监听文件 fd 的问题，还需要动点脑筋，我们来看看 libuv 怎么解决的。
+
+**libuv** 使用 epoll 来构建 **event-loop** 的主体，其中：
+
+- socket, pipe 等能通过 epoll 方式监听的 fd 类型，通过 epoll_wait 的方式进行监听；
+- 文件处理 / DNS 解析 / 解压、压缩等操作，使用工作线程的进行处理，将请求和结果通过两个队列建立联系，由一个 pipe 与主线程进行通信， epoll 监听该 fd 的方式来确定读取队列的时机。
+
+参考链接：
+
+- [Node.js 异步非阻塞 I/O 机制剖析](https://juejin.im/post/5d9c28dbf265da5b6723e3a1)
+
+
 ----
 # Tornado
 
