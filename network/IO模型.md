@@ -49,13 +49,5 @@ IO多路转接是多了一个select函数，多个进程的IO可以注册到同�
 - [Linux的五种IO模型](https://juejin.im/post/5b94e93b5188255c672e901e#heading-7)
 - [Linux IO模式及 select、poll、epoll详解](https://segmentfault.com/a/1190000003063859)
 
-
-
-
-
-
-
-
-
-
-
+> 理解： IO一般是同步的，真正的异步IO很少使用。同步IO实现异步需要针对哪一个通信层次，例如异步框架的实现。[参考: epoll与异步](epoll.md)
+>> **io分两个阶段，1.询问内核准备好数据没有 2.从内核读数据。阻塞，非阻塞都是指阶段一。同步异步指阶段2。** [](#bookmark)
