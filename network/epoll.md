@@ -139,7 +139,7 @@ select，poll，epoll本质上都是同步I/O，因为他们都需要在读写�
 
 
 ----
-# epoll与异步
+# epoll与异步 [](#bookmark)
 
 - [讨论：IO多路复用到底是不是异步的？](https://www.zhihu.com/question/59975081)
 
@@ -158,7 +158,7 @@ select，poll，epoll本质上都是同步I/O，因为他们都需要在读写�
 > **unix只有同步io**
 
 Q: 那究竟是如何实现异步的？epoll不是也要wait吗？为什么还能继续处理？
-
+A: 有等待时间
 
 
 ----
