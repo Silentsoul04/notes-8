@@ -7,13 +7,13 @@ ssh -p36000 kafka-00.ag.awsor
 
 
 # 创建主题
-bin/kafka-topics.sh --create --zookeeper 192.168.1.100:2181 --replication-factor 2 --partitions 2 --topic partopic
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 0 --partitions 2 --topic addata.ad_heat
 
 # 主题信息
-bin/kafka-topics.sh --describe --zookeeper 192.168.1.100:2181 --topic partopic
+bin/kafka-topics.sh --describe --zookeeper 192.168.1.100:2181 --topic addata.ad_heat
 
 # 命令行生产者
-./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic mykafka
+./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic addata.ad_heat
 
 # 消费者
 ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mykafka --from-beginning
@@ -125,5 +125,5 @@ cd bin/kakfa
 
 ./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group test_ag_web_uni --reset-offsets --shift-by -10 --topic binlog-db40-adData-ad-heat:0 --execute
 
-./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group ag_web_uni --reset-offsets --to-latest --topic binlog-db40-adData-ad-heat --execute
+./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group test_ag_web_uni --reset-offsets --to-latest --topic binlog-db40-adData-ad-heat --execute
 

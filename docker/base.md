@@ -19,7 +19,7 @@ docker push registry.umlife.net:443/mt-service/schema/elasticsearch-ik:5.5.3
 ```
 docker run -d --name zookeeper -p 2181:2181 -t wurstmeister/zookeeper
 
-docker run  -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=172.16.8.4:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.16.8.4:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
+docker run -d --network host --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=localhost:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
 
  docker run -d --name kafka1 -p 9093:9093 -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=192.168.1.100:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.100:9093 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9093 -t wurstmeister/kafka
 
@@ -146,6 +146,11 @@ set global time_zone='+8:00';
 ```
 
 【mysqld】中添加：general_log = 1
+
+【mysqld】中添加：skip-grant-tables
+UPDATE mysql.user SET authentication_string=PASSWORD('password') WHERE user='root';
+
+FLUSH PRIVILEGES;
 
 ---
 # pg安装

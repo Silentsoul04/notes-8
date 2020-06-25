@@ -89,3 +89,16 @@ git branch -a | grep brand 发现本地分支虽然去了，但是远程分支�
 git checkout v1.0
 
 git checkout -b 
+
+
+删除本地tag
+```
+
+git tag -d Remote_Systems_Operation
+
+git push origin :refs/tags/Remote_Systems_Operation
+
+删除远程分支
+git branch -r -d origin/branch-name
+git push origin :branch-name
+```
