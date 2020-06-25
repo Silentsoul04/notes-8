@@ -102,3 +102,9 @@ git push origin :refs/tags/Remote_Systems_Operation
 git branch -r -d origin/branch-name
 git push origin :branch-name
 ```
+
+---
+# status乱码
+```
+git config --global core.quotepath false
+```
