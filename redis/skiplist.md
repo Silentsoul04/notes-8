@@ -216,6 +216,6 @@ There are a few reasons:
 
 ## 参考链接
 - [Redis 为什么用跳表而不用平衡树？](http://redisbook.com/index.html)
-
+- [跳跃表确定不了解下](https://juejin.im/post/5ed5eec16fb9a047995842f2) 比较详细的源码例子
 
 
