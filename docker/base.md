@@ -1,4 +1,42 @@
 ---
+docker compose
+
+## extra_hosts
+
+添加主机名映射。使用与docker client --add-host参数相同的值。
+
+extra_hosts:
+    - "hostname:127.0.0.1"
+
+- [docker-compose-file](https://deepzz.com/post/docker-compose-file.html)
+
+## external
+如果设置为true，则指定该卷已在Compose外部创建。 docker-compose up不会尝试创建它，并且如果它不存在将会引发一个错误。
+
+external不能与其他卷配置键（driver，driver_opts）一起使用。
+
+您还可以指定卷的名称与用于在Compose文件中引用它的名称：
+
+```shell script
+volumes:
+  data:
+    external:
+      name: actual-name-of-volume
+```
+
+
+
+
+---
+docker run --name b2 -it --network container:b1 --rm busybox:latest
+
+
+docker run -itd --name mongo -p 27017:27017 mongo --auth
+
+docker run -it -v /home/youmi/data/mongo/db:/data/db --name mongo_v2 -p 27018:27017 mongo 
+
+
+---
 docker build -t registry.umlife.net:443/adxmi/migo:yg --build-arg SRV=yugong .
 
 直接进入镜像交互
