@@ -6,7 +6,7 @@
 }
 
 ---
-docker compose
+# docker compose
 
 ## extra_hosts
 
@@ -31,12 +31,27 @@ volumes:
       name: actual-name-of-volume
 ```
 
+---
+# content-audit
+
+docker build -t cas .
+docker build -t registry.umlife.net:443/mt-service/content-audit .
+
+docker run --name cas -it --rm cas
+
+docker run --name cas -it -p 8011:80 -v /home/youmi/project/content-audit/db.sqlite3:/home/webapp/db.sqlite3 --rm --entrypoint /bin/sh cas
+
+docker run --add-host=mongo:172.16.6.111 --add-host=mysql:172.16.6.111 -e MONGODB_PORT=27018 -e MONGODB_CLIENT=ycms_web --name cas -it -p 8011:80 -v /home/youmi/project/content-audit/db.sqlite3:/home/webapp/db.sqlite3 --rm  registry.umlife.net:443/mt-service/content-audit
+
+
+docker run -m 500m --name content-audit -itd -p 21234:80 -e MONGODB_PORT=27018 -e MONGODB_CLIENT=ycms -e MONGODB_HOST=web-01.ag.alishh -e MYSQL_HOST=db-test.ag.alishh -e MYSQL_USER=aso_ro -e MYSQL_USER_PASSWORD=b77JSf7L4C3jlkI3 -v /data/content-audit/db.sqlite3:/home/webapp/db.sqlite3 registry.umlife.net:443/mt-service/content-audit
+
 
 
 
 ---
+# mongo
 docker run --name b2 -it --network container:b1 --rm busybox:latest
-
 
 docker run -itd --name mongo -p 27017:27017 mongo --auth
 
