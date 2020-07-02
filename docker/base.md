@@ -1,4 +1,11 @@
 ---
+ /etc/docker/daemon.json
+ 
+{ 
+    "registry-mirrors": ["http://hub-mirror.c.163.com"] 
+}
+
+---
 docker compose
 
 ## extra_hosts
