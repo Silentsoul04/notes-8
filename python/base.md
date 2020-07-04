@@ -1,4 +1,8 @@
-- [TODO:《流畅的python》阅读笔记](https://juejin.im/entry/59e4754951882578e27b1e7c)
+# TODO:
+
+- [python下简单实现select和epoll的socket网络编程](http://xiaorui.cc/archives/592)
+- [python-threads-synchronization-locks](http://yoyzhou.github.io/blog/2013/02/28/python-threads-synchronization-locks/)
+- [《流畅的python》阅读笔记](https://juejin.im/entry/59e4754951882578e27b1e7c)
 
 ---
 ## init new
