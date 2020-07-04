@@ -1,3 +1,4 @@
+- [prometheus-book](https://yunlzheng.gitbook.io/prometheus-book/)
 - [prometheus-in-action](https://www.aneasystone.com/archives/2018/11/prometheus-in-action.html)
 
 ## 基本原理
