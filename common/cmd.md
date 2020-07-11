@@ -72,7 +72,7 @@ pyenv virtualenv-delete my-virtual-env
 
 ---
 
-virtualenv --python=/home/youmi/.pyenv/shims/python utils/venv
+virtualenv --python=/home/youmi/.pyenv/shims/python venv
 
 
 ---

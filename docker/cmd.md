@@ -1,4 +1,12 @@
 ---
+docker run --user www-data busybox id
+
+docker run busybox cat /etc/passwd
+
+docker run --rm -it -v `pwd`:/mnt -w /mnt busybox /bin/sh -c 'touch b.txt'
+docker run --user=1000:1000 --rm -it -v `pwd`:/mnt -w /mnt busybox /bin/sh -c 'touch b.txt'
+
+---
  /etc/docker/daemon.json
  
 { 
@@ -7,6 +15,17 @@
 
 ---
 # docker compose
+
+https://stackoverflow.com/questions/28072259/when-running-a-django-dev-server-with-docker-fig-why-is-some-of-the-log-output
+
+```
+docker-compose exec -T web ./test.sh
+
+# 覆盖名称
+docker-compose -f docker-compose-dev.yml --project-name=test up 
+
+docker-compose -f docker-compose-dev.yml down
+```
 
 ## extra_hosts
 
@@ -30,6 +49,9 @@ volumes:
     external:
       name: actual-name-of-volume
 ```
+
+## 多行命令
+- https://segmentfault.com/q/1010000014461396/a-1020000014634042
 
 ---
 # content-audit
