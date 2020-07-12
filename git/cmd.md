@@ -1,5 +1,7 @@
+# 单独删除某个文件的所有历史记录
 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch elasticsearch/dump.md' --prune-empty --tag-name-filter cat -- --all
 
+- https://blog.csdn.net/q258523454/article/details/83899911#commentBox
 
 ---
 
