@@ -8,7 +8,7 @@ esrally race --pipeline=benchmark-only --target-hosts=127.0.0.1:9200 --cluster-h
 > 通过修改logging的等级，进行ES的请求日志查看。
 
 -- 本地环境的用户权限不足
-esrally race --pipeline=benchmark-only --target-hosts=es-test-ag.umlife.net:80 --track=nyc_taxis --challenge=append-no-conflicts --test-mode --client-options="use_ssl:false,verify_certs:false,basic_auth_user:'ag_adm',basic_auth_password:'5Ot2PJOC7mtnNIsz'"  --report-file=/tmp/logs/report.md
+esrally race --pipeline=benchmark-only --target-hosts=es-test-ag.umlife.net:80 --track=nyc_taxis --challenge=append-no-conflicts --test-mode --client-options="use_ssl:false,verify_certs:false,basic_auth_user:'ag_adm',basic_auth_password:'xxx'"  --report-file=/tmp/logs/report.md
 
 
 esrally race --pipeline=benchmark-only --target-hosts=127.0.0.1:9200 --track=nyc_taxis --challenge=append-no-conflicts --test-mode --user-tag=[version:info]

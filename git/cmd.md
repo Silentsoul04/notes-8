@@ -1,3 +1,8 @@
+git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch elasticsearch/dump.md' --prune-empty --tag-name-filter cat -- --all
+
+
+---
+
 Git warning of file overwriting due to (supposedly) untracked files
 
 ```
