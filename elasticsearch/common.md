@@ -1,3 +1,5 @@
+- [Elasticsearch优化思路](https://zhuanlan.zhihu.com/p/84173080)
+- [阿里云：Elasticsearch 技术团队](https://developer.aliyun.com/group/es)
 - [为什么Elasticsearch查询变得这么慢了？](https://mp.weixin.qq.com/s/RTpBaFpNELQCO6VE0KMfsw)
 - [从平台到中台 | Elasticsearch 在蚂蚁金服的实践经验](https://juejin.im/post/5be947416fb9a049af6cc930)
 - [从 10 秒到 2 秒！ElasticSearch 性能调优](https://juejin.im/post/5c3e9813518825552880084a)
