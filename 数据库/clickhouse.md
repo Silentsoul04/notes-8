@@ -8,3 +8,22 @@
 - [ClickHouse 在趣头条的实践](https://mp.weixin.qq.com/s/lP9quNJuhpXHxP-n8W0maw)
 - [ClickHouse 数据压缩与解压](https://knifefly.cn/2019/08/25/ClickHouse%E5%8E%8B%E7%BC%A9%E4%B8%8E%E8%A7%A3%E5%8E%8B/)
 - [How to speed up LZ4 decompression in ClickHouse](https://habr.com/en/company/yandex/blog/457612/)
+
+
+# 如何进行分区的覆盖的
+
+## 背景
+更新场景，但是更新的效率不高，所以每天会进行全量复制的更改
+
+## 问题
+
+如果直接drop掉分区，后写入。会在当前写入进度中导致数据查询的异常
+
+## 解决办法
+
+通过影子表的方式进行分区覆盖
+
+1. 创建一个结构一样的影子表
+2. 往影子表进行数据的写入
+3. 写入完成后，通过replace partition操作进行数据的替换
+4. 删除旧分区的数据。如果需要保存旧的状态表，进行数据归档和淘汰策略。

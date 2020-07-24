@@ -1,3 +1,6 @@
+init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.append(os.path.dirname(find_pylintrc()))"
+
+
 # TODO:
 
 - [python下简单实现select和epoll的socket网络编程](http://xiaorui.cc/archives/592)
