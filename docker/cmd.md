@@ -13,6 +13,10 @@ docker run --user=1000:1000 --rm -it -v `pwd`:/mnt -w /mnt busybox /bin/sh -c 't
     "registry-mirrors": ["http://hub-mirror.c.163.com"] 
 }
 
+https://www.daocloud.io/mirror#accelerator-doc
+
+sudo systemctl restart docker.service
+
 ---
 # docker compose
 
