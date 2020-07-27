@@ -45,35 +45,6 @@ du -h --max-depth=1
 –exclude=<目录或文件> 略过指定的目录或文件。
 –max-depth=<目录层数> 超过指定层数的目录后，予以忽略。
 ```
---------
-# pyenv
-
-pyenv install --list
-
-pyenv install 2.7.6
-
-pyenv-virtualenv
-
-pyenv virtualenvs
-
-制定版本创建virtualenv
-pyenv virtualenv 2.7.13 venv27
-
-pyenv virtualenvs
-
-pyenv activate <name>
-
-pyenv deactivate
-
-pyenv uninstall my-virtual-env
-
-pyenv virtualenv-delete my-virtual-env
-
-
----
-
-virtualenv --python=/home/youmi/.pyenv/shims/python venv
-
 
 ---
 # 钉钉消息

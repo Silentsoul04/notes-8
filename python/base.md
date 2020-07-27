@@ -1,3 +1,62 @@
+
+--------
+# pyenv
+
+pyenv install --list
+
+pyenv install 2.7.6
+
+pyenv-virtualenv
+
+pyenv virtualenvs
+
+制定版本创建virtualenv
+pyenv virtualenv 2.7.13 venv27
+
+pyenv virtualenvs
+
+pyenv activate <name>
+
+pyenv deactivate
+
+pyenv uninstall my-virtual-env
+
+pyenv virtualenv-delete my-virtual-env
+
+
+pyenv global 2.7.3  # 设置全局的 Python 版本，通过将版本号写入 ~/.pyenv/version 文件的方式。
+
+pyenv local 2.7.3  # 设置 Python 本地版本，通过将版本号写入当前目录下的 .python-version 文件的方式。通过这种方式设置的 Python 版本优先级较 global 高。
+
+
+virtualenv --python=/home/youmi/.pyenv/shims/python venv
+
+---
+
+pip的版本控制:
+
+```
+pip install mysqlclient==1.*
+
+# ~=不能控制大版本1。
+# 若1.3.14已安装，会进行更新
+pip install "mysqlclient~=1.4"
+
+# 安装1.4.6，安装的是1.的最新版本。但1.3.14已安装，不会进行更新
+pip install 'mysqlclient~=1.3'
+
+# 安装1.3.14，1.3的最新小版本
+pip install 'mysqlclient~=1.3.0'
+
+
+```
+
+- [how-to-pip-install-a-package-with-min-and-max-version-range](https://stackoverflow.com/questions/8795617/how-to-pip-install-a-package-with-min-and-max-version-range)
+
+卸载yes to all: `pip uninstall -y -r requirements.txt`
+
+---
+
 init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.append(os.path.dirname(find_pylintrc()))"
 
 
@@ -73,5 +132,4 @@ def super(cls, inst):
 3.7.5的python需要安装1.4.0版本的client, 1.3.X版本的会报安装出错
 mysqlclient~=1.4.0
 
-
-
+https://github.com/django/django/pull/10726
