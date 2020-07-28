@@ -1,3 +1,39 @@
+---
+# 插入
+
+插入的姿势，不应该频繁插入。会导致太多的分区。
+
+你不应该每秒发送太多的insert语句。理想情况下-每秒/几秒钟插入一次。
+
+因此，您可以每秒插入100K行，但只能使用一个大容量insert语句。当您每秒向*MergeTree表发送数百或数千条insert语句时，总会遇到一些错误，并且无法通过调整某些设置来更改它。
+
+如果不能在外部将大量插入合并到一个大容量insert语句中，那么应该在*MergeTree table之前创建缓冲区表（Buffer table）。
+
+ClickHouse在后台将这些较小的部分合并为较大的部分。它根据一定的规则选择要合并的部分。合并两个（或多个）部件后，将创建一个更大的部件，并将旧部件排队等待删除。您列出的设置允许微调合并部件的规则。合并过程的目标是为每个分区保留一个大的部分（或者每个分区保留几个不值得合并的大部分，因为它们太大）
+
+预期的速度是：每1-2秒插入一次，每个插入包含10K-500K行数据。
+
+后台合并的速度通常取决于存储速度、使用的压缩设置和mergetree选项，即合并算法-普通合并/聚合/求和/折叠等以及使用的排序键。
+
+### 合并频率
+
+无法控制。没有间隔。
+
+不应依赖合并过程。它有自己复杂的算法来平衡parts数量。Merge并没有做最终合并的目标——合成一个parts，因为这样做效率不高，而且会浪费磁盘I/O和CPU。
+
+您可以使用“optimize table”命令调用未计划的强制合并。
+
+### final
+
+可以通过final获取最新的行，它的工作方式类似于按主键分组以获得行的最新变体，但是工作速度明显慢于常规选择。
+
+参考链接：
+
+- [DB::Exception: Too many parts (600). Merges are processing significantly slower than inserts](https://github.com/ClickHouse/ClickHouse/issues/3174) 
+- [写入的详细说明](https://github.com/ClickHouse/ClickHouse/issues/3174#issuecomment-423435071)
+- [Clickhouse - How often clickhouse triggers a merge operation and how to control it?](https://stackoverflow.com/a/62521478)
+- [Best practice for single value update](https://github.com/ClickHouse/ClickHouse/issues/1661)
+
 # ClickHouse 数据压缩与解压
 
 那么为什么LZ4解压缩成为一个瓶颈呢？LZ4看起来是一种非常轻的算法:数据解压缩速率通常是每个处理器内核1到3 GB/s，具体取决于数据。这比典型的磁盘子系统快得多。此外，我们使用所有可用的中央处理器内核，解压缩在所有物理内核之间线性扩展。
