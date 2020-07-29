@@ -2,6 +2,8 @@
 --------
 # pyenv
 
+pyenv versions
+
 pyenv install --list
 
 pyenv install 2.7.6
