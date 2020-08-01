@@ -23,6 +23,10 @@ ClickHouse在后台将这些较小的部分合并为较大的部分。它根据�
 
 您可以使用“optimize table”命令调用未计划的强制合并。
 
+> 分区合并的过程。写入后的10～15分钟后台触发合并任务。合并后，并没有立刻删除，而会留存一段时间（8分钟），查询时自动过滤掉。但去重树好像没有达到相应的量级隔了很久的时间也没有进行合并。
+
+- [分区目录的合并过程](./ClickHouse原理解析与应用.md#6.2.3分区目录的合并过程)
+
 ### final
 
 可以通过final获取最新的行，它的工作方式类似于按主键分组以获得行的最新变体，但是工作速度明显慢于常规选择。
@@ -34,18 +38,20 @@ ClickHouse在后台将这些较小的部分合并为较大的部分。它根据�
 - [Clickhouse - How often clickhouse triggers a merge operation and how to control it?](https://stackoverflow.com/a/62521478)
 - [Best practice for single value update](https://github.com/ClickHouse/ClickHouse/issues/1661)
 
+
+---
 # ClickHouse 数据压缩与解压
 
 那么为什么LZ4解压缩成为一个瓶颈呢？LZ4看起来是一种非常轻的算法:数据解压缩速率通常是每个处理器内核1到3 GB/s，具体取决于数据。这比典型的磁盘子系统快得多。此外，我们使用所有可用的中央处理器内核，解压缩在所有物理内核之间线性扩展。
 
 首先，如果数据压缩率很高，则磁盘上数据占用空间就很小，在读取数据时磁盘IO会比较低，但是如果待解压的数据量很大则会影响到CPU使用率。在LZ4的情况下，解压缩数据所需的工作量几乎与解压缩数据本身的量成正比；其次，如果数据被缓存，你可能根本不需要从磁盘读取数据。可以依赖页面缓存或使用自己的缓存。缓存在面向列的数据库中更有效，因为只有经常使用的列保留在缓存中。这就是为什么LZ4经常成为CPU负载的瓶颈。
 
-
 - [ClickHouse 在趣头条的实践](https://mp.weixin.qq.com/s/lP9quNJuhpXHxP-n8W0maw)
 - [ClickHouse 数据压缩与解压](https://knifefly.cn/2019/08/25/ClickHouse%E5%8E%8B%E7%BC%A9%E4%B8%8E%E8%A7%A3%E5%8E%8B/)
 - [How to speed up LZ4 decompression in ClickHouse](https://habr.com/en/company/yandex/blog/457612/)
 
 
+---
 # 如何进行分区的覆盖的
 
 ## 背景
@@ -65,7 +71,6 @@ ClickHouse在后台将这些较小的部分合并为较大的部分。它根据�
 4. 删除旧分区的数据。如果需要保存旧的状态表，进行数据归档和淘汰策略。
 
 
-
 ---
 # 分片与复制
 
@@ -74,8 +79,6 @@ ClickHouse在后台将这些较小的部分合并为较大的部分。它根据�
 之前为了节省资源，打算循环使用，把shard1的两个副本放到hadoop1、hadoop2两个机器上，shard2的两个副本放到hadoop2、hadoop3上，shard3的两个副本放到hadoop3、hadoop1上，结果是不行的。
 
 原因是shard+replica对应一个数据表，Distributed查询规则是每个shard里找一个replica，把结果合并。
-
-
 
 ## 禁止分布式写入，采用本地表写入。
 
@@ -91,7 +94,6 @@ ClickHouse在后台将这些较小的部分合并为较大的部分。它根据�
 注意事项：
 - 插入到本地表需要客户机应用程序上更多的逻辑，并且可能更难使用。但它在概念上更简单。
 - 如果您的查询依赖于一些关于数据分布的假设，比如使用IN或JOIN（连接同一位置的数据）而不是GLOBAL IN、GLOBAL JOIN的查询，那么您必须自己维护正确性。
-
 
 ### 写分布式表
 
