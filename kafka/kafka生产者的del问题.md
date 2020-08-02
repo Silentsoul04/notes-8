@@ -26,6 +26,8 @@ close(0)发现是在`kafka.producer.kafka.KafkaProducer._cleanup_factory`里面�
 弱引用的原因是为了防止ref的计算增加。避免永不被回收。
 > This only affects the KafkaProducer and is caused by the extra system reference caused by atexit.register(self.close). We should use a weakref proxy to allow gc to function normally on producer objects.
 
+> 思考：也就是atexit.register(self._cleanup)也会异常引用+1，导致正常的gc无法进行内存的收回，甚至泄漏。这时候则需要通过weakref.proxy(self)进行弱引用。
+
 参考链接：
 
 - [atexit.register](https://docs.python.org/zh-cn/3/library/atexit.html)
