@@ -1,3 +1,25 @@
+# shell
+
+```shell script
+# 缺省值的替换
+${parameter:-word} # 为空替换
+${parameter:=word} # 为空替换，并将值赋给$parameter变量
+${parameter:?word} # 为空报错
+${parameter:+word} # 不为空替换
+ 
+${#parameter}      # 获得字符串的长度
+ 
+# 截取字符串，有了着四种用法就不必使用cut命令来截取字符串了。
+# 在shell里面使用外部命令会降低shell的执行效率。特别是在循环的时候。
+ 
+${parameter%word}  # 最小限度从后面截取word
+${parameter%%word} # 最大限度从后面截取word
+${parameter#word}  # 最小限度从前面截取word
+${parameter##word} # 最大限度从前面截取word
+```
+
+- [Shell Parameter Expansion 参数展开](http://xstarcd.github.io/wiki/shell/ShellParameterExpansion.html)
+
 
 ---
 
@@ -69,7 +91,15 @@ for filename in *; do if [ `date -r $filename +%H` == "16" ];then rm -f $filenam
 
 - 删除10天之前的文件 
 ```
-find . -mtime +10 -type f | xargs rm -rf
+find  . -mtime +10 -type f | xargs rm -rf
+
+find  . -name 'ag_www_ec_feature*' -mtime +30 -type f  | xargs rm -rf
+```
+
+- 删除10天之前的目录
+```
+find .  -maxdepth 1 -type d -mtime +30  | xargs rm -rf
+find . -name 'aso-www-feature*' -maxdepth 1 -type d -mtime +30  | xargs rm -rf
 ```
 
 ---
