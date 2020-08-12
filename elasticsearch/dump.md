@@ -43,10 +43,10 @@ GET advertisement/data/_search
 }
 ```
 
-/home/ymserver/bin/dump_data/node_modules/.bin/elasticdump --type=data --searchBody='{"query": {"has_child": {"query": {"bool": {"filter": {"range": {"log_summary_list": {"gte": "2020-04-01 00:00:00"}}}}}, "type": "data"}}}' --input=http://elastic:xxx@es-cn-v0h0ly9io00071cps.elasticsearch.aliyuncs.com:9200/advertisement --output=http://ag_adm:5Oxxx@172.19.42.160:9200/ag_advertisement_application --limit=500
+/home/ymserver/bin/dump_data/node_modules/.bin/elasticdump --type=data --searchBody='{"query": {"has_child": {"query": {"bool": {"filter": {"range": {"log_summary_list": {"gte": "2020-08-10 00:00:00"}}}}}, "type": "data"}}}' --input=http://elastic:xxx@es-cn-v0h0ly9io00071cps.elasticsearch.aliyuncs.com:9200/advertisement --output=http://ag_adm:xxx@172.19.42.160:9200/advertisement --limit=500
 
     
-/home/ymserver/bin/dump_data/node_modules/.bin/elasticdump --type=data --searchBody='{"query": {"bool": {"filter": {"range": {"log_summary_list": {"gte": "2020-04-01 00:00:00"}}}}}}' --input=http://elastic:xxx@es-cn-v0h0ly9io00071cps.elasticsearch.aliyuncs.com:9200/advertisement --output=http://ag_adm:5Oxxx@172.19.42.160:9200/ag_advertisement_application --limit=1000
+/home/ymserver/bin/dump_data/node_modules/.bin/elasticdump --type=data --searchBody='{"query": {"bool": {"filter": {"range": {"log_summary_list": {"gte": "2020-08-10 00:00:00"}}}}}}' --input=http://elastic:xxx@es-cn-v0h0ly9io00071cps.elasticsearch.aliyuncs.com:9200/advertisement --output=http://ag_adm:xxx@172.19.42.160:9200/advertisement --limit=1000
 
 
 ---
