@@ -13,7 +13,7 @@ class Solution(object):
         for i in range(len(arrays)):
             # i = 2
             index = i
-            current = arrays[i]
+            current = arrays[index]
             while index > 0 and arrays[index - 1] > current:
                 arrays[index] = arrays[index - 1]
                 index -= 1
