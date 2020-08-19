@@ -76,9 +76,18 @@ class Singleton(object):
 
     @synchronized
     def __new__(cls, *args, **kwargs):
+        # TypeError: __new__() got an unexpected keyword argument 'a'
+        _ = args, kwargs
         if cls.instance is None:
+            # TypeError: object.__new__() takes exactly one argument (the type to instantiate)
+            # cls.instance = super().__new__(cls, *args, **kwargs)
             cls.instance = object.__new__(cls)
         return cls.instance
+
+    def __init__(self, *args, **kwargs):
+        self.a = kwargs['a']
+        print(args, kwargs, self.a)
+
 s0 = Singleton(a=1)
 s1 = Singleton(a=2)
 # print(s0.a)
