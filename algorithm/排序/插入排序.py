@@ -32,3 +32,16 @@ for i in range(0, 50):
     o1 = Solution().sort(input)
     o2 = sorted(input)
     assert o1 == o2
+
+
+"""
+[优化的插入排序](https://www.cnblogs.com/heyuquan/p/insert-sort.html)
+
+二分插入排序：
+
+二分法插入排序，简称二分排序，是在插入第i个元素时，对前面的0～i-1元素进行折半，先跟他们中间的那个元素比，如果小，则对前半再进行折半，否则对后半进行折半，直到left<right，然后再把第i个元素前1位与目标位置之间的所有元素后移，再把第i个元素放在目标位置上。
+
+希尔排序：
+
+
+"""
