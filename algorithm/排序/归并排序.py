@@ -41,7 +41,6 @@ def merge(left, right):
 
 
 # print(merge([1, 3, 5, 7, 9], [2, 4, 6, 12, 14]))
-
 input = [random.randint(1, 20) for _ in range(0, 10)]
 print(f"input {input} ,result {sort(input)}")
 
