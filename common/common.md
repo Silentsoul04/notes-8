@@ -1,3 +1,32 @@
+## pycharm调试docker
+
+apt update
+
+apt install -y openssh-server
+
+mkdir /var/run/sshd
+
+echo 'root:passwd' | chpasswd
+
+sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+sed -i 's/#PermitRootLogin/PermitRootLogin/' /etc/ssh/sshd_config
+
+sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+echo "export VISIBLE=now" >> /etc/profile
+
+service ssh restart
+
+docker port [your_container_name] 22
+
+- https://zhuanlan.zhihu.com/p/52827335
+
+注意ssh进容器里面的环境变量是没有的。可以通过pycharm的env文件配置一下。
+
+
+---
+
 ## xkbset
 
 ```
@@ -44,16 +73,16 @@ subprocess.Popen(command)
 # subprocess.Popen(["xdotool", "click", "1"]
 ```
 
-通过系统自带的快件建设置 xdotool click 4 xdotool click 4 来控制鼠标滚，遇到的问题就是不能一直按住，需要重复按住。应该是系统设计的快捷键不允许按住重复触发 
+通过系统自带的快件建设置 xdotool click 4 xdotool click 4 来控制鼠标滚，遇到的问题就是不能一直按住，需要重复按住。应该是系统设计的快捷键不允许按住重复触发
 
 ---
 
 
 ## 时区
 中国的时区为什么是Asia/Shanghai，而不是Asia/Beijing？
-原因是1949年以前，中国一共分了5个时区，以哈尔滨 （ 
+原因是1949年以前，中国一共分了5个时区，以哈尔滨 （
 Asia/Harbin）、上海（Asia/Shanghai）、重庆（Asia/Chongqing）、乌鲁木齐（Asia/Urumqi）、喀什（Asia/Kashgar）为代表——分别是：长白时区GMT+8:30、中原标准时区
- 
+
 GMT+8、陇蜀时区GMT+7、新藏时区GMT+6和昆仑时区GMT+5:30。它是1912年北京观象台制订，后由内政部批准过。而且从国际标准本身的角度来看，北京和上海处于同一时区，只能保留一个。而作为时区代表上海已经足够具有代表性，因此其维护者没有足够的动力做出改变。所以目前还没有Asia/beijing。
 
 django没有北京时区
@@ -100,9 +129,9 @@ http://axil.github.io/pytest-vs-standard-django-tests.html
 put to next output 选项
 
 ---
-## 系统用户组 
+## 系统用户组
 
-/etc/group 
+/etc/group
 查看用户所属组 groups username
 
 将用户添加组 sudo gpasswd -a www-data ymserver
@@ -129,7 +158,7 @@ put to next output 选项
 ---
 ## timeout
 
-timeout -k 10 3 python cli/update_test.py 
+timeout -k 10 3 python cli/update_test.py
 
 默认是signal.SIGTERM信号
 

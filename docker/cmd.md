@@ -8,9 +8,9 @@ docker run --user=1000:1000 --rm -it -v `pwd`:/mnt -w /mnt busybox /bin/sh -c 't
 
 ---
  /etc/docker/daemon.json
- 
-{ 
-    "registry-mirrors": ["http://hub-mirror.c.163.com"] 
+
+{
+    "registry-mirrors": ["http://hub-mirror.c.163.com"]
 }
 
 https://www.daocloud.io/mirror#accelerator-doc
@@ -26,7 +26,7 @@ https://stackoverflow.com/questions/28072259/when-running-a-django-dev-server-wi
 docker-compose exec -T web ./test.sh
 
 # 覆盖名称
-docker-compose -f docker-compose-dev.yml --project-name=test up 
+docker-compose -f docker-compose-dev.yml --project-name=test up
 
 docker-compose -f docker-compose-dev.yml down
 ```
@@ -81,7 +81,7 @@ docker run --name b2 -it --network container:b1 --rm busybox:latest
 
 docker run -itd --name mongo -p 27017:27017 mongo --auth
 
-docker run -it -v /home/youmi/data/mongo/db:/data/db --name mongo_v2 -p 27018:27017 mongo 
+docker run -it -v /home/youmi/data/mongo/db:/data/db --name mongo_v2 -p 27018:27017 mongo
 
 
 ---
@@ -105,10 +105,9 @@ docker push registry.umlife.net:443/mt-service/schema/elasticsearch-ik:5.5.3
 ```
 docker run -d --name zookeeper -p 2181:2181 -t wurstmeister/zookeeper
 
-docker run -d --network host --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=localhost:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
+docker run -d --network host --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=172.16.1.157:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.16.1.157:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
 
  docker run -d --name kafka1 -p 9093:9093 -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=192.168.1.100:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.100:9093 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9093 -t wurstmeister/kafka
-
 
 
 
@@ -121,19 +120,19 @@ cd opt/kafka_2.11-2.0.0/
 docker stop kafka1
 
 # 创建主题
-bin/kafka-topics.sh --create --zookeeper 192.168.1.100:2181 --replication-factor 2 --partitions 2 --topic partopic
+bin/kafka-topics.sh --create --zookeeper 172.16.1.157:2181 --replication-factor 2 --partitions 2 --topic partopic
 
 # 主题信息
-bin/kafka-topics.sh --describe --zookeeper 192.168.1.100:2181 --topic partopic
+bin/kafka-topics.sh --describe --zookeeper 172.16.1.157:2181 --topic partopic
 
 # 命令行生产者
-./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic mykafka
+./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic partopic
 
 # 消费者
-./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mykafka --from-beginning
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic partopic --from-beginning
 
 # 获取主题情况
-bin/kafka-topics.sh --zookeeper 172.16.8.4:2181 --list
+bin/kafka-topics.sh --zookeeper 172.16.1.157:2181 --list
 
 # 获取消费者消费情况
 bin/kafka-consumer-groups.sh --describe --bootstrap-server localhost:9092 --group common
@@ -243,7 +242,7 @@ FLUSH PRIVILEGES;
 
 默认配置文件在这里: /var/lib/pgsql/data/postgresql.conf
 
-docker run --name mypostgres -d -p 5432:5432 -e POSTGRES_PASSWORD=password -e USERMAP_UID=youmi -e USERMAP_GID=youmi -v /home/youmi/pg/data:/var/lib/postgresql/data  postgres:9.4 
+docker run --name mypostgres -d -p 5432:5432 -e POSTGRES_PASSWORD=password -e USERMAP_UID=youmi -e USERMAP_GID=youmi -v /home/youmi/pg/data:/var/lib/postgresql/data  postgres:9.4
 
 
 docker pull chorss/docker-pgadmin4
@@ -371,7 +370,7 @@ docker push registry.umlife.net:443/mt-service/ag-business:feature-init-1.0.0
  python scripts/docker/app-config.py --host=https://apollo-alishh.umlife.net --app=ag-permission-uni --env=preview  --auth=ag-apollo:xx -d=./cli --ns permission_config.json
  python cli/acl.py
 
-docker run -p 8003:80 --env CFGHOST=https://apollo-alishh.umlife.net  --env CFGENV=ag-permission-uni-local --env CFGAUTH=ag-apollo:xx --env CFGAPP=ag-test-config --rm registry.umlife.net:443/mt-service/ag-permission:1.4.4 
+docker run -p 8003:80 --env CFGHOST=https://apollo-alishh.umlife.net  --env CFGENV=ag-permission-uni-local --env CFGAUTH=ag-apollo:xx --env CFGAPP=ag-test-config --rm registry.umlife.net:443/mt-service/ag-permission:1.4.4
 
 
 
