@@ -1,3 +1,33 @@
+## update后实时
+
+更新后通过final进行获取实时数据。
+
+Q: 更新过程中，进行并发查询会怎么样？final会相互阻塞查询吗？final会阻塞写吗？
+
+- [handling-real-time-updates-in-clickhouse](https://altinity.com/blog/2020/4/14/handling-real-time-updates-in-clickhouse)
+
+---
+## PREWHERE 子句
+
+与WHERE子句的意思相同。主要不同在于表数据的读取；PREWHERE 仅支持*MergeTree系列引擎
+
+使用PREWHERE，只读取PREWHERE表达式中需要的列，根据PREWHERE执行的结果读取其他需要的列。
+
+如在过滤条件中有少量不适合索引过滤的列，但它们又可提供很强的过滤能力，使用PREWHERE很有意义，帮助减少数据的读取。
+
+例如，在一个需要提取大量列的查询中为少部分列编写PREWHERE是很有作用的。
+
+1. 在一个查询中可以同时指定PREWHERE和WHERE，在这种情况下，PREWHERE优先于WHERE执行。
+
+2. PREWHERE不适合用于已经存在于索引中的列：列已经存在于索引中，只有满足索引的数据块才会被读取。
+
+3. 如将'optimize_move_to_prewhere'设置为1，并且在查询中不包含PREWHERE，则系统将自动的把适合PREWHERE表达式的部分从WHERE中抽离到PREWHERE中。
+
+> 也就是能通过prewhere先根据条件的找出符合条件的列块，然后再去找其他列的块并根据prewhere条件进行过滤。prewhere f1 = 0 where f2 = 1
+
+- [clickHouse之SQL语法之select（—）](https://blog.csdn.net/ma15732625261/article/details/86600106)
+- [ClickHouse源码阅读](https://blog.csdn.net/B_e_a_u_tiful1205/article/details/104226269)
+
 ---
 # 插入
 
@@ -33,7 +63,7 @@ ClickHouse在后台将这些较小的部分合并为较大的部分。它根据�
 
 参考链接：
 
-- [DB::Exception: Too many parts (600). Merges are processing significantly slower than inserts](https://github.com/ClickHouse/ClickHouse/issues/3174) 
+- [DB::Exception: Too many parts (600). Merges are processing significantly slower than inserts](https://github.com/ClickHouse/ClickHouse/issues/3174)
 - [写入的详细说明](https://github.com/ClickHouse/ClickHouse/issues/3174#issuecomment-423435071)
 - [Clickhouse - How often clickhouse triggers a merge operation and how to control it?](https://stackoverflow.com/a/62521478)
 - [Best practice for single value update](https://github.com/ClickHouse/ClickHouse/issues/1661)
