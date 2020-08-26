@@ -12,7 +12,7 @@ def heapify(n, i, l):
     left = 2 * i + 1
     right = 2 * i + 2
     tmp = i
-    # 找出三个元素的最大值
+    # 堆化先找出节点的三个元素的最大值
     if left < l and n[left] > n[i]:
         tmp = left
     if right < l and n[right] > n[tmp]:
