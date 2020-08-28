@@ -4,6 +4,7 @@
 
 ```shell script
 ssh -p36000 kafka-00.ag.awsor
+cd /opt/kafka_2.13-2.6.0
 
 
 # 创建主题
@@ -41,7 +42,7 @@ kafka-consumer-groups.sh --bootstrap-server <kafka_broker_host:9091> --group <gr
 --to-offset 100
 --shift-by -10
 
-bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group common --reset-offsets --to-offset 100 --topic addata.ad_heat --execute    
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group common --reset-offsets --to-offset 100 --topic addata.ad_heat --execute
 
 
 
@@ -92,9 +93,9 @@ cd opt/kafka
 
 ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic addata.ad_heat  --max-messages 1
 
-./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic addata.ad_heat --offset latest --partition 0 
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic addata.ad_heat --offset latest --partition 0
 
-./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic addata.ad_heat --offset latest --partition 0 --max-messages 1 
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic addata.ad_heat --offset latest --partition 0 --max-messages 1
 
 
 ----
@@ -111,7 +112,7 @@ cd bin/kakfa
 ./bin/kafka-consumer-groups.sh --describe --bootstrap-server 172.19.33.10:9092 --group test_ag_web_uni
 
 ## 消费消息
-./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --from-beginning 
+./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --from-beginning
 
 ### 消费最多10个消息
 ./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --max-messages 10

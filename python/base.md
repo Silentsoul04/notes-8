@@ -1,3 +1,13 @@
+# pytest
+
+参看覆盖情况： pytest -rA apps/es_sync/uni_advertisement_test.py --cov=apps/es_sync
+
+多个目录： --cov={apps/es_sync,libs}
+
+获取文件： coverage html
+获取覆盖率： coverage report --skip-covered | tail -n 3
+
+
 
 --------
 # pyenv
@@ -78,7 +88,7 @@ init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.app
 通常来说，新式类开始实例化时，__new__()方法会返回cls（cls指代当前类）的实例，然后该类的__init__()方法作为构造方法会接收这个实例（即self）作为自己的第一个参数，**然后依次传入__new__()方法中接收的位置参数和命名参数**
 
 参数是怎么传递的？我能改变传参吗？
-You can really only achieve this by writing a metaclass. 
+You can really only achieve this by writing a metaclass.
 The ususal way is to override the __call__ method of the metaclass.
 
 - https://bytes.com/topic/python/answers/751865-modify-arguments-between-__new__-__init__
@@ -101,7 +111,7 @@ The ususal way is to override the __call__ method of the metaclass.
 - [pythonic-way-to-create-a-long-multi-line-string](https://stackoverflow.com/questions/10660435/pythonic-way-to-create-a-long-multi-line-string)
 
 ---
-### mro 
+### mro
 事实上，对于你定义的每一个类，Python 会计算出一个方法解析顺序（Method Resolution Order, MRO）列表，它代表了类继承的顺序。
 mro的计算方式是，子类指向父类, 选择入度为0， 从左往右
 原因： 单调性问题、只能继承无法重写（override）。具体参考文章《你真的理解Python中MRO算法吗》
@@ -109,7 +119,7 @@ mro 先找出入度为0的，也就是不会给其他类继承的，不会给其
 源代码： https://www.python.org/download/releases/2.3/mro/
 
 
-- super 
+- super
 super 其实和父类没有实质性的关联。
 ```
 def super(cls, inst):

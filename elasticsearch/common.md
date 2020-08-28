@@ -1,3 +1,16 @@
+# keyword
+
+```
+"brand_id": {
+  "type": "keyword"
+}
+```
+
+存储的是字符串的数字，因为ES不支持大数bigint64。keyword字段的比较在数字层次还是可以比较成功的
+
+`"gt": 0` 能符合预期
+
+---
 - [Elasticsearch优化思路](https://zhuanlan.zhihu.com/p/84173080)
 - [阿里云：Elasticsearch 技术团队](https://developer.aliyun.com/group/es)
 - [为什么Elasticsearch查询变得这么慢了？](https://mp.weixin.qq.com/s/RTpBaFpNELQCO6VE0KMfsw)
@@ -86,10 +99,10 @@ oss备份目录设置
 #{
 #    "type": "oss",
 #    "settings": {
-#        "endpoint": "http://oss-cn-shanghai-internal.aliyuncs.com", 
+#        "endpoint": "http://oss-cn-shanghai-internal.aliyuncs.com",
 #        "access_key_id": "xxx",
 #        "secret_access_key": "xxxx",
-#        "bucket": "backup-ag", 
+#        "bucket": "backup-ag",
 #        "compress": true,
 #        "base_path": "ag-es/snapshot"
 #    }
@@ -115,7 +128,7 @@ PUT /_snapshot/backup_mh
 POST _snapshot/backup_ag/ad_20190221/_restore
 {
   "indices": "advertisement_v5.0.0",
-  "rename_pattern": "(.+)", 
+  "rename_pattern": "(.+)",
   "rename_replacement": "ag_advertisement_industry"
 }
 

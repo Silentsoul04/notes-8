@@ -6,7 +6,7 @@ apt install -y openssh-server
 
 mkdir /var/run/sshd
 
-echo 'root:passwd' | chpasswd
+echo 'root:123' | chpasswd
 
 sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
