@@ -1,3 +1,112 @@
+
+- [docker entrypoint入口文件详解](https://www.cnblogs.com/breezey/p/8812197.html)
+
+---
+# docker compose
+- [docker compose](https://hub.docker.com/r/tmaier/docker-compose/)
+- [Run docker-compose build in .gitlab-ci.yml](https://stackoverflow.com/a/52734017)
+
+```shell script
+image: tmaier/docker-compose:latest
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
+  - docker-compose --version
+
+build image:
+  stage: build
+  script:
+    - docker-compose build
+```
+
+`docker build -t my-compose -f Dockerfile.compose .`
+
+```shell script
+
+version: '3'
+services:
+  sut:
+    image: my-compose
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    command: docker pull wurstmeister/zookeeper
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+```
+本地挂载docker.sock可以跟本机一样操作docker。
+
+- [dind](https://github.com/jpetazzo/dind)
+
+```
+docker run --privileged -d docker:18.09-dind
+docker exec -it ecstatic_sammet  /bin/sh
+```
+
+- [making-docker-in-docker-builds-faster-with-docker-layer-caching](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#making-docker-in-docker-builds-faster-with-docker-layer-caching)
+
+这个链接介绍了如何在gitlab上运行。
+
+Q: 如何在本地通过docker把结合docker-compose和docker-dind跑起来？
+- [docker-image](https://www.caktusgroup.com/blog/2020/02/25/docker-image/)
+
+```shell script
+version: '3'
+services:
+  docker:
+    image: docker:18.09-dind
+    privileged: true
+  sut:
+    image: my-compose
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+      DOCKER_DRIVER: overlay2
+    command: docker pull busybox
+    depends_on:
+      - docker
+```
+
+Q： 如何把拉取到的镜像layer层进行打包成新的compose呢？
+
+A: 镜像文件是放在docker容器里面的。/var/lib/docker/overlay2里面的
+
+`docker commit -a "yinzishao" -m "compose with image" dj_docker_1 docker_wi`
+
+但是以上语句的镜像构建，没有把拉下来的镜像打进去。TODO:镜像的数据跟容器内的数据不是一回事。
+是因为声明了Volumes:/var/lib/docker: {} ?所以镜像忽略了这个目录？
+
+Dockerfile中的VOLUME使每次运行一个新的container时，都会为其**自动创建一个匿名的volume**，如果需要在不同container之间共享数据，那么我们依然需要通过docker run -it -v my-volume:/foo的方式将/foo中数据存放于指定的my-volume中。
+
+- [利用 commit 理解镜像构成](https://yeasy.gitbook.io/docker_practice/image/commit)
+
+- [do-not-use-docker-in-docker-for-ci](https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/)
+Q: And what about the build cache? That one can get pretty tricky too. People often ask me, “I’m running Docker-in-Docker; how can I use the images located on my host, rather than pulling everything again in my inner Docker?”
+
+A: 通过cache文件进行/var/lib/docker的缓存？类似requirement.txt的机制。TODO： [Nikola Kovacs](https://gitlab.com/gitlab-org/gitlab-foss/-/issues/17861)
+
+---
+# before script
+
+docker compose 如何在某个service之前执行前置命令？
+
+---
+# docker build
+
+构建的时候可以通过cache-form进行加速。
+
+一般比较慢的步骤是进行apk add 相关的操作。如果cache-form可以进行layer层的复用。
+
+`docker build -t test-build-cache -f Dockerfile.base  --cache-from=registry.umlife.net:443/mt-service/ag-www/base .`
+
+无效，是因为RUN是写成一行，需要拆分多行？不是，本地自己构建的cache则可以。应该是远程的有区别导致。
+
+`docker build -t test-build-cache -f Dockerfile.base  --cache-from=test-build-cache .`
+
+- [using-cache-from-can-speed-up-your-docker-builds](https://blog.wu-boy.com/2019/02/using-cache-from-can-speed-up-your-docker-builds/)
+- [CICD: cache docker images fetched by docker in docker (DIND)](https://gitlab.com/gitlab-org/gitlab-foss/-/issues/42763)
+
 ---
 docker run --user www-data busybox id
 
@@ -56,6 +165,22 @@ volumes:
 
 ## 多行命令
 - https://segmentfault.com/q/1010000014461396/a-1020000014634042
+
+
+```shell script
+
+    command:
+      - /bin/sh
+      - -c
+      - |
+          bundle config mirror.https://rubygems.org https://gems.ruby-china.org
+```
+
+## - | 和- > 的区别
+
+[YAML中多行字符串的配置方法](https://juejin.im/post/6844903972688363534)
+
+
 
 ---
 # content-audit
