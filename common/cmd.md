@@ -6,12 +6,12 @@ ${parameter:-word} # 为空替换
 ${parameter:=word} # 为空替换，并将值赋给$parameter变量
 ${parameter:?word} # 为空报错
 ${parameter:+word} # 不为空替换
- 
+
 ${#parameter}      # 获得字符串的长度
- 
+
 # 截取字符串，有了着四种用法就不必使用cut命令来截取字符串了。
 # 在shell里面使用外部命令会降低shell的执行效率。特别是在循环的时候。
- 
+
 ${parameter%word}  # 最小限度从后面截取word
 ${parameter%%word} # 最大限度从后面截取word
 ${parameter#word}  # 最小限度从前面截取word
@@ -75,21 +75,21 @@ curl 'https://oapi.dingtalk.com/robot/send?access_token=xx' -H 'Content-Type: ap
 ```
 
 ---
-# 按照文件的修改最后修改时间来删除 
+# 按照文件的修改最后修改时间来删除
 
 https://daizj.iteye.com/blog/2378290
 
-- 删除2016年的所有文件 
+- 删除2016年的所有文件
 ```
-for filename in *; do if [ `date -r $filename +%Y` == "2016" ];then rm -rf $filename; fi done 
-```
-
-- 删除16点生成的文件 
-```
-for filename in *; do if [ `date -r $filename +%H` == "16" ];then rm -f $filename; fi done 
+for filename in *; do if [ `date -r $filename +%Y` == "2016" ];then rm -rf $filename; fi done
 ```
 
-- 删除10天之前的文件 
+- 删除16点生成的文件
+```
+for filename in *; do if [ `date -r $filename +%H` == "16" ];then rm -f $filename; fi done
+```
+
+- 删除10天之前的文件
 ```
 find  . -mtime +10 -type f | xargs rm -rf
 
@@ -117,7 +117,7 @@ mysql-wor 19177 youmi   23u  IPv4 755266      0t0  TCP localhost:33196->localhos
 netstat -tunlp|grep 端口号，用于查看指定端口号的进程情况，如查看3306端口的情况
 
 ```
-tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      1053/mysqld    
+tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      1053/mysqld
 ```
 
 ---
@@ -234,4 +234,13 @@ for i in `ls config/*.sample`; do cp $i `echo ./$i| sed "s/.sample//g"` ; done
 
 ---
 ## vim
-替换: 1,$s/&>>\(.*cli.*$\)/>>\1 2>\&1/g 
+替换: 1,$s/&>>\(.*cli.*$\)/>>\1 2>\&1/g
+
+---
+```shell script
+docker build -t schema/alishh/ag-db-40:local --build-arg path=mysql/alishh/ag-db-40 -f build/mysql/Dockerfile.40 .
+
+RUN find /docker-entrypoint-initdb.d -type f | grep -Ev "*ddl.sql" | xargs rm
+
+docker run --rm schema/alishh/ag-db-40:local ls /docker-entrypoint-initdb.d
+```
