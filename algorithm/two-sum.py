@@ -42,6 +42,18 @@ class SolutionDict:
                 return [d[n], d[target-n]]
 
 
+class SolutionDict:
+    def two_sum(self, nums: List[int], target: int) -> List[int]:
+        d = {}
+        # 不像上面那样先生成字典就思路简单很多也少一个for循环！
+        # 不需要注意单个元素重复计算的问题
+        for i, n in enumerate(nums):
+            t = target - n
+            if t in d:
+                return [d[t], i]
+            d[n] = i
+
+
 nums = [2, 7, 11, 15]
 target = 9
 result = Solution().two_sum(nums, target)
