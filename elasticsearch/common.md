@@ -264,3 +264,10 @@ By default, a running search only checks if it is cancelled or not on segment bo
 However, it comes with an additional overhead of more frequent cancellation checks that can be noticeable on large fast running search queries. Changing this setting only affects the searches that start after the change is made.
 
 - <https://www.quora.com/In-Elasticsearch-is-there-a-way-to-kill-a-query-that-is-taking-too-long-after-a-certain-time>
+
+---
+# retry_on_conflict
+
+找了一下bulk的更新操作的retry_on_conflict的配置，官方文档都需要在每个文档上面加上retry_on_conflict的配置。默认是0，先找一下全局的配置，避免每个文档都需要重复加上。
+
+但是找不到～～
