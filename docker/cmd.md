@@ -1,5 +1,11 @@
-
+---
 - [docker entrypoint入口文件详解](https://www.cnblogs.com/breezey/p/8812197.html)
+
+## shell
+
+docker run --network host --env-file aggs.env --entrypoint="bash" -i --rm mt-data/dj:ad_aggs  -c "tail -f /dev/null"
+
+- https://stackoverflow.com/a/28037991
 
 ---
 # docker compose

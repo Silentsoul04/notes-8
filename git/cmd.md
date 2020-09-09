@@ -1,11 +1,21 @@
+# 获取最近更改的分支
+
+git for-each-ref --sort=-committerdate refs/heads/
+
+git for-each-ref --sort=committerdate refs/heads/
+
+# Or using git branch (since version 2.7.0)
+git branch --sort=-committerdate  # DESC
+git branch --sort=committerdate  # ASC
+
+---
 # 单独删除某个文件的所有历史记录
 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch elasticsearch/dump.md' --prune-empty --tag-name-filter cat -- --all
 
 - https://blog.csdn.net/q258523454/article/details/83899911#commentBox
 
 ---
-
-Git warning of file overwriting due to (supposedly) untracked files
+# Git warning of file overwriting due to (supposedly) untracked files
 
 ```
 ll `git rebase develop 2>&1 | sed "s/^[^\t].*/ /g" `
@@ -25,7 +35,7 @@ git reflog
 
 ---
 # 切换标签
-git checkout tag_name 
+git checkout tag_name
 
 git checkout -b branch_name tag_name
 
@@ -95,7 +105,7 @@ git branch -a | grep brand 发现本地分支虽然去了，但是远程分支�
 
 git checkout v1.0
 
-git checkout -b 
+git checkout -b
 
 
 删除本地tag
