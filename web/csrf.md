@@ -1,7 +1,7 @@
 ---
 # CORS和JSONP
 
-参考链接: 
+参考链接:
 
 - [什么是跨域请求以及实现跨域的方案](https://www.jianshu.com/p/f880878c1398)
 - [详解js跨域问题](https://segmentfault.com/a/1190000000718840)
@@ -63,10 +63,11 @@ CORS与JSONP相比，无疑更为先进、方便和可靠。
 
 _salt_cipher_secret、_unsalt_cipher_token
 ```
-1. Cipher = (Secret + Salt) mod N
-2. (Cipher - Salt) mod N 会等于 Secret
+1. Cipher = (Secret + Salt) mod N  return: Salt + Cipher =》 csrfmiddlewaretoken
+2. (Cipher - Salt) mod N 会等于 Secret 所以： csrfmiddlewaretoken：能解码得到secret
 ```
-疑问：这个算法有什么用。都能推出来的。也没有私钥的加密。还不如直接用同一个值。
+疑问：这个算法有什么用。都能推出来的。也没有私钥的加密。还不如直接用同一个值。前提都是建立在：csrftoken是黑客拿不到的
+只是为了避免csrfmiddlewaretoken的随机性而已？并且能跟csrftoken的secret进行比较，也避免了有状态。csrftoken跟随着登录的session。
 
 - [算法例子](https://www.jianshu.com/p/eaf4a57bbca7)
 
@@ -89,21 +90,21 @@ _salt_cipher_secret、_unsalt_cipher_token
 
 
 2.所有传出POST表单中都有一个名为“csrfmiddlewaretoken”的隐藏表单字段。
- 
+
  该字段的值还是这个secret的值，其中添加了salt并且用于加扰它。 在每次调用get_token()时重新生成salt，所以在每个响应中这个表单字段值都会改变。
-  
+
   此部分由模板标记完成。
-  
+
 > 每一个响应的POST表单中，都会插入一个隐藏的csrfmiddlewaretoken字段。该字段的值也是对1中的secret进行salt hash，每次请求表单页面都会使用一个随机的salt，所以每次响应中表单里面插入的csrfmiddlewaretoken都是不一样的。
 
 
 3.对于所有未使用HTTP GET，HEAD，OPTIONS或TRACE的传入请求，必须存在CSRF cookie，并且“csrfmiddlewaretoken”字段必须存在且正确。 如果不是，用户将得到403错误。
-  
+
   当验证'csrfmiddlewaretoken'字段值时，只将secret而不是完整的token与cookie值中的secret进行比较。 **这允许使用不断变化的token。 虽然每个请求可能使用自己的token，但是secret对所有人来说都是相同的。**
-  
+
 此检查由CsrfViewMiddleware完成。
-  
-  
+
+
 # 问题
 
 Q: 如何避免重放攻击？
