@@ -1,3 +1,15 @@
+# 磁盘
+
+ncdu 磁盘分析工具
+
+- https://linux.cn/article-10239-1.html
+- https://juejin.im/post/6844903889385291783
+
+# dig
+
+dig -x 172.19.40.160
+
+
 # shell
 
 ```shell script
