@@ -27,6 +27,10 @@ rm `git rebase develop 2>&1 | sed "s/^[^\t].*/ /g" `
 
 git flow release finish -S
 
+## public
+
+git flow release finish -p
+
 ---
 # 回滚
 

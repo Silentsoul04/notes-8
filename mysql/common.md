@@ -1,6 +1,49 @@
+# ALLOW_INVALID_DATES
+
+背景：　｀panic: Error 1292: Incorrect date value: '2017-07-13T00:00:00+08:00' for column 'first_date' at row 1｀
+
+
+当我们插入非法时间值时，虽然会被纠正，但是在严格模式下，不会插入数据，反而会报错：
+
+- https://segmentfault.com/a/1190000018958236
+
+原因：　NO_ZERO_DATE？
+
+```
+
+ONLY_FULL_GROUP_BY：
+对于GROUP BY聚合操作，如果在SELECT中的列，没有在GROUP BY中出现，那么这个SQL是不合法的，因为列不在GROUP BY从句中
+
+NO_AUTO_VALUE_ON_ZERO：
+该值影响自增长列的插入。默认设置下，插入0或NULL代表生成下一个自增长值。如果用户 希望插入的值为0，而该列又是自增长的，那么这个选项就有用了。
+
+STRICT_TRANS_TABLES：
+在该模式下，如果一个值不能插入到一个事务表中，则中断当前的操作，对非事务表不做限制
+
+NO_ZERO_IN_DATE：
+在严格模式下，不允许日期和月份为零
+
+NO_ZERO_DATE：
+设置该值，mysql数据库不允许插入零日期，插入零日期会抛出错误而不是警告。
+
+ERROR_FOR_DIVISION_BY_ZERO：
+在INSERT或UPDATE过程中，如果数据被零除，则产生错误而非警告。如 果未给出该模式，那么数据被零除时MySQL返回NULL
+
+NO_AUTO_CREATE_USER：
+禁止GRANT创建密码为空的用户
+
+NO_ENGINE_SUBSTITUTION：
+如果需要的存储引擎被禁用或未编译，那么抛出错误。不设置此值时，用默认的存储引擎替代，并抛出一个异常
+
+PIPES_AS_CONCAT：
+将"||"视为字符串的连接操作符而非或运算符，这和Oracle数据库是一样的，也和字符串的拼接函数Concat相类似
+ANSI_QUOTES：
+启用ANSI_QUOTES后，不能用双引号来引用字符串，因为它被解释为识别符
+```
 
 ---
-# group by 
+
+# group by
 
 注意group by 的case when ，如果case when 里面的as 字段，跟原来的一样，group by 了这字段，会用的是原来的值进行group by 。注意case when 要一个新的字段名，避免一些bug。
 
@@ -44,10 +87,10 @@ SET GLOBAL general_log_file = 'XX';
 # mysqldump
 导出表结构
 
-mysqldump -C -uroot -proot --databases aso_www 
- 
- 
---default-character-set=utf8  
+mysqldump -C -uroot -proot --databases aso_www
+
+
+--default-character-set=utf8
 
 --single-transaction： 不加锁
 
@@ -57,7 +100,7 @@ mysqldump -C -uroot -proot --databases aso_www
 
 mysqldump -u aso_ro -p --no-data adData_multi  > schema.sql
 
-mysqldump --user=root -proot --host=localhost --port=3306  --no-data --skip-triggers --skip-add-drop-table --single-transaction --quick --databases "aso_www" 
+mysqldump --user=root -proot --host=localhost --port=3306  --no-data --skip-triggers --skip-add-drop-table --single-transaction --quick --databases "aso_www"
 
 --result-file=/home/youmi/Documents/note/work/aso-www/mysql/data/ddl/aso_www.sql
 
@@ -129,7 +172,7 @@ CH用array join
 [CH](https://clickhouse.yandex/docs/en/query_language/functions/)
 (是presto的)用cross join unnnest
 
-dla的ad 
+dla的ad
 
 开始2019/10/13 13:14:6 结束2019/11/13 12:59:59
 
