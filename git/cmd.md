@@ -1,3 +1,6 @@
+# fileMode
+git config core.fileMode false
+
 # 获取最近更改的分支
 
 git for-each-ref --sort=-committerdate refs/heads/

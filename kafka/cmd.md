@@ -117,7 +117,7 @@ cd bin/kakfa
 ### 消费最多10个消息
 ./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --max-messages 10
 
-./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db40-adData-ad-heat --max-messages 10  --consumer-property group.id=test_ag_web_uni
+./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db40-adData-ad-heat --max-messages 10  --consumer-property group.id=test_ag_es_sync_brand
 
 
 

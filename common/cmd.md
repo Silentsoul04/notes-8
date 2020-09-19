@@ -1,3 +1,13 @@
+# chmod
+
+chown [-R] 账号名称 文件或目录
+
+chown [-R] 账号名称:用户组名称 文件或目录
+
+chgrp [-R] 用户组名称 dirname/filename ...
+
+- https://blog.csdn.net/hudashi/article/details/7797393
+
 # 磁盘
 
 ncdu 磁盘分析工具
