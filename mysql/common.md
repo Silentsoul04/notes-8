@@ -1,3 +1,10 @@
+# DES_ENCRYPT
+
+The ENCRYPT(), DES_ENCRYPT() and DES_DECRYPT() functions based on the Data Encryption Standard (DES) have been deprecated in favor of Advanced Encryption Standard (AES) based functions, because AES provides much better security. (Deprecate the ENCRYPT, DES_ENCRYPT and DES_DECRYPT functions, WL#8126)
+
+
+- [removal-and-deprecation-in-mysql-5-7](https://mysqlserverteam.com/removal-and-deprecation-in-mysql-5-7/)
+
 # ALLOW_INVALID_DATES
 
 背景：　｀panic: Error 1292: Incorrect date value: '2017-07-13T00:00:00+08:00' for column 'first_date' at row 1｀
