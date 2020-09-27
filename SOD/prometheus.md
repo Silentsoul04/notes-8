@@ -40,3 +40,17 @@ Histogram 是直方图，或称为柱状图，常用于跟踪事件发生的规�
 Summary 和 Histogram 十分相似，也用于跟踪事件发生的规模，不同之处是，它提供了一个 quantiles 的功能，可以按百分比划分跟踪的结果。例如：quantile 取值 0.95，表示取采样值里面的 95% 数据。
 
 更多信息可以参考官网文档 Metric types，Summary 和 Histogram 的概念比较容易混淆，属于比较高阶的指标类型，可以参考 Histograms and summaries 这里的说明。
+
+
+---
+# 监控实践
+
+- [QUERYING PROMETHEUS](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+
+如何进行同步环比的对比
+
+## 报警规则
+
+如何避免突刺
+
+如何没有数据的检查
