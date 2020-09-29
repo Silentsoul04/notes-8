@@ -104,6 +104,10 @@ cd opt/kafka
 
 cd bin/kakfa
 
+
+## 主题信息
+bin/kafka-topics.sh --describe --zookeeper 172.19.33.30:2181 --topic binlog-pub-db-00-msp-org-brand
+
 ## 重置
 ./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group ag_ec_sync_product_qs --reset-offsets --to-latest --all-topics --execute
 
@@ -117,7 +121,7 @@ cd bin/kakfa
 ### 消费最多10个消息
 ./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --max-messages 10
 
-./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db40-adData-ad-heat --max-messages 10  --consumer-property group.id=test_ag_es_sync_brand
+./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-ag-db-41-addata-advertisement --max-messages 10  --consumer-property group.id=es_sync_advertisement_uni
 
 
 

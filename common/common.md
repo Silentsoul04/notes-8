@@ -180,7 +180,22 @@ def sigterm_handler(signal, frame):
 
 signal.signal(signal.SIGTERM, sigterm_handler)
 ```
+
+```
 -k 10 在发送信号10秒钟后还是允许则直接kill掉
+3 3秒timeout时间限制
+```
+
+```
+1	SIGHUP	终止	终止控制终端或进程
+2	SIGINT	终止	由键盘引起的终端(Ctrl-c)
+9	SIGKILL	终止	强制杀死进程(大招, 进程不可捕获)
+14	SIGALRM	终止	时钟中断(闹钟)
+15	SIGTERM	终止	进程终止(进程可捕获)
+```
+- [Python和Signal](https://www.jianshu.com/p/c8edab99173d)
+- [Containers: Terminating with grace](https://itnext.io/containers-terminating-with-grace-d19e0ce34290)
+- [dumb-init-Docker](https://www.infoq.cn/article/2016/01/dumb-init-Docker)
 
 ---
 ## sh疑问
