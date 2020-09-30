@@ -47,10 +47,10 @@ Summary 和 Histogram 十分相似，也用于跟踪事件发生的规模，不�
 
 - [QUERYING PROMETHEUS](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 
-如何进行同步环比的对比
+如何进行同步环比的对比： 这段时间的值/上段时间的值
 
 ## 报警规则
 
-如何避免突刺
+如何避免突刺: 进行平均值的报警;通过某个报警的阈值触发了多次才报警。
 
-如何没有数据的检查
+如何没有数据的检查: 某段时间的最小值大于0
