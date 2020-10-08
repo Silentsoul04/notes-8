@@ -197,6 +197,9 @@ signal.signal(signal.SIGTERM, sigterm_handler)
 - [Containers: Terminating with grace](https://itnext.io/containers-terminating-with-grace-d19e0ce34290)
 - [dumb-init-Docker](https://www.infoq.cn/article/2016/01/dumb-init-Docker)
 
+
+?: `Process finished with exit code 129 (interrupted by signal 1: SIGHUP)`
+
 ---
 ## sh疑问
 set -e 开头是什么意思？
