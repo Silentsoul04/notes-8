@@ -317,6 +317,7 @@ docker run -d --name ag-db-40 -p 33064:3306 registry.umlife.net:443/mt-service/s
 
 docker run  --rm -p 9000:9000 --name my-clickhouse-server-v2 --ulimit nofile=262144:262144 --volume=/home/yinzishao/vhost/docker/ch/data:/var/lib/clickhouse  -v /home/yinzishao/vhost/docker/ch/config.xml:/etc/clickhouse-server/config.xml yandex/clickhouse-server
 
+docker run  --rm -p 9000:9000 --name my-clickhouse-server-v2 --ulimit nofile=262144:262144 --volume=/home/youmi/data/ch:/var/lib/clickhouse  -v /home/youmi/config/ch/config.xml:/etc/clickhouse-server/config.xml yandex/clickhouse-server
 
 docker run -it --rm --link my-clickhouse-server-v2:clickhouse-server yandex/clickhouse-client --host clickhouse-server
 
