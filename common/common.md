@@ -162,7 +162,7 @@ put to next output 选项
 ---
 ## timeout
 
-timeout -k 10 3 python cli/update_test.py
+timeout -s 15 -k 10 3 python cli/update_test.py
 
 默认是signal.SIGTERM信号
 
@@ -182,7 +182,8 @@ signal.signal(signal.SIGTERM, sigterm_handler)
 ```
 
 ```
--k 10 在发送信号10秒钟后还是允许则直接kill掉
+-s  --signal=SIGNAL 见'kill -l'
+-k  --kill-after=DURATION 10 在发送信号10秒钟后还是允许则直接kill掉。如果不加，则不会强制kill掉。即使处理信号的时间会很久。
 3 3秒timeout时间限制
 ```
 
