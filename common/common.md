@@ -201,6 +201,14 @@ signal.signal(signal.SIGTERM, sigterm_handler)
 
 ?: `Process finished with exit code 129 (interrupted by signal 1: SIGHUP)`
 
+## quit
+除了intr之外，还有另外一种键盘信号quit，可以用来停止程序。quit键通常是^\。
+
+intr和quit之间有什么区别呢？区别并不大。以前quit主要由需要终止测试程序的高级程序员使用。当按下^\时，它不仅停止程序，而且还会告诉Unix为此时内存中的内容制作一份副本。该信息存储在一个磁芯文件(core file)中，也就是一个名为core的文件中。然后程序员可以使用特殊的工具分析磁芯文件，查找什么地方出了问题。
+
+现在程序员拥有了更好的调试工具，因此在大多数系统上，quit信号不再生成磁芯文件，尽管一些编程环境仍在使用磁芯文件帮助调试。如果没有调试过程序，但是一个名为core的文件神秘地出现在你的一个目录中，那么这意味着你运行的程序出现了严重的错误而中止。除非真的需要这个文件，否则可以删除它。实际上，你应该删除这个文件，因为core文件相当庞大，没有理由去浪费空间。
+- [停止或暂停程序的信号: intr、quit、stop](https://my.oschina.net/u/2914561/blog/808585)
+
 ---
 ## sh疑问
 set -e 开头是什么意思？
