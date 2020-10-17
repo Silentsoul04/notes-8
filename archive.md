@@ -1,0 +1,51 @@
+# go
+
+- [go](/notebook/go)
+
+
+## GMP
+
+- [并发](/notebook/go/并发与锁.md)
+- [goroutine](/notebook/go/goroutine.md)
+
+- [Golang 并发模型之 GMP 浅尝](https://mp.weixin.qq.com/s/p_7qZH5Ix3vVJEvbPHyMng)
+- [30+张图讲解：Golang调度器GMP原理与调度全分析](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651438895&idx=3&sn=d7328484410c825c6e35b51a324f0c65&chksm=80bb61ddb7cce8cba59349bcae7c067db08e66428650962450cd3a081b9e96fae8db45758087&scene=21#wechat_redirect)[](#bookmark): 这篇文章讲得很清晰，值得多读。很多点都说到了，M的回收与P的空闲与绑定。
+- [源码面前无秘密 | Golang标准库 sync.WaitGroup](https://juejin.im/post/6866971615717457934): sync.WaitGroup的源码并不多但会考虑很多并发情况,总体难度适中,很适合go初学者作为go源码阅读的起点.
+- [Go 语言标准库中 atomic.Value 的前世今生](https://blog.betacat.io/post/golang-atomic-value-exploration/)
+- [Go 标准库源码学习（一）详解短小精悍的 Once](https://mp.weixin.qq.com/s/Lsm-BMdKCKNQjRndNCLwLw): 对once深入理解，提了3点疑问
+
+
+## chan
+
+- [通道](/notebook/go/通道.md)
+
+- [图解Golang channel源码](https://juejin.im/post/6875325172249788429): 主要是围绕着一个环形队列和两个链表展开
+- [如何实现一个协程池？](https://github.com/iswbm/GolangCodingTime/blob/master/source/c04/c04_10.rst)：使用通道的实现的方法很值得推敲。
+
+## 其他
+- [GO GC 垃圾回收机制](https://segmentfault.com/a/1190000018161588)：比较概括。
+- [Go语言中的错误处理（Error Handling in Go）](http://ethancai.github.io/2017/12/29/Error-Handling-in-Go/)：理解goland的错误处理机制。
+
+
+## awesome
+
+- [Go编程时光](http://golang.iswbm.com/en/latest/): 这个项目的基本用法讲述得还可以。可以当成写代码的手册类。网页中标亮点为重点。
+- [go-zero](https://www.yuque.com/tal-tech/go-zero/yaoehb)： 理解架构和源码。
+- [Go 语言设计与实现](https://draveness.me/golang/)：draveness大神的书
+---
+# 优雅退出
+
+- [优雅退出](/notebook/SOD/优雅退出.md)
+- [优雅退出例子](/notebook/SOD/优雅退出例子.md)
+
+- [Service Mesh 实践（五）：优雅启动和优雅关闭](https://www.dozer.cc/2020/02/graceful-start-and-shutdown.html)
+- [pod-lifecycle](https://kubernetes.io/zh/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination-forced)
+- [kubernetes-best-practices-terminating-with-grace](https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace)
+- [bestpractice-pod-prestop](http://docs.api.xiaomi.com/en/app-engine-k8s/bestpractice-pod-prestop.html)
+- [linux：nohup 命令实现守护进程（屏蔽 SIGHUP 信号）](https://my.oschina.net/sallency/blog/827737)
+- [停止或暂停程序的信号: intr、quit、stop](https://my.oschina.net/u/2914561/blog/808585)
+- [一次 Docker 容器内大量僵尸进程排查分析](https://juejin.im/post/6844904029248552973)
+- [Dumb-Init进程信号处理](https://my.oschina.net/xiaominmin/blog/3223293)
+- [docker-containerd-shim](https://juejin.im/entry/6844903454549229576)
+- [when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed](https://stackoverflow.com/questions/1491674/when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed)
+- [僵尸进程例子](https://github.com/Yelp/dumb-init/issues/128)

@@ -214,3 +214,5 @@ runtime.netpollunblock 会在读写事件发生时，将 runtime.pollDesc 中的
 
 ---
 - [go语言实战](./go语言实战.md#goroutine)
+- [Golang 并发模型之 GMP 浅尝](https://mp.weixin.qq.com/s/p_7qZH5Ix3vVJEvbPHyMng)
+- [30+张图讲解：Golang调度器GMP原理与调度全分析](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651438895&idx=3&sn=d7328484410c825c6e35b51a324f0c65&chksm=80bb61ddb7cce8cba59349bcae7c067db08e66428650962450cd3a081b9e96fae8db45758087&scene=21#wechat_redirect): 这篇文章讲得很清晰，值得多读。很多点都说到了，M的回收与P的空闲与绑定。[](#bookmark)
