@@ -10,10 +10,17 @@
 
 - [Golang 并发模型之 GMP 浅尝](https://mp.weixin.qq.com/s/p_7qZH5Ix3vVJEvbPHyMng)
 - [30+张图讲解：Golang调度器GMP原理与调度全分析](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651438895&idx=3&sn=d7328484410c825c6e35b51a324f0c65&chksm=80bb61ddb7cce8cba59349bcae7c067db08e66428650962450cd3a081b9e96fae8db45758087&scene=21#wechat_redirect)[](#bookmark): 这篇文章讲得很清晰，值得多读。很多点都说到了，M的回收与P的空闲与绑定。
+
 - [源码面前无秘密 | Golang标准库 sync.WaitGroup](https://juejin.im/post/6866971615717457934): sync.WaitGroup的源码并不多但会考虑很多并发情况,总体难度适中,很适合go初学者作为go源码阅读的起点.
 - [Go 语言标准库中 atomic.Value 的前世今生](https://blog.betacat.io/post/golang-atomic-value-exploration/)
 - [Go 标准库源码学习（一）详解短小精悍的 Once](https://mp.weixin.qq.com/s/Lsm-BMdKCKNQjRndNCLwLw): 对once深入理解，提了3点疑问
 
+- [理解真实世界中 Go 的并发 BUG](https://mp.weixin.qq.com/s/EnLxJEoPrASWytmM8jJtmg): 很多真实世界可能会发生的并发BUG，值得参考！
+- [go语言中的map实战](https://studygolang.com/articles/560): 并发修改哈希表
+
+## GC
+- [浅析 Golang 垃圾回收机制](https://mp.weixin.qq.com/s/LTz8UjCvaxZvAPRqeFCxjQ): 挺清晰的介绍垃圾回收的入门概念
+- [GO GC 垃圾回收机制](https://segmentfault.com/a/1190000018161588)：比较概括。
 
 ## chan
 
@@ -23,9 +30,11 @@
 - [如何实现一个协程池？](https://github.com/iswbm/GolangCodingTime/blob/master/source/c04/c04_10.rst)：使用通道的实现的方法很值得推敲。
 
 ## 其他
-- [GO GC 垃圾回收机制](https://segmentfault.com/a/1190000018161588)：比较概括。
 - [Go语言中的错误处理（Error Handling in Go）](http://ethancai.github.io/2017/12/29/Error-Handling-in-Go/)：理解goland的错误处理机制。
 
+- [[]T 还是 []*T, 这是一个问题](https://colobu.com/2017/01/05/-T-or-T-it-s-a-question/): 只是说明了副本创建的各种情况
+- [接口](https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-interface): 从底层汇编解释接口。eface、iface
+- [说说 Go 语言中的空接口](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_05.rst)、[2.6 图解：静态类型与动态类型](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_06.rst)
 
 ## awesome
 
