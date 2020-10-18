@@ -5,11 +5,14 @@
 
 ## GMP
 
-- [并发](/notebook/go/并发与锁.md)
 - [goroutine](/notebook/go/goroutine.md)
 
 - [Golang 并发模型之 GMP 浅尝](https://mp.weixin.qq.com/s/p_7qZH5Ix3vVJEvbPHyMng)
 - [30+张图讲解：Golang调度器GMP原理与调度全分析](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651438895&idx=3&sn=d7328484410c825c6e35b51a324f0c65&chksm=80bb61ddb7cce8cba59349bcae7c067db08e66428650962450cd3a081b9e96fae8db45758087&scene=21#wechat_redirect)[](#bookmark): 这篇文章讲得很清晰，值得多读。很多点都说到了，M的回收与P的空闲与绑定。
+
+
+## 并发
+- [并发](/notebook/go/并发与锁.md)
 
 - [源码面前无秘密 | Golang标准库 sync.WaitGroup](https://juejin.im/post/6866971615717457934): sync.WaitGroup的源码并不多但会考虑很多并发情况,总体难度适中,很适合go初学者作为go源码阅读的起点.
 - [Go 语言标准库中 atomic.Value 的前世今生](https://blog.betacat.io/post/golang-atomic-value-exploration/)
@@ -21,6 +24,7 @@
 ## GC
 - [浅析 Golang 垃圾回收机制](https://mp.weixin.qq.com/s/LTz8UjCvaxZvAPRqeFCxjQ): 挺清晰的介绍垃圾回收的入门概念
 - [GO GC 垃圾回收机制](https://segmentfault.com/a/1190000018161588)：比较概括。
+- [图文结合，白话Go的垃圾回收原理](https://juejin.im/post/6882206650875248654)[](#bookmark): 比较清晰分析各种方法的优缺点，这样做的理由。而且在算法过程方面的讲述比较白话，但是在写屏障的介绍可能有点不好，不过也能让我们知道大概。
 
 ## chan
 
@@ -41,6 +45,8 @@
 - [Go编程时光](http://golang.iswbm.com/en/latest/): 这个项目的基本用法讲述得还可以。可以当成写代码的手册类。网页中标亮点为重点。
 - [go-zero](https://www.yuque.com/tal-tech/go-zero/yaoehb)： 理解架构和源码。
 - [Go 语言设计与实现](https://draveness.me/golang/)：draveness大神的书
+
+
 ---
 # 优雅退出
 
