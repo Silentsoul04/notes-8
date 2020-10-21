@@ -39,7 +39,7 @@
 - 协商缓存。304响应。Etag、Last-Modified
 
 
-## [uwsgi](uwsgi.md)[](#bookmark)
+## [uwsgi](../python/uwsgi.md)[](#bookmark)
 - CGI是什么
 - WSGI是什么。网关接口，一种规范。
 - uWSGI是什么。web服务器，包含各种协议。

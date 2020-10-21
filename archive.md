@@ -59,3 +59,17 @@
 - [docker-containerd-shim](https://juejin.im/entry/6844903454549229576)
 - [when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed](https://stackoverflow.com/questions/1491674/when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed)
 - [僵尸进程例子](https://github.com/Yelp/dumb-init/issues/128)
+
+
+---
+# python
+
+- [gevent.md](/notebook/python/gevent.md)
+- [uwsgi.md](/notebook/python/uwsgi.md)
+
+## 网络
+
+- [深入理解uwsgi和gunicorn网络模型[上]](http://xiaorui.cc/archives/4264): 这篇文章比较深入，提了问题也很到位，有助思考
+- [去 async/await 之路](https://zhuanlan.zhihu.com/p/45996168): 说明python的异步的一些方式和对比。
+- [Gevent高并发网络库精解:一些数据通信的数据结构](https://www.jianshu.com/p/ccf3bd34340f)
+- [TODO: Python 开源异步并发框架的未来](https://segmentfault.com/a/1190000000471602)
