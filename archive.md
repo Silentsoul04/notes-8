@@ -20,6 +20,7 @@
 
 - [理解真实世界中 Go 的并发 BUG](https://mp.weixin.qq.com/s/EnLxJEoPrASWytmM8jJtmg): 很多真实世界可能会发生的并发BUG，值得参考！
 - [go语言中的map实战](https://studygolang.com/articles/560): 并发修改哈希表
+- [go sync.Map源码分析](https://juejin.im/post/6844903598317371399): 对比sync.map与concurrent-map
 - [深入理解sync.Map](https://my.oschina.net/u/4587630/blog/4408032)： 对比java和go的并发hash的标准库的区别
 - [Go 1.9 sync.Map揭秘](https://colobu.com/2017/07/11/dive-into-sync-Map/)
 
@@ -72,3 +73,17 @@
 - [docker-containerd-shim](https://juejin.im/entry/6844903454549229576)
 - [when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed](https://stackoverflow.com/questions/1491674/when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed)
 - [僵尸进程例子](https://github.com/Yelp/dumb-init/issues/128)
+
+
+---
+# python
+
+- [gevent.md](/notebook/python/gevent.md)
+- [uwsgi.md](/notebook/python/uwsgi.md)
+
+## 网络
+
+- [深入理解uwsgi和gunicorn网络模型[上]](http://xiaorui.cc/archives/4264): 这篇文章比较深入，提了问题也很到位，有助思考
+- [去 async/await 之路](https://zhuanlan.zhihu.com/p/45996168): 说明python的异步的一些方式和对比。
+- [Gevent高并发网络库精解:一些数据通信的数据结构](https://www.jianshu.com/p/ccf3bd34340f)
+- [TODO: Python 开源异步并发框架的未来](https://segmentfault.com/a/1190000000471602)

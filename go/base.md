@@ -88,15 +88,15 @@ go build 命令来测试该包的编译
 ## package
 
  包只是一个包含一些代码文件的**目录**，它可以从同一个入口引入并可以使用其中的代码或变量（ features ）
- 
+
  > 包简单理解成是一个包含了多个 .go 文件的目录
- 
+
 ## install
 go install <package> 命令后，系统会尝试在指定的包目录里寻找带有 **main** 包声明的文件。找到之后，Go 就知道这是可执行的程序，需要被编译为二进制文件。一个包里可以有很多文件，但是只能其中一个文件里有 main 函数，标志着这个文件是程序的入口文件。
 
 如果一个包中没有带有 main 包声明的文件，那么，Go 就会在 pkg 目录中创建一个 包管理 (.a) 文件。 这不是一个二进制文件，因此是不可执行的。
 
- 
+
 Go源文件中的第一个语句必须是
 
 `package 名称`
@@ -155,7 +155,7 @@ Go 能够辨别出 entry.go 是应用的入口文件，因为它里面有 main �
 
 
 ---
-###  go mod 
+###  go mod
 
 安装后，我们可以通过以下两种方式之一激活模块支持：
 
@@ -194,7 +194,7 @@ goland 的配置，好像得设一下代理: https://goproxy.io
 
 
 
-参考链接: 
+参考链接:
 
 - [go mod 使用](https://juejin.im/post/5c8e503a6fb9a070d878184a)
 - [Go的包管理工具（三）：Go Modules](https://juejin.im/post/5c7fc2b1f265da2dac4575fc)
@@ -234,3 +234,11 @@ https 则需要生成access-token VNdA5Ym5WhvsWygy8NQZ
 # TODO: Go语言如何进阶？
 
 - [Go语言如何进阶？](https://www.zhihu.com/question/399923003/answer/1300151492)
+
+---
+
+# archive
+
+- [Go编程时光](http://golang.iswbm.com/en/latest/)
+
+第二章：面向对象，第四章：并发编程。讲的都是比较贴切实际。特别是context的介绍。可以用作go的常见查阅资料。

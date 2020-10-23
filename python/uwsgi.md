@@ -51,36 +51,36 @@ uwsgi想要继承fastcgi的这种好处，它通过将**消息分片的方式**�
 # web 模型
 
 
-### 说下我对这 python 这几种 web 模型的理解吧： 
+### 说下我对这 python 这几种 web 模型的理解吧：
 
-首先是 http server + wsgi server(container) + wsgi application 这种传统模型吧： 
-- http server 指的是类似于 nginx 或 apache 的服务 
-- wsgi server 指的是类似 gunicorn 和 uwsgi 这样的服务 
-- wsgi application 指的是 flask django 这样的基于 wsgi 接口的框架运行起来的实例 
-最初这种模型只是为了方便 web 框架的开发者，**不需要每个框架层面都去实现一遍 http server ，就增加了一个 WSGI 中间层协议**，框架只要实现这个协议的客户端就可以，然后用**wsgi server 去实现 http 协议的解析并去调用客户端(wsgi application)**。 
+首先是 http server + wsgi server(container) + wsgi application 这种传统模型吧：
+- http server 指的是类似于 nginx 或 apache 的服务
+- wsgi server 指的是类似 gunicorn 和 uwsgi 这样的服务
+- wsgi application 指的是 flask django 这样的基于 wsgi 接口的框架运行起来的实例
+最初这种模型只是为了方便 web 框架的开发者，**不需要每个框架层面都去实现一遍 http server ，就增加了一个 WSGI 中间层协议**，框架只要实现这个协议的客户端就可以，然后用**wsgi server 去实现 http 协议的解析并去调用客户端(wsgi application)**。
 > 统一解析http，所以抽取了一个wsgi server
 
-### 为了方便开发，每个框架都内置了一个简易的 wsgi server ，为什么还要用专门的 wsgi server 呢？ 
+### 为了方便开发，每个框架都内置了一个简易的 wsgi server ，为什么还要用专门的 wsgi server 呢？
 
 **wsgi 除了解析 http 协议以及 http 端口侦听外，还负责了流量转发以及 wsgi application 进程管理的功能**。
 
-一般 wsgi 框架内置的 wsgi server 都是一个单进程，**一次只能处理一个请求**。而目的通用的 wsgi server(gunicorn, uwsgi)都至少支持**pre fork**模型，这种模型会起一个 master 来侦听请求，并启动多个 slave(每个 slave 是一个 wsgi application)， master 负责把请求转发到空闲的 slave 上。除了这种传统的基于进程的 pre fork 同步模型，不同的 wsgi server 也会支持一些其它模型，有基于线程的同步模型，也有基于 asyncio 的异步模型。 
+一般 wsgi 框架内置的 wsgi server 都是一个单进程，**一次只能处理一个请求**。而目的通用的 wsgi server(gunicorn, uwsgi)都至少支持**pre fork**模型，这种模型会起一个 master 来侦听请求，并启动多个 slave(每个 slave 是一个 wsgi application)， master 负责把请求转发到空闲的 slave 上。除了这种传统的基于进程的 pre fork 同步模型，不同的 wsgi server 也会支持一些其它模型，有基于线程的同步模型，也有基于 asyncio 的异步模型。
 
 > 并发与负载均衡
 
 
-### 这种模型下怎样写异步代码呢？ 
+### 这种模型下怎样写异步代码呢？
 
-1. 直接用传统的异步编程(进程，线程，协程)，虽然有些 wsgi server 支持 asynio 模型，但是这也需要用户所写的代码做相应的支持。这就导致了如果我们在 wsgi application 的时候不能随便使用线程和异步 IO ，如果用了就需要配置 wsgi server 使其支持我们自己的写法。因此为了使得我们缩写的 application 能部署在任意的 wsgi server(container)中，我们就只能写同步代码了。 
-2. 使用分布式异步编程，使用类似 celery 的方式，将需要异步处理的东西发送到 worker 去处理。 
+1. 直接用传统的异步编程(进程，线程，协程)，虽然有些 wsgi server 支持 asynio 模型，但是这也需要用户所写的代码做相应的支持。这就导致了如果我们在 wsgi application 的时候不能随便使用线程和异步 IO ，如果用了就需要配置 wsgi server 使其支持我们自己的写法。因此为了使得我们缩写的 application 能部署在任意的 wsgi server(container)中，我们就只能写同步代码了。
+2. 使用分布式异步编程，使用类似 celery 的方式，将需要异步处理的东西发送到 worker 去处理。
 
-### 既然有了 wsgi server ，为什么还要有一个 http server 呢？ 
+### 既然有了 wsgi server ，为什么还要有一个 http server 呢？
 
-主要是因为 wsgi server **支持的并发量比较低**，一般会用一个专门的 http server 来**做一层缓冲，避免并发量过大时直接服务挂掉**。 
+主要是因为 wsgi server **支持的并发量比较低**，一般会用一个专门的 http server 来**做一层缓冲，避免并发量过大时直接服务挂掉**。
 
 因为nginx具备优秀的**静态内容处理能力**，然后将动态内容转发给uWSGI服务器，这样可以达到很好的客户端响应。 Nginx 通过 httpuwsgimodule 与 uWSGI 服务器进行交换
 
-python 传统的这种 wsgi 模型，主要是为了方便框架开发者只需要专注框架层面，而非 http 处理层面。但这样却增加了服务部署的复杂度，需要同时部署和配置 http server 和 wsgi server ，如果想支持异步还要部署 worker ，而使用 tornado 或 go 开发的应用因为自己实现了高效 http 处理的应用只需要部署自己就可以了。 
+python 传统的这种 wsgi 模型，主要是为了方便框架开发者只需要专注框架层面，而非 http 处理层面。但这样却增加了服务部署的复杂度，需要同时部署和配置 http server 和 wsgi server ，如果想支持异步还要部署 worker ，而使用 tornado 或 go 开发的应用因为自己实现了高效 http 处理的应用只需要部署自己就可以了。
 
 > CGI，通用网关协议。WSGI，Python web服务网关协议。
 > uWSGI，wsgi server ，存在的理由:1. 如果在nginx中直接用WSGI， 那么 nginx线程中就要启动python解释器 2. 统一解析 http 协议以及 http 端口侦听外，还负责了流量转发以及 wsgi application 进程管理的功能
@@ -88,12 +88,12 @@ python 传统的这种 wsgi 模型，主要是为了方便框架开发者只需�
 
 ## 异步框架
 
-### 接下来是 tornado 和 twisted 这种模型： 
-这种模型和上面的传统模型处于一个时期，这种模型和 nodejs 差不多，都是基于回调的模型，适用于高 IO 低 CPU 的场景。这种模型自己实现了一个基于回调 http server(event loop)，每一个请求都被注册成一个异步函数来处理，然后主循环来不断的循环这些函数。这样就和 pre fork 模型有了区别， **pre fork 模型中每一个 slave 都是一个 wsgi application**，一个 wsgi application 都只能处理一个请求，而回调模型**只有一个线程**，不仅**极大的减少了内存的分配还减小了进城以及线程间的切换开销**，从而可以**支持高 IO 并发**。但是这种模型也有很明显的缺点，就是**一旦应用程序有大量的 CPU 计算，就会让这个线程堵住，所有的请求都会收到影响**，如果应用在处理一个请求时崩溃，所有的请求也都会收到影响。 
+### 接下来是 tornado 和 twisted 这种模型：
+这种模型和上面的传统模型处于一个时期，这种模型和 nodejs 差不多，都是基于回调的模型，适用于高 IO 低 CPU 的场景。这种模型自己实现了一个基于回调 http server(event loop)，每一个请求都被注册成一个异步函数来处理，然后主循环来不断的循环这些函数。这样就和 pre fork 模型有了区别， **pre fork 模型中每一个 slave 都是一个 wsgi application**，一个 wsgi application 都只能处理一个请求，而回调模型**只有一个线程**，不仅**极大的减少了内存的分配还减小了进城以及线程间的切换开销**，从而可以**支持高 IO 并发**。但是这种模型也有很明显的缺点，就是**一旦应用程序有大量的 CPU 计算，就会让这个线程堵住，所有的请求都会收到影响**，如果应用在处理一个请求时崩溃，所有的请求也都会收到影响。
 
 > 事件循环(回调写法)与同步进程模式的对比
 
-### 接下来时 aiohttp/sanic 这种模型： 
+### 接下来时 aiohttp/sanic 这种模型：
 这种模型和 tornada 模型的**改进**，但实质上是一样的，因为回调的写法不易读也容易出错，于是将回调的写法改成了**同步的写法**。这种模型和 koa2 和 go net/http 查不多， asyncio 提供了类似 go coroutine 的功能和写法，而 aiohttp 则提供了类似 go 中的 net/http 的 http 处理库。
 
 > 同步写法
@@ -114,7 +114,7 @@ location / {
 ```
 这表示“传递每一个请求给绑定到3031端口并使用uwsgi协议的服务器。
 
-uwsgi_pass使用uwsgi协议。 proxy_pass使用普通的HTTP与uWSGI服务器联系。uWSGI文档声称该协议更好，更快，并且可以从uWSGI的所有特殊功能（插件uWSGI plugin）中受益。 
+uwsgi_pass使用uwsgi协议。 proxy_pass使用普通的HTTP与uWSGI服务器联系。uWSGI文档声称该协议更好，更快，并且可以从uWSGI的所有特殊功能（插件uWSGI plugin）中受益。
 
 
 ---
@@ -147,7 +147,7 @@ uwsgi_pass使用uwsgi协议。 proxy_pass使用普通的HTTP与uWSGI服务器联
 ---
 
 > 如果你看到你的测试在更高的并发速率下失败了，那么你可能到达了你的OS socket backlog队列限制 (在Linux中最高是128个槽，可以通过 /proc/sys/net/somaxconn 和 /proc/sys/net/ipv4/tcp_max_syn_backlog 对TCP socket进行调整)。
-  
+
 > 你可以使用 listen 配置选项，在uWSGI中设置这个值。
 
 ---
@@ -204,3 +204,21 @@ spawned uWSGI worker 2 (pid: 28956, cores: 1)
 - [The uwsgi Protocol](https://uwsgi-docs.readthedocs.io/en/latest/Protocol.html)
 - [Nginx支持uwsgi](https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/Nginx.html)
 - [difference-between-uwsgi-pass-and-proxy-pass-in-nginx](https://stackoverflow.com/questions/34562730/difference-between-uwsgi-pass-and-proxy-pass-in-nginx)
+
+---
+# Gunicorn的作用是什么？
+
+
+- 只有一个应用，不需要负载均衡
+- 只提供api服务，没有静态文件
+- 不需要额外的访问控制等功能。限流、黑名单等
+
+nginx可以缓冲请求和响应。如果让Gunicorn直接提供服务，浏览器发起一个请求，鉴于浏览器和网络情况都是未知的，http请求的发起过程可能比较慢，而Gunicorn只能等待请求发起完成后，才去真正处理请求，处理完成后，等客户端完全接收请求后，才继续下一个。
+
+nginx缓存客户端发起的请求，直到收完整个请求，转发给Gunicorn，等Gunicorn处理完成后，拿到响应，再发给客户端，这个流程是nginx擅长处理，而Gunicorn不擅长处理的。
+
+- [Nginx、Gunicorn在服务器中分别起什么作用？](https://www.zhihu.com/question/38528616/answer/117946381)
+- [为什么nginx可以直接部署，还要uWSGI，gunicorn等中间件？](https://www.zhihu.com/question/342967945/answer/804493384)
+- [深入理解uwsgi和gunicorn网络模型[上]](http://xiaorui.cc/archives/4264): 这篇文章比较深入，提了问题也很到位，有助思考
+- [去 async/await 之路](https://zhuanlan.zhihu.com/p/45996168): 说明python的异步的一些方式和对比。
+
