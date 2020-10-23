@@ -1,4 +1,15 @@
+---
+# shell
 
+shell ${}的使用
+```shell script
+
+${file#*.}：拿掉第一个 . 及其左边的字符串：file.txt
+${file##*/}：拿掉最后一条 / 及其左边的字符串：my.file.txt
+```
+- [shell ${}的使用](https://www.cnblogs.com/iamdevops/p/5602885.html)
+
+---
 - [Python - HTML转换为PDF文件wkhtmltopdf](https://www.jianshu.com/p/b718b77d4c93)
 
 ---

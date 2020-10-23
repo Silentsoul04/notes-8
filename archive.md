@@ -20,6 +20,8 @@
 
 - [理解真实世界中 Go 的并发 BUG](https://mp.weixin.qq.com/s/EnLxJEoPrASWytmM8jJtmg): 很多真实世界可能会发生的并发BUG，值得参考！
 - [go语言中的map实战](https://studygolang.com/articles/560): 并发修改哈希表
+- [深入理解sync.Map](https://my.oschina.net/u/4587630/blog/4408032)： 对比java和go的并发hash的标准库的区别
+- [Go 1.9 sync.Map揭秘](https://colobu.com/2017/07/11/dive-into-sync-Map/)
 
 ## GC
 - [浅析 Golang 垃圾回收机制](https://mp.weixin.qq.com/s/LTz8UjCvaxZvAPRqeFCxjQ): 挺清晰的介绍垃圾回收的入门概念
@@ -39,6 +41,7 @@
 - [[]T 还是 []*T, 这是一个问题](https://colobu.com/2017/01/05/-T-or-T-it-s-a-question/): 只是说明了副本创建的各种情况
 - [接口](https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-interface): 从底层汇编解释接口。eface、iface
 - [说说 Go 语言中的空接口](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_05.rst)、[2.6 图解：静态类型与动态类型](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_06.rst)
+- [1.8 万字详解 Go 是如何设计 Map 的](https://mp.weixin.qq.com/s/OJSxIXH87mjCkQn76eNQsQ): 太详细了，详细到底层分析
 
 ## awesome
 
@@ -46,6 +49,11 @@
 - [go-zero](https://www.yuque.com/tal-tech/go-zero/yaoehb)： 理解架构和源码。
 - [Go 语言设计与实现](https://draveness.me/golang/)：draveness大神的书
 
+
+---
+# python
+- [sort](/notebook/algorithm/排序/sorted.md): python的排序是怎么实现的
+- [dict](): TODO python的字典是怎么实现的，如何解决hash冲突。
 
 ---
 # 优雅退出
