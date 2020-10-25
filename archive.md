@@ -44,6 +44,10 @@
 - [说说 Go 语言中的空接口](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_05.rst)、[2.6 图解：静态类型与动态类型](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_06.rst)
 - [1.8 万字详解 Go 是如何设计 Map 的](https://mp.weixin.qq.com/s/OJSxIXH87mjCkQn76eNQsQ): 太详细了，详细到底层分析
 
+## etcd
+- [跟 etcd 学习数据库中事务隔离的实现](https://blog.betacat.io/post/2019/08/learn-transaction-isolation-levels-from-etcd/)
+- [MVCC 在 etcd 中的实现](https://blog.betacat.io/post/mvcc-implementation-in-etcd/)
+
 ## awesome
 
 - [Go编程时光](http://golang.iswbm.com/en/latest/): 这个项目的基本用法讲述得还可以。可以当成写代码的手册类。网页中标亮点为重点。
