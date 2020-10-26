@@ -28,7 +28,11 @@ docker run -d --name=registrator \
 ---
 
 ```
-docker run -d -p 8500:8500 -v ~/data/consul:/consul/data -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_1 consul agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
+docker run -d --network=host --rm -p 8500:8500 -v ~/data/consul:/consul/data -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_1 consul agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
+
+docker run -d --network=host --rm -p 8500:8500 -v ~/data/consul:/consul/data --name=consul_server_1 consul agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
+
+--network=host: 跨容器好像也不能连接？
 
 -client：表示 Consul 将绑定客户端接口的地址，0.0.0.0 表示所有地址都可以访问
 
@@ -48,7 +52,7 @@ docker run -d -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_5 consul agen
 docker run -d -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_6 consul agent -client -node=5 -join='172.17.0.3' -client='0.0.0.0'
 
 
-docker exec consul_server_1 consul members Node Address Status Type Build Protocol DC Segment 1 
+docker exec consul_server_1 consul members Node Address Status Type Build Protocol DC Segment 1
 
 ```
 - [Docker - 容器部署 Consul 集群](https://www.cnblogs.com/lfzm/p/10633595.html)
