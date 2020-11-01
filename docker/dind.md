@@ -145,3 +145,68 @@ Dockerfile中的VOLUME使每次运行一个新的container时，都会为其**�
 Q: And what about the build cache? That one can get pretty tricky too. People often ask me, “I’m running Docker-in-Docker; how can I use the images located on my host, rather than pulling everything again in my inner Docker?”
 
 A: 通过cache文件进行/var/lib/docker的缓存？类似requirement.txt的机制。TODO： [Nikola Kovacs](https://gitlab.com/gitlab-org/gitlab-foss/-/issues/17861)
+
+---
+
+- [dind19.03 file](https://github.com/docker-library/docker/tree/b1d2628005e12e79079c025c3653cba248d6f264/19.03/dind)
+docker:18.09-dind
+
+```
+chmod +x dockerd-entrypoint.sh
+docker build -t my-dind --cache-from=my-dind .
+
+> Cannot connect to the Docker daemon at tcp://docker:2375. Is the docker daemon running?
+
+需要在19.03的dind加上：
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+      DOCKER_DRIVER: overlay2
+      DOCKER_HOST: tcp://docker:2375/
+```
+
+如果把`VOLUME /var/lib/docker` 去掉， overlay2会报错
+
+docker_1  | time="2020-10-31T07:04:03.487053839Z" level=error msg="failed to mount overlay: invalid argument" storage-driver=overlay2
+
+docker_1  | failed to start daemon: error initializing graphdriver: driver not supported
+
+
+---
+
+# 那就换个思路
+
+先把相关的文件打包到另一个目录。然后通过更改entrypoint进行打包到另一个目录下。
+
+```
+mkdir -p /var-lib-docker
+cp -r /var-lib-docker/. /var/lib/docker
+ls /var/lib/docker
+```
+
+---
+# health check
+
+新建的dind因为需要移动/var/lib/docker。启动较慢，如何进行健康检查。
+
+/ # curl http://docker:2375
+curl: (7) Failed to connect to docker port 2375: Connection refused
+
+
+---
+# 权限问题
+
+19.03-dind原生就会有这个问题:
+
+mysqld: error while loading shared libraries: libpthread.so.0: cannot stat shared object: Permission denied
+
+
+`DOCKER_TLS_CERTDIR: ""` 配置作用？
+
+---
+- https://stackoverflow.com/questions/58749344/pre-pull-images-in-docker-in-docker-dind
+- [Caching for docker-in-docker builds](https://gitlab.com/gitlab-org/gitlab-foss/-/issues/17861): 根源讨论
+- [Docker in Docker (DinD) commit behaviour](https://github.com/docker/for-linux/issues/506): 有一个cache image的例子但实现不了 [例子](https://github.com/elhigu/gitlab-ci-dind-with-image-cache/tree/master/.gitlab-custom-dind)
+- [Pulling build cache](https://github.com/moby/moby/issues/20316): build from cache讨论
+- [Distributing Docker Cache across Hosts](https://runnable.com/blog/distributing-docker-cache-across-hosts): S3
+- [Registry as a pull through cache](https://docs.docker.com/registry/recipes/mirror/): 您可以运行本地注册表镜像，并将所有守护程序指向该目录，以免产生额外的互联网流量。
+- [FASTER CI BUILDS WHEN USING DOCKER-IN-DOCKER ON GITLAB](https://joealamo.co.uk/2019/07/28/faster-dind-ci-builds.html): max-concurrent-downloads
