@@ -177,11 +177,16 @@ docker_1  | failed to start daemon: error initializing graphdriver: driver not s
 
 先把相关的文件打包到另一个目录。然后通过更改entrypoint进行打包到另一个目录下。
 
-```
-mkdir -p /var-lib-docker
-cp -r /var-lib-docker/. /var/lib/docker
+```shell script
+if [ "`ls -A /var-lib-docker/`" = "" ]; then
+    echo "empty"
+else
+    mv /var-lib-docker/* /var/lib/docker
+fi
 ls /var/lib/docker
 ```
+
+my-dind:19.03 添加文件
 
 ---
 # health check
@@ -195,12 +200,45 @@ curl: (7) Failed to connect to docker port 2375: Connection refused
 ---
 # 权限问题
 
-19.03-dind原生就会有这个问题:
+19.03-dind、18.09原生就会有这个问题:
 
 mysqld: error while loading shared libraries: libpthread.so.0: cannot stat shared object: Permission denied
 
+- [Mysql, Privileged mode, cannot open shared object file](https://github.com/moby/moby/issues/7512#issuecomment-61787845)
 
-`DOCKER_TLS_CERTDIR: ""` 配置作用？
+但是上到gitlab ci 上却可以？因为我本机装了mysql的原因
+
+`DOCKER_TLS_CERTDIR: ""` 、 `privileged: true` 配置作用？
+
+docker:18.09-dind、19.03都可以正常启动ES
+
+---
+# 自建docker问题
+
+docker run  --name=dind --privileged  -d registry.umlife.net:443/mt-service/ag-www/dind:2.0.0
+
+
+error during connect: Get http://docker:2375/v1.40/containers/json: dial tcp: lookup docker on 8.8.8.8:53: no such host
+
+
+commit 镜像后权限出错
+
+docker run --rm --network host -e "ES_JAVA_OPTS=-Xms256m -Xmx256m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+
+/bin/bash: bin/es-docker: Permission denied
+
+docker run docker.elastic.co/elasticsearch/elasticsearch:5.5.3 ls -ln /usr/share/
+
+drwxr-xr-x 20 0 0 4096 Nov  2 06:06 zoneinfo
+
+ls -ln /var/lib/docker/
+drwxr-x---    3 0        0             4096 Nov  2 06:06 network
+drwx------   25 0        0             4096 Nov  2 06:22 overlay2
+
+
+
+权限问题？
+
 
 ---
 - https://stackoverflow.com/questions/58749344/pre-pull-images-in-docker-in-docker-dind
@@ -210,3 +248,5 @@ mysqld: error while loading shared libraries: libpthread.so.0: cannot stat share
 - [Distributing Docker Cache across Hosts](https://runnable.com/blog/distributing-docker-cache-across-hosts): S3
 - [Registry as a pull through cache](https://docs.docker.com/registry/recipes/mirror/): 您可以运行本地注册表镜像，并将所有守护程序指向该目录，以免产生额外的互联网流量。
 - [FASTER CI BUILDS WHEN USING DOCKER-IN-DOCKER ON GITLAB](https://joealamo.co.uk/2019/07/28/faster-dind-ci-builds.html): max-concurrent-downloads
+- [preloading-images-to-dind-container](https://libraries.io/gitlab/elhigu/preloading-images-to-dind-container): 总结了这个问题！ [preloading-images-to-dind-container](https://gitlab.com/elhigu/preloading-images-to-dind-container)
+- [how-can-i-let-the-gitlab-ci-runner-dind-image-cache-intermediate-images](https://stackoverflow.com/questions/35556649/how-can-i-let-the-gitlab-ci-runner-dind-image-cache-intermediate-images): 独立的runner

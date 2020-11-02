@@ -149,12 +149,13 @@ docker run -it --env CFGENV=LOCAL --env CFGAUTH=ag-apollo:xx --env CFGAPP=ag-tes
 ## ES
 docker build -t yzs/myes build/elasticsearch-ik/.
 
-docker run --rm --network host -e "discovery.type=single-node" -e "xpack.security.enabled=false" yzs/myes
+docker run --rm --network host -e "ES_JAVA_OPTS=-Xms256m -Xmx256m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" yzs/myes
 
 docker tag 2f16c2609583 registry.umlife.net:443/mt-service/schema/elasticsearch-ik:5.5.3
 
 docker push registry.umlife.net:443/mt-service/schema/elasticsearch-ik:5.5.3
 
+docker run --rm --network host -e "ES_JAVA_OPTS=-Xms256m -Xmx256m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.5.3
 
 ## kafka
 ```
