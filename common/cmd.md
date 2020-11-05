@@ -1,3 +1,22 @@
+# sed
+
+```shell script
+
+sed -i '42s/.*/&  # pylint: disable=logging-format-interpolation/g' apps/common/business/service.py
+
+echo "test/base.py:154:0: W0613: Unused argument 'kwargs' (unused-argument)" | sed 's/\(.*py\)\(.*\)/\1        \2/g'
+
+echo "test/base.py:154:0: W0613: Unused argument 'kwargs' (unused-argument)" | sed 's/\(.*py\):\([0-9]*\):.*(\(.*\))/\1 \2 \3/g'
+
+echo "test/base.py:154:0: W0613: Unused argument 'kwargs' (unused-argument)"  | sed "s/\(.*py\):\([0-9]*\):.*(\(.*\))/sed -i '\2\s\/.*\/\&  # pylint: diable=\3\/g' \1/g"
+
+cat lint.txt | sed "s/\(.*py\):\([0-9]*\):.*(\(.*\))/sed -i '\2\s\/.*\/\&  # pylint: disable=\3\/g' \1/g" | grep -v '\*\*' | tee lint_p.txt
+
+
+echo "(unused-argument)" | sed 's/(\(.*\))/\1/g'
+```
+
+---
 # chmod
 
 chown [-R] 账号名称 文件或目录

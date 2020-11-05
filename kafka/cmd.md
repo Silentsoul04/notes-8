@@ -101,6 +101,7 @@ cd opt/kafka
 ----
 
 # 国内
+ssh -p36000 kafka-00.ag.alishh
 
 cd bin/kakfa
 

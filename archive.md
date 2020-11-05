@@ -1,3 +1,7 @@
+# redis
+
+- [分布式锁的实现之 redis 篇](https://xiaomi-info.github.io/2019/12/17/redis-distributed-lock/):redis锁相关会存在的问题与图分析
+
 # go
 
 - [go](/notebook/go)
@@ -7,7 +11,7 @@
 
 - [goroutine](/notebook/go/goroutine.md)
 
-- [Golang 并发模型之 GMP 浅尝](https://mp.weixin.qq.com/s/p_7qZH5Ix3vVJEvbPHyMng)
+- [Golang 并发模型之 GMP 浅   尝](https://mp.weixin.qq.com/s/p_7qZH5Ix3vVJEvbPHyMng)
 - [30+张图讲解：Golang调度器GMP原理与调度全分析](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651438895&idx=3&sn=d7328484410c825c6e35b51a324f0c65&chksm=80bb61ddb7cce8cba59349bcae7c067db08e66428650962450cd3a081b9e96fae8db45758087&scene=21#wechat_redirect)[](#bookmark): 这篇文章讲得很清晰，值得多读。很多点都说到了，M的回收与P的空闲与绑定。
 
 
@@ -28,6 +32,7 @@
 - [浅析 Golang 垃圾回收机制](https://mp.weixin.qq.com/s/LTz8UjCvaxZvAPRqeFCxjQ): 挺清晰的介绍垃圾回收的入门概念
 - [GO GC 垃圾回收机制](https://segmentfault.com/a/1190000018161588)：比较概括。
 - [图文结合，白话Go的垃圾回收原理](https://juejin.im/post/6882206650875248654)[](#bookmark): 比较清晰分析各种方法的优缺点，这样做的理由。而且在算法过程方面的讲述比较白话，但是在写屏障的介绍可能有点不好，不过也能让我们知道大概。
+- [图解：宏观角度看 Go 语言如何实现垃圾回收中的 Stop the World](https://mp.weixin.qq.com/s/rt4lxGwaYo8IkTdmo186Cg): 说明stw的简要步骤，并且说明跟系统调用的关系，引出避免长时间的调用。
 
 ## chan
 
