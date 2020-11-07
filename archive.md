@@ -1,19 +1,11 @@
-# redis
-
-- [分布式锁的实现之 redis 篇](https://xiaomi-info.github.io/2019/12/17/redis-distributed-lock/):redis锁相关会存在的问题与图分析
-
 # go
-
 - [go](/notebook/go)
 
-
 ## GMP
-
 - [goroutine](/notebook/go/goroutine.md)
 
 - [Golang 并发模型之 GMP 浅   尝](https://mp.weixin.qq.com/s/p_7qZH5Ix3vVJEvbPHyMng)
 - [30+张图讲解：Golang调度器GMP原理与调度全分析](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651438895&idx=3&sn=d7328484410c825c6e35b51a324f0c65&chksm=80bb61ddb7cce8cba59349bcae7c067db08e66428650962450cd3a081b9e96fae8db45758087&scene=21#wechat_redirect)[](#bookmark): 这篇文章讲得很清晰，值得多读。很多点都说到了，M的回收与P的空闲与绑定。
-
 
 ## 并发
 - [并发](/notebook/go/并发与锁.md)
@@ -35,7 +27,6 @@
 - [图解：宏观角度看 Go 语言如何实现垃圾回收中的 Stop the World](https://mp.weixin.qq.com/s/rt4lxGwaYo8IkTdmo186Cg): 说明stw的简要步骤，并且说明跟系统调用的关系，引出避免长时间的调用。
 
 ## chan
-
 - [通道](/notebook/go/通道.md)
 
 - [图解Golang channel源码](https://juejin.im/post/6875325172249788429): 主要是围绕着一个环形队列和两个链表展开
@@ -64,15 +55,34 @@
 
 ---
 # python
+- [gevent.md](/notebook/python/gevent.md)
+- [uwsgi.md](/notebook/python/uwsgi.md)
+
+## 网络
+- [深入理解uwsgi和gunicorn网络模型[上]](http://xiaorui.cc/archives/4264): 这篇文章比较深入，提了问题也很到位，有助思考
+- [去 async/await 之路](https://zhuanlan.zhihu.com/p/45996168): 说明python的异步的一些方式和对比。
+- [Gevent高并发网络库精解:一些数据通信的数据结构](https://www.jianshu.com/p/ccf3bd34340f)
+- [TODO: Python 开源异步并发框架的未来](https://segmentfault.com/a/1190000000471602)
+
+## 数据结构
 - [sort](/notebook/algorithm/排序/sorted.md): python的排序是怎么实现的
 - [dict](): TODO python的字典是怎么实现的，如何解决hash冲突。
 
+
+---
+# 分布式
+- [分布式](../notebook/SOD/分布式)
+
+## redis
+- [分布式锁的实现之 redis 篇](https://xiaomi-info.github.io/2019/12/17/redis-distributed-lock/):redis锁相关会存在的问题与图分析
+
+
 ---
 # 优雅退出
-
 - [优雅退出](/notebook/SOD/优雅退出.md)
 - [优雅退出例子](/notebook/SOD/优雅退出例子.md)
 
+## 参考链接
 - [Service Mesh 实践（五）：优雅启动和优雅关闭](https://www.dozer.cc/2020/02/graceful-start-and-shutdown.html)
 - [pod-lifecycle](https://kubernetes.io/zh/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination-forced)
 - [kubernetes-best-practices-terminating-with-grace](https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace)
@@ -84,17 +94,3 @@
 - [docker-containerd-shim](https://juejin.im/entry/6844903454549229576)
 - [when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed](https://stackoverflow.com/questions/1491674/when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed)
 - [僵尸进程例子](https://github.com/Yelp/dumb-init/issues/128)
-
-
----
-# python
-
-- [gevent.md](/notebook/python/gevent.md)
-- [uwsgi.md](/notebook/python/uwsgi.md)
-
-## 网络
-
-- [深入理解uwsgi和gunicorn网络模型[上]](http://xiaorui.cc/archives/4264): 这篇文章比较深入，提了问题也很到位，有助思考
-- [去 async/await 之路](https://zhuanlan.zhihu.com/p/45996168): 说明python的异步的一些方式和对比。
-- [Gevent高并发网络库精解:一些数据通信的数据结构](https://www.jianshu.com/p/ccf3bd34340f)
-- [TODO: Python 开源异步并发框架的未来](https://segmentfault.com/a/1190000000471602)
