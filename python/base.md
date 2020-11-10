@@ -1,3 +1,13 @@
+---
+# tee
+
+tee没有效果
+
+这是因为python在stdout不是终端时缓冲它。解除缓冲区的最简单方法是使用`python -u`：
+
+- [tee-does-not-show-output-or-write-to-file](https://stackoverflow.com/questions/27534609/tee-does-not-show-output-or-write-to-file)
+
+---
 # pytest
 
 参看覆盖情况： pytest -rA apps/es_sync/uni_advertisement_test.py --cov=apps/es_sync
