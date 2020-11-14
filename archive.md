@@ -17,8 +17,9 @@
 - [理解真实世界中 Go 的并发 BUG](https://mp.weixin.qq.com/s/EnLxJEoPrASWytmM8jJtmg): 很多真实世界可能会发生的并发BUG，值得参考！
 - [go语言中的map实战](https://studygolang.com/articles/560): 并发修改哈希表
 - [go sync.Map源码分析](https://juejin.im/post/6844903598317371399): 对比sync.map与concurrent-map
-- [深入理解sync.Map](https://my.oschina.net/u/4587630/blog/4408032)： 对比java和go的并发hash的标准库的区别
+- [深入理解sync.Map](https://my.oschina.net/u/4587630/blog/4408032): 对比java和go的并发hash的标准库的区别
 - [Go 1.9 sync.Map揭秘](https://colobu.com/2017/07/11/dive-into-sync-Map/)
+- [通过实例深入理解sync.Map的工作原理](https://tonybai.com/2020/11/10/understand-sync-map-inside-through-examples/): 通过实例法，我们大致得到了sync.Map的工作原理和行为特征。read dirty之间的数据行为
 
 ## GC
 - [浅析 Golang 垃圾回收机制](https://mp.weixin.qq.com/s/LTz8UjCvaxZvAPRqeFCxjQ): 挺清晰的介绍垃圾回收的入门概念

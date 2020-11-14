@@ -28,20 +28,24 @@ docker run -d --name=registrator \
 ---
 
 ```
-docker run -d --network=host --rm -p 8500:8500 -v ~/data/consul:/consul/data -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_1 consul agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
+# consul本地启动命令
+docker run -d -rm -p 8500:8500 -v ~/data/consul:/consul/data -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_1 consul agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
 
-docker run -d --network=host --rm -p 8500:8500 -v ~/data/consul:/consul/data --name=consul_server_1 consul agent -server -bootstrap -ui -node=1 -client='0.0.0.0'
-
---network=host: 跨容器好像也不能连接？
-
+```
 -client：表示 Consul 将绑定客户端接口的地址，0.0.0.0 表示所有地址都可以访问
 
+容器启动的服务，注册后得到: http://172.19.0.7:8001/  也就是dj能通过172.16.6.111本机的网络去访问consul。但是因为注册的ip是自己compose网络的。所以consul无法到达172.19.0.7，即使本机是能到达的。需要通过设为本机的网络：--network=host: 跨容器好像也不能连接？需要加上bind？含义是啥？
+
+```
+docker run -d --network=host --rm -v ~/data/consul:/consul/data --name=consul_server_1 consul agent -server -bootstrap -ui -node=1 -client='0.0.0.0' -bind 172.16.6.111
+```
+
+```
 docker exec consul_server_1 consul members
 
 docker run -d -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_2 consul agent -server -node=2  -join='172.17.0.3'
 
 docker run -d -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_3 consul agent -server -node=3  -join='172.17.0.3'
-
 
 
 docker run -d -e CONSUL_BIND_INTERFACE='eth0' --name=consul_server_4 consul agent -client -node=4 -join='172.17.0.3' -client='0.0.0.0'
