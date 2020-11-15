@@ -5,7 +5,7 @@
 - [goroutine](/notebook/go/goroutine.md)
 
 - [Golang 并发模型之 GMP 浅   尝](https://mp.weixin.qq.com/s/p_7qZH5Ix3vVJEvbPHyMng)
-- [30+张图讲解：Golang调度器GMP原理与调度全分析](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651438895&idx=3&sn=d7328484410c825c6e35b51a324f0c65&chksm=80bb61ddb7cce8cba59349bcae7c067db08e66428650962450cd3a081b9e96fae8db45758087&scene=21#wechat_redirect)[](#bookmark): 这篇文章讲得很清晰，值得多读。很多点都说到了，M的回收与P的空闲与绑定。
+- [30+张图讲解: Golang调度器GMP原理与调度全分析](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651438895&idx=3&sn=d7328484410c825c6e35b51a324f0c65&chksm=80bb61ddb7cce8cba59349bcae7c067db08e66428650962450cd3a081b9e96fae8db45758087&scene=21#wechat_redirect): 这篇文章讲得很清晰，值得多读。很多点都说到了，M的回收与P的空闲与绑定。 [](#bookmark)
 
 ## 并发
 - [并发](/notebook/go/并发与锁.md)
@@ -23,24 +23,24 @@
 
 ## GC
 - [浅析 Golang 垃圾回收机制](https://mp.weixin.qq.com/s/LTz8UjCvaxZvAPRqeFCxjQ): 挺清晰的介绍垃圾回收的入门概念
-- [GO GC 垃圾回收机制](https://segmentfault.com/a/1190000018161588)：比较概括。
-- [图文结合，白话Go的垃圾回收原理](https://juejin.im/post/6882206650875248654)[](#bookmark): 比较清晰分析各种方法的优缺点，这样做的理由。而且在算法过程方面的讲述比较白话，但是在写屏障的介绍可能有点不好，不过也能让我们知道大概。
-- [图解：宏观角度看 Go 语言如何实现垃圾回收中的 Stop the World](https://mp.weixin.qq.com/s/rt4lxGwaYo8IkTdmo186Cg): 说明stw的简要步骤，并且说明跟系统调用的关系，引出避免长时间的调用。
+- [GO GC 垃圾回收机制](https://segmentfault.com/a/1190000018161588): 比较概括。
+- [图文结合，白话Go的垃圾回收原理](https://juejin.im/post/6882206650875248654): 比较清晰分析各种方法的优缺点，这样做的理由。而且在算法过程方面的讲述比较白话，但是在写屏障的介绍可能有点不好，不过也能让我们知道大概。 [](#bookmark)
+- [图解: 宏观角度看 Go 语言如何实现垃圾回收中的 Stop the World](https://mp.weixin.qq.com/s/rt4lxGwaYo8IkTdmo186Cg): 说明stw的简要步骤，并且说明跟系统调用的关系，引出避免长时间的调用。
 
 ## chan
 - [通道](/notebook/go/通道.md)
 
 - [图解Golang channel源码](https://juejin.im/post/6875325172249788429): 主要是围绕着一个环形队列和两个链表展开
-- [如何实现一个协程池？](https://github.com/iswbm/GolangCodingTime/blob/master/source/c04/c04_10.rst)：使用通道的实现的方法很值得推敲。
+- [如何实现一个协程池？](https://github.com/iswbm/GolangCodingTime/blob/master/source/c04/c04_10.rst): 使用通道的实现的方法很值得推敲。
 - [如何优雅地关闭Go channel](https://www.jianshu.com/p/d24dfbb33781): 有具体的准则和例子
 
 ## 其他
-- [Go语言中的错误处理（Error Handling in Go）](http://ethancai.github.io/2017/12/29/Error-Handling-in-Go/)：理解goland的错误处理机制。
+- [Go语言中的错误处理（Error Handling in Go）](http://ethancai.github.io/2017/12/29/Error-Handling-in-Go/): 理解goland的错误处理机制。
 
 - [[]T 还是 []*T, 这是一个问题](https://colobu.com/2017/01/05/-T-or-T-it-s-a-question/): 只是说明了副本创建的各种情况
 - [深度解密Go语言之关于 interface 的10个问题](https://www.cnblogs.com/qcrao-2018/p/10766091.html): 值接收者和指针接收者的区别
 - [接口](https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-interface): 从底层汇编解释接口。eface、iface
-- [说说 Go 语言中的空接口](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_05.rst)、[2.6 图解：静态类型与动态类型](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_06.rst)
+- [说说 Go 语言中的空接口](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_05.rst) 、[2.6 图解: 静态类型与动态类型](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_06.rst)
 - [1.8 万字详解 Go 是如何设计 Map 的](https://mp.weixin.qq.com/s/OJSxIXH87mjCkQn76eNQsQ): 太详细了，详细到底层分析
 - [应用编译，计算机中一定要掌握的知识细节](https://mp.weixin.qq.com/s/YKZ3MJuGVgWJG69WATRPPQ): 预处理、编译、汇编以及链接。go实例分析前三个部分
 
@@ -51,8 +51,8 @@
 ## awesome
 
 - [Go编程时光](http://golang.iswbm.com/en/latest/): 这个项目的基本用法讲述得还可以。可以当成写代码的手册类。网页中标亮点为重点。
-- [go-zero](https://www.yuque.com/tal-tech/go-zero/yaoehb)： 理解架构和源码。
-- [Go 语言设计与实现](https://draveness.me/golang/)：draveness大神的书
+- [go-zero](https://www.yuque.com/tal-tech/go-zero/yaoehb):  理解架构和源码。
+- [Go 语言设计与实现](https://draveness.me/golang/): draveness大神的书
 
 
 ---
@@ -76,7 +76,8 @@
 - [分布式](../notebook/SOD/分布式)
 
 ## redis
-- [分布式锁的实现之 redis 篇](https://xiaomi-info.github.io/2019/12/17/redis-distributed-lock/):redis锁相关会存在的问题与图分析
+- [分布式锁的实现之 redis 篇](https://xiaomi-info.github.io/2019/12/17/redis-distributed-lock/): redis锁相关会存在的问题与图分析
+- [分布式锁用 Redis 还是 Zookeeper？](https://juejin.im/post/6894853961761685517): 分析具体场景，两种解决办法的简单使用与对比。
 
 
 ---
@@ -85,11 +86,11 @@
 - [优雅退出例子](/notebook/SOD/优雅退出例子.md)
 
 ## 参考链接
-- [Service Mesh 实践（五）：优雅启动和优雅关闭](https://www.dozer.cc/2020/02/graceful-start-and-shutdown.html)
+- [Service Mesh 实践（五）: 优雅启动和优雅关闭](https://www.dozer.cc/2020/02/graceful-start-and-shutdown.html)
 - [pod-lifecycle](https://kubernetes.io/zh/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination-forced)
 - [kubernetes-best-practices-terminating-with-grace](https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace)
 - [bestpractice-pod-prestop](http://docs.api.xiaomi.com/en/app-engine-k8s/bestpractice-pod-prestop.html)
-- [linux：nohup 命令实现守护进程（屏蔽 SIGHUP 信号）](https://my.oschina.net/sallency/blog/827737)
+- [linux: nohup 命令实现守护进程（屏蔽 SIGHUP 信号）](https://my.oschina.net/sallency/blog/827737)
 - [停止或暂停程序的信号: intr、quit、stop](https://my.oschina.net/u/2914561/blog/808585)
 - [一次 Docker 容器内大量僵尸进程排查分析](https://juejin.im/post/6844904029248552973)
 - [Dumb-Init进程信号处理](https://my.oschina.net/xiaominmin/blog/3223293)
