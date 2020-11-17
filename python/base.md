@@ -3,7 +3,7 @@
 
 tee没有效果
 
-这是因为python在stdout不是终端时缓冲它。解除缓冲区的最简单方法是使用`python -u`：
+这是因为python在stdout不是终端时缓冲它。解除缓冲区的最简单方法是使用`python -u`： ？ 没效果
 
 - [tee-does-not-show-output-or-write-to-file](https://stackoverflow.com/questions/27534609/tee-does-not-show-output-or-write-to-file)
 

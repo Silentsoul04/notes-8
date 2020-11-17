@@ -1,3 +1,12 @@
+# gitbook2pdf
+
+如何将gitbook转换成pdf
+
+docker run --rm -v /usr/share/fonts:/usr/share/fonts -v `pwd`/output:/app/output soulteary/docker-gitbook-pdf-generator:1.0.0 "https://keelii.gitbooks.io/socket-programming-in-python-cn"
+
+- [gitbook2pdf](https://github.com/fuergaosi233/gitbook2pdf)
+- [ebook-convert](https://www.mapull.com/gitbook/comscore/extend/pdf.html): 官方不支持的原因
+
 ---
 # shell
 
