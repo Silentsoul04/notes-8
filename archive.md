@@ -1,3 +1,6 @@
+# archive
+
+---
 # go
 - [go](/notebook/go)
 
@@ -43,6 +46,13 @@
 - [说说 Go 语言中的空接口](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_05.rst) 、[2.6 图解: 静态类型与动态类型](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_06.rst)
 - [1.8 万字详解 Go 是如何设计 Map 的](https://mp.weixin.qq.com/s/OJSxIXH87mjCkQn76eNQsQ): 太详细了，详细到底层分析
 - [应用编译，计算机中一定要掌握的知识细节](https://mp.weixin.qq.com/s/YKZ3MJuGVgWJG69WATRPPQ): 预处理、编译、汇编以及链接。go实例分析前三个部分
+
+## network
+
+- [Go netpoller 原生网络模型之源码全面揭秘](https://strikefreedom.top/go-netpoll-io-multiplexing-reactor): 从源码和例子分析。引出reactor对比分析、gnet等。TODO
+- [谈半同步/半异步网络并发模型](https://zhuanlan.zhihu.com/p/58860015)： 这篇文章，总结了半同步/半异步与半同步/半反应堆的区别（架构队列设计,I/O发生的地方），也体现了reactor的含义，让人打通所有的概念的联系
+- [nginx不是使用epoll么? epoll貌似是同步的吧! 那nginx的异步非阻塞到底异步在哪里?](https://www.zhihu.com/question/63193746/answer/206682206): 这里有说到：开发者必须保证每一个事件handler都不得包含任何阻塞调用
+
 
 ## etcd
 - [跟 etcd 学习数据库中事务隔离的实现](https://blog.betacat.io/post/2019/08/learn-transaction-isolation-levels-from-etcd/)
@@ -97,3 +107,10 @@
 - [docker-containerd-shim](https://juejin.im/entry/6844903454549229576)
 - [when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed](https://stackoverflow.com/questions/1491674/when-a-parent-process-is-killed-by-kill-9-will-subprocess-also-be-killed)
 - [僵尸进程例子](https://github.com/Yelp/dumb-init/issues/128)
+
+---
+# java
+
+## 锁
+
+- [搞懂 Java 并发中的 AQS 是怎么运行的](https://mp.weixin.qq.com/s/tMI6qV_ItuTqlKZiUnAlmg): 晦涩难懂
