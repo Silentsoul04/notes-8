@@ -49,7 +49,7 @@
 
 ## network
 
-- [Go netpoller 原生网络模型之源码全面揭秘](https://strikefreedom.top/go-netpoll-io-multiplexing-reactor): 从源码和例子分析。引出reactor对比分析、gnet等。TODO
+- [Go netpoller 原生网络模型之源码全面揭秘](https://strikefreedom.top/go-netpoll-io-multiplexing-reactor): 从源码和例子分析。引出reactor对比分析、gnet等。简单介绍了select、epoll的代码结束，而且详细对比了分析各自的优缺点，并且很好的从源码分析了几个问题，但是没有再深入介绍？。TODO
 - [谈半同步/半异步网络并发模型](https://zhuanlan.zhihu.com/p/58860015)： 这篇文章，总结了半同步/半异步与半同步/半反应堆的区别（架构队列设计,I/O发生的地方），也体现了reactor的含义，让人打通所有的概念的联系
 - [nginx不是使用epoll么? epoll貌似是同步的吧! 那nginx的异步非阻塞到底异步在哪里?](https://www.zhihu.com/question/63193746/answer/206682206): 这里有说到：开发者必须保证每一个事件handler都不得包含任何阻塞调用
 
