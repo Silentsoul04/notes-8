@@ -1,3 +1,26 @@
+## explain
+
+进入server容器执行可行：
+`clickhouse-client   --send_logs_level=trace <<< 'SELECT * FROM mt.ad_aggs_outer' > /dev/null`
+
+执行client错误：
+`docker run -it --rm --link my-clickhouse-server-v2:clickhouse-server yandex/clickhouse-client --host clickhouse-server`
+`docker run --rm --link my-clickhouse-server-v2:clickhouse-server yandex/clickhouse-client --host clickhouse-server --send_logs_level=trace  --query 'SELECT * FROM mt.ad_aggs_outer' > /dev/null`
+报错： Code: 10. DB::Exception: Not found column thread_number in block. There are only columns: event_time, event_time_microseconds, host_name, query_id, thread_id, priority, source, text
+
+原因：https://github.com/ClickHouse/ClickHouse/issues/9539#issuecomment-595902359:
+```
+The client cannot read logs that are sent with send_logs_level setting.
+In distributed setup, servers will forward logs to the initiator server, then they are sent to the client and the client will show an error
+```
+
+
+## LOWCARDINALITY
+
+- [ClickHouse中的低基数字段优化](https://mp.weixin.qq.com/s/XKQk4hsdj8VN8TnYdrOnuw)： 指如何优化低基数的字符串字段。通过LowCardinality把字段通过类似position的压缩技术，改成字典。字符越长效果越佳。 官网文档： [LowCardinality Data Type](https://clickhouse.tech/docs/en/sql-reference/data-types/lowcardinality/)、 [A MAGICAL MYSTERY TOUR OF THE LOWCARDINALITY DATA TYPE](https://altinity.com/blog/2019/3/27/low-cardinality)。不知道对数值类型有多少优化空间。
+
+---
+
 ## update后实时
 
 更新后通过final进行获取实时数据。
