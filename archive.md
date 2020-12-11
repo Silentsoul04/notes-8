@@ -47,6 +47,8 @@
 - [1.8 万字详解 Go 是如何设计 Map 的](https://mp.weixin.qq.com/s/OJSxIXH87mjCkQn76eNQsQ): 太详细了，详细到底层分析
 - [应用编译，计算机中一定要掌握的知识细节](https://mp.weixin.qq.com/s/YKZ3MJuGVgWJG69WATRPPQ): 预处理、编译、汇编以及链接。go实例分析前三个部分
 
+- [go基础之map-写在前面（一)](https://mp.weixin.qq.com/s/Aw8AjDmuvf7n7ACWl7mwaw) : 源码，编译原理。相关链接中的文章也较详细。 [抽丝剥茧—Go哈希Map的鬼魅神功](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651440382&idx=3&sn=2aa006a968994df6027f8e6c5392722a&chksm=80bb1a0cb7cc931a3ce45fb280d0f2e04c9e9032e1b952c42a231688b28740b11fcfff44166f&scene=21#wechat_redirect)
+
 ## network
 
 - [Go netpoller 原生网络模型之源码全面揭秘](https://strikefreedom.top/go-netpoll-io-multiplexing-reactor): 从源码和例子分析。引出reactor对比分析、gnet等。简单介绍了select、epoll的代码结束，而且详细对比了分析各自的优缺点，并且很好的从源码分析了几个问题，但是没有再深入介绍？。TODO
