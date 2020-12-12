@@ -102,6 +102,7 @@ ClickHouse在后台将这些较小的部分合并为较大的部分。它根据�
 - [ClickHouse 在趣头条的实践](https://mp.weixin.qq.com/s/lP9quNJuhpXHxP-n8W0maw)
 - [ClickHouse 数据压缩与解压](https://knifefly.cn/2019/08/25/ClickHouse%E5%8E%8B%E7%BC%A9%E4%B8%8E%E8%A7%A3%E5%8E%8B/)
 - [How to speed up LZ4 decompression in ClickHouse](https://habr.com/en/company/yandex/blog/457612/)
+- [压缩算法.md](../压缩算法.md)
 
 
 ---
