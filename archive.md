@@ -115,10 +115,19 @@
 ---
 # clickhouse
 
-- [ClickHouse中的低基数字段优化](https://mp.weixin.qq.com/s/XKQk4hsdj8VN8TnYdrOnuw)： 指如何优化低基数的字符串字段。通过LowCardinality把字段通过类似position的压缩技术，改成字典。字符越长效果越佳。 官网文档： [LowCardinality Data Type](https://clickhouse.tech/docs/en/sql-reference/data-types/lowcardinality/)、 [A MAGICAL MYSTERY TOUR OF THE LOWCARDINALITY DATA TYPE](https://altinity.com/blog/2019/3/27/low-cardinality)。不知道对数值类型有多少优化空间。
+## 低基数
+- [ClickHouse中的低基数字段优化](https://mp.weixin.qq.com/s/XKQk4hsdj8VN8TnYdrOnuw): 指如何优化低基数的字符串字段。通过LowCardinality把字段通过类似position的压缩技术，改成字典。字符越长效果越佳。
+- [LowCardinality Data Type](https://clickhouse.tech/docs/en/sql-reference/data-types/lowcardinality/): 官网文档
+- [A MAGICAL MYSTERY TOUR OF THE LOWCARDINALITY DATA TYPE](https://altinity.com/blog/2019/3/27/low-cardinality): 不知道对数值类型有多少优化空间。
+- [LowCardinality 数据类型的神秘之旅](https://blog.csdn.net/jiangshouzhuang/article/details/103268340): 具体的倒排索引图和具体的代码与例子。
+- [allow_suspicious_low_cardinality_types](https://clickhouse.tech/docs/en/operations/settings/settings/#allow_suspicious_low_cardinality_types): 允许或限制将LowCardinality用于固定大小为8个字节或更少的数据类型：数字数据类型和FixedString（8_bytes_or_less）。要注意较小的固定值可能适得其反。
+
+- [LowCardinality](./数据库/clickhouse/LowCardinality.md)： 总结与测试
+
+## 其他
 - [five-ways-to-handle-as-of-queries-in-clickhouse](https://altinity.com/blog/2020/4/8/five-ways-to-handle-as-of-queries-in-clickhouse): 通过比较5种方式去，来说明怎么拿时间序列的最靠近的一行（窗口、Top K 的场景）。比较贴近生产的例子。
 - [joins-in-clickhouse-materialized-views](https://altinity.com/blog/2020-07-14-joins-in-clickhouse-materialized-views):  通过物化视图和join操作，进行实时汇总进汇总表的操作。但是要注意join的一些小陷阱。ClickHouse只触发联接中最左边的表。其他表可以为转换提供数据，但是视图不会对这些表上的插入做出反应。
-- [clickhouse-dictionaries-reloaded](https://altinity.com/blog/2020/5/19/clickhouse-dictionaries-reloaded): 字典的一个改版优化。之前字典声明和使用的不便。新版本可以直接通过ddl进行管理，而且能更好优化join查询。它只需要5次调用，而不需要扫描1000万行表（？：字面理解是左边直接调用了5次join。还是说字典能优化数据装载而已）。
+- [clickhouse-dictionaries-reloaded](https://altinity.com/blog/2020/5/19/clickhouse-dictionaries-reloaded): 字典的一个改版优化。之前字典声明和使用的不便。新版本可以直接通过ddl进行管理，而且能更好优化join查询。它只需要5次调用，而不需要扫描1000万行表（？：字面理解是左边直接调用了5次join。还是说字典直接在内存，所以能优化数据装载过程而已）。
 
 ---
 # 设计模式
