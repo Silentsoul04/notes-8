@@ -129,6 +129,12 @@
 - [joins-in-clickhouse-materialized-views](https://altinity.com/blog/2020-07-14-joins-in-clickhouse-materialized-views):  通过物化视图和join操作，进行实时汇总进汇总表的操作。但是要注意join的一些小陷阱。ClickHouse只触发联接中最左边的表。其他表可以为转换提供数据，但是视图不会对这些表上的插入做出反应。
 - [clickhouse-dictionaries-reloaded](https://altinity.com/blog/2020/5/19/clickhouse-dictionaries-reloaded): 字典的一个改版优化。之前字典声明和使用的不便。新版本可以直接通过ddl进行管理，而且能更好优化join查询。它只需要5次调用，而不需要扫描1000万行表（？：字面理解是左边直接调用了5次join。还是说字典直接在内存，所以能优化数据装载过程而已）。
 
+## 位图
+- [ClickHouse留存分析工具十亿数据秒级查询方案](https://mp.weixin.qq.com/s/Bh5aEvpBgSEDkTozpfMFkw): 通过位图的，优化留存用户的分析。有具体代码与总结、参考文献。
+- [ClickHouse遇见RoaringBitmap](https://blog.csdn.net/nazeniwaresakini/article/details/108166089): 引出AggregateFunction、源码分析。
+- [bitmap-functions](https://clickhouse.tech/docs/en/sql-reference/functions/bitmap-functions/): 官方文档
+- [bitmap](/notebook/数据库/clickhouse/bitmap.md): 总结测试与例子。
+
 ---
 # 设计模式
 
