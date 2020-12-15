@@ -140,6 +140,13 @@
 
 - [ORM is an anti-pattern](https://seldo.com/posts/orm_is_an_antipattern): ORM的一些对比和作者说其反模式的理解
 
+---
+# mysql
+
+##
+
+- [一次SQL查询优化原理分析](https://www.jianshu.com/p/0768ebc4e28d): 回表、分页优化。引出INNODB_BUFFER_PAGE的使用
+
 
 ---
 # java

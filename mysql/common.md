@@ -1,3 +1,25 @@
+# 命中页
+
+InnoDB中有buffer pool。里面存有最近访问过的数据页，包括数据页和索引页。所以我们需要运行两个sql，来比较buffer pool中的数据页的数量。
+
+```sql
+select index_name,count(*) from information_schema.INNODB_BUFFER_PAGE where INDEX_NAME in('val','primary') and TABLE_NAME like '%test%' group by index_name;
+```
+
+> 可以看出，此时buffer pool中关于test表有4098个数据页，208个索引页。
+
+为了防止上次试验的影响，我们需要清空buffer pool，重启mysql。
+```
+mysqladmin shutdown
+/usr/local/bin/mysqld_safe &
+```
+
+为了在每次重启时确保清空buffer pool，我们需要关闭innodb_buffer_pool_dump_at_shutdown和innodb_buffer_pool_load_at_startup，这两个选项能够控制数据库关闭时dump出buffer pool中的数据和在数据库开启时载入在磁盘上备份buffer pool的数据。
+
+
+- [一次SQL查询优化原理分析（900W+数据，从17s到300ms）](https://www.jianshu.com/p/0768ebc4e28d)
+
+---
 # DES_ENCRYPT
 
 The ENCRYPT(), DES_ENCRYPT() and DES_DECRYPT() functions based on the Data Encryption Standard (DES) have been deprecated in favor of Advanced Encryption Standard (AES) based functions, because AES provides much better security. (Deprecate the ENCRYPT, DES_ENCRYPT and DES_DECRYPT functions, WL#8126)
