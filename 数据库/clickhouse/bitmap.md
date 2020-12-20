@@ -1,10 +1,18 @@
 ## 位图
 
+位图对象的构造方法有2种。一个将由带有-State的聚合函数groupBitmap构造，另一个将由Array Object构造。也可以将位图对象转换为数组对象。
+
+在实际存储位图对象时，RoaringBitmap被包装到一个数据结构中。当基数小于或等于32时，它使用Set objet。当基数大于32时，它使用RoaringBitmap对象。这就是为什么低基数集的存储速度更快。
+
+
 使用场景：
 - 留存分析
 - 新上榜数据（对比上一个维度的结果）
+- 归档压缩
 
+## 基本使用
 
+### Array Object构造
 ```sql
 WITH bitmapBuild([32, 65, 127, 1026]) AS bm
 SELECT bm,toTypeName(bm);
@@ -14,24 +22,33 @@ SELECT bm,toTypeName(bm);
 │  A │ AggregateFunction(groupBitmap, UInt16) │
 └────┴────────────────────────────────────────┘
 
-位图在CH中的本质是AggregateFunction(groupBitmap, UInt*)类型的（*由位图中的最大值弹性决定），即groupBitmap这个聚合函数产生的中间结果。
-
-根据聚合函数的combinator语法，可以结合-Merge后缀等。
-
+### 将由带有-State的聚合函数groupBitmap构造
 ```sql
 
-select groupBitmapState(id) from (
+select groupBitmapState(id) as bm, toTypeName(bm)  from (
     select 1 as id, 100 as b
     union all
     select 2 as id, 100 as b
 ) group by b
 ```
 
+┌─bm─┬─toTypeName(groupBitmapState(id))──────┐
+│    │ AggregateFunction(groupBitmap, UInt8) │
+└────┴───────────────────────────────────────┘
+
+1 rows in set. Elapsed: 0.002 sec.
+
+
+位图在CH中的本质是AggregateFunction(groupBitmap, UInt*)类型的（*由位图中的最大值弹性决定），即groupBitmap这个聚合函数产生的中间结果。
+
+？： 根据聚合函数的combinator语法，可以结合-Merge后缀等。
+
 ---
 # 生产案例
 
-```sql
+构造一个广告id位图字段，以此来表达mt.ad_log表
 
+```sql
 CREATE TABLE test_bit_ad_log
 (
     `area` String,
@@ -49,7 +66,7 @@ PARTITION BY dt
 ORDER BY (dt, platform, format, media, appid, channel, position, area)
 
 INSERT INTO test_bit_ad_log (dt, platform, format, media, appid, channel, position, area, ad_id_bm) SELECT
-    dt,
+    dte,
     platform,
     format,
     media,
@@ -58,18 +75,16 @@ INSERT INTO test_bit_ad_log (dt, platform, format, media, appid, channel, positi
     position,
     area,
     groupBitmapState(ad_id)
-FROM mt.ad_log
-WHERE dt = '2020-10-13'
+FROM mt.test_ad_log
 GROUP BY
-    dt,
+    dte,
     platform,
     format,
     media,
     appid,
     channel,
     position,
-    area
-LIMIT 10;
+    area;
 ```
 
 ## groupBitmapAndState
@@ -93,24 +108,39 @@ mt  ad_log  199.22 MiB  1.86%   100	0.10	100	2020-07-29	2020-12-13	2020-12-13 14
 mt  ad_log_dt   12.05 MiB   0.11%   100	0.13	105	2020-07-29	2020-12-13	2020-12-13 19:10:35     2,571,216
 mt  test_bit_ad_log 2.90 MiB    0.03%   100	0.50	100	2020-07-29	2020-12-13	2020-12-13 18:49:30     21,303
 ```
-
 > 压缩率： 3/12=25%。不能跟ad_log进行对比，因为废弃了很多字段，特别是精确到秒时间。应该是跟按天维度的数据进行对比。
+
+```
+┌─database─┬─table──┬─size─┬─ratio┬─partitions─┬─compression_ratio─┬─parts─┬─min_date─┬─max_date─┬ut─┬rows─┐
+mt  test_ad_log 285.93 MiB  2.44%   1	0.12	5	2020-12-01	2020-12-01	2020-12-20 20:56:38	48,852,386
+mt  ad_log_dt   26.15 MiB   0.22%   1	0.18	4	2020-12-01	2020-12-01	2020-12-20 20:58:29	3,971,254
+mt  test_bit_ad_log 11.86 MiB   0.1%    1	0.67	1	2020-12-01	2020-12-01	2020-12-20 20:59:56	53,667
+```
+> 压缩率： 11.86/26.15=45.35%
+
+```
+┌─database─┬─table──┬─size─┬─ratio┬─partitions─┬─compression_ratio─┬─parts─┬─min_date─┬─max_date─┬ut─┬rows─┐
+mt  test_ad_log 830.90 MiB  6.73%   3	0.12	21	2020-12-01	2020-12-03	2020-12-20 21:12:25	138,779,440
+mt  ad_log_dt   78.96 MiB   0.64%   3	0.18	11	2020-12-01	2020-12-03	2020-12-20 21:13:26	11,883,406
+mt  test_bit_ad_log 35.38 MiB   0.29%   3	0.67	3	2020-12-01	2020-12-03	2020-12-20 21:13:58	159,698
+```
+> 压缩率： 35.38/78.96=44.80%
+
+
 
 ## 查询效率
 
 ```sql
 -- 原始表获取
 SELECT countDistinct(ad_id)
-FROM mt.ad_log
+FROM mt.test_ad_log
 WHERE (platform = 2) AND (format = 102) AND (media > 3)
 
-Query id: eb48475b-d2e9-493f-a606-9f9d15c25d13
-
 ┌─uniqExact(ad_id)─┐
-│             9433 │
+│            83555 │
 └──────────────────┘
 
-1 rows in set. Elapsed: 0.082 sec. Processed 49.74 million rows, 110.46 MB (607.42 million rows/s., 1.35 GB/s.)
+1 rows in set. Elapsed: 0.597 sec. Processed 138.78 million rows, 685.49 MB (232.43 million rows/s., 1.15 GB/s.)
 ```
 
 ```sql
@@ -118,13 +148,11 @@ SELECT countDistinct(ad_id)
 FROM mt.ad_log_dt
 WHERE (platform = 2) AND (format = 102) AND (media > 3)
 
-Query id: 2e1705d5-40e7-45a9-8747-98dcebcb710b
-
 ┌─uniqExact(ad_id)─┐
-│             9433 │
+│            83555 │
 └──────────────────┘
 
-1 rows in set. Elapsed: 0.026 sec. Processed 2.57 million rows, 10.94 MB (99.15 million rows/s., 421.80 MB/s.)
+1 rows in set. Elapsed: 0.112 sec. Processed 11.88 million rows, 60.14 MB (106.37 million rows/s., 538.31 MB/s.)
 
 ```
 
@@ -136,14 +164,14 @@ SELECT groupBitmapOr(ad_id_bm)
 FROM mt.test_bit_ad_log
 WHERE (platform = 2) AND (format = 102) AND (media > 3)
 
-Query id: 2fe7cb11-46ef-400d-b870-422888bde83f
-
 ┌─groupBitmapOr(ad_id_bm)─┐
-│                    9433 │
+│                   83555 │
 └─────────────────────────┘
 
-1 rows in set. Elapsed: 0.020 sec. Processed 19.58 thousand rows, 247.16 KB (979.06 thousand rows/s., 12.36 MB/s.)
+1 rows in set. Elapsed: 0.057 sec. Processed 24.58 thousand rows, 389.66 KB (430.72 thousand rows/s., 6.83 MB/s.)
 ```
+
+> 优化速率还是挺大的: 0.057/0.112=50.89%
 
 ## 恢复，列拆行
 ```sql
@@ -215,7 +243,7 @@ create table ad_log_dt
 
 INSERT INTO ad_log_dt (dt, platform, format, media, appid, channel, position, area, ad_id) SELECT
 distinct
-    dt,
+    dte,
     platform,
     format,
     media,
@@ -224,9 +252,12 @@ distinct
     position,
     area,
     ad_id
-FROM mt.ad_log;
+FROM mt.test_ad_log;
 
 ```
+
+---
+## 不足思考
 
 问题： 只能获取基数或者列表。join相关的操作如何处理？场景：获取这些结果的其他属性的聚合值？
 
@@ -259,8 +290,21 @@ select * from ad_effect where (ad_id, channel, platform, format) in (
 - 适用于灵活天数的留存查询；
 - 便于更新，用户操作数据和用户属性数据分开存储，便于后续属性的增加和数据回滚。
 
+
 ---
 # 参考链接：
 - [ClickHouse留存分析工具十亿数据秒级查询方案](https://mp.weixin.qq.com/s/Bh5aEvpBgSEDkTozpfMFkw): 通过位图的，优化留存用户的分析。有具体代码与总结、参考文献。
 - [ClickHouse遇见RoaringBitmap](https://blog.csdn.net/nazeniwaresakini/article/details/108166089): 引出AggregateFunction、源码分析。
 - [bitmap-functions](https://clickhouse.tech/docs/en/sql-reference/functions/bitmap-functions/): 官方文档
+
+---
+# 备忘录
+
+
+```sql
+
+insert into test_ad_log (dte, area, ad_id, ad_creative_id, ad_create, platform, format, media, appid, position, cnt, ut)
+SELECT formatDateTime(toDateTime(dt), '%Y-%m-%d') as dte , area, ad_id, ad_creative_id, toUnixTimestamp(ad_create) as ad_create, platform, format, media, appid, position, cnt, toUnixTimestamp(ut) as ut
+from mt.ad_log where dt = '2020-12-01';
+
+```

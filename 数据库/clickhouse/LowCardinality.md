@@ -1,3 +1,16 @@
+## LowCardinality Data Type
+
+将其他数据类型的内部表示更改为字典编码
+
+### Syntax
+
+`LowCardinality(data_type)`
+
+低基数是改变数据存储方法和数据处理规则的上层结构。ClickHouse将[字典编码](https://baike.baidu.com/item/%E8%AF%8D%E5%85%B8%E7%BC%96%E7%A0%81/4097538)应用于低基数列。使用字典编码的数据可以显著提高许多应用程序的SELECT查询的性能。
+
+使用低基数数据类型的效率取决于数据的多样性。如果一个字典包含的不同值少于10000个，那么ClickHouse通常显示出更高的数据读取和存储效率。如果一个字典包含超过100000个不同的值，那么与使用普通数据类型相比，ClickHouse的性能会更差。
+
+
 ```sql
 
 CREATE TABLE test2
@@ -84,9 +97,13 @@ ClickHouse LowCardinality 优化不仅限于存储，它还使用字典 position
 ![LowCardinality 数据类型的神秘之旅](.LowCardinality_images/1a87e7d2.png)
 
 ### LowCardinality 与 Enum
+
 值得一提的是，还有一种用字典编码字符串的可能性，那就是枚举类型：Enum。
 
 ClickHouse 完全支持枚举。从存储的角度来看，它可能甚至更高效，因为枚举值存储在表定义上而不是存储在单独的数据文件中。枚举适用于静态字典。但是，如果插入了原始枚举之外的值，ClickHouse 将抛出异常。枚举值中的每个更改都需要 ALTER TABLE，这可能会带来很多麻烦。LowCardinality 在这方面要灵活得多。
+
+在处理字符串时，请考虑使用LowCardinality而不是Enum。低基数在使用中提供了更大的灵活性，并且通常显示出相同或更高的效率
+
 
 ## 参考链接
 
@@ -221,4 +238,39 @@ mt  _ad_effect_shadow_app   6.44 GiB    56.7%   732	0.39	1,100	2018-11-30	2020-1
 mt  _ad_effect_shadow_app   5.57 GiB    53.09%  732	0.40	1,099	2018-11-30	2020-11-30	2020-12-13 14:27:46
 
 ## 速度对比
- TODO:
+
+
+```sql
+alter table _ad_effect_shadow_app add column media_id_row UInt32  default  media_id;
+optimize table _ad_effect_shadow_app final;
+-- 0 rows in set. Elapsed: 126.632 sec.
+```
+
+```sql
+
+SELECT count(1)
+FROM _ad_effect_shadow_app
+WHERE media_id IN (1, 2, 3)
+```
+
+┌─count(1)─┐
+│   315096 │
+└──────────┘
+
+1 rows in set. Elapsed: 0.945 sec.
+1 rows in set. Elapsed: 0.934 sec.
+1 rows in set. Elapsed: 0.948 sec.
+5629f20dd9f9 :)
+
+```sql
+
+SELECT count(1)
+FROM _ad_effect_shadow_app
+WHERE media_id_row IN (1, 2, 3)
+```
+
+1 rows in set. Elapsed: 1.462 sec.
+1 rows in set. Elapsed: 1.462 sec.
+1 rows in set. Elapsed: 1.499 sec.
+
+

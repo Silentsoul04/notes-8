@@ -18,11 +18,16 @@
 - [Go 标准库源码学习（一）详解短小精悍的 Once](https://mp.weixin.qq.com/s/Lsm-BMdKCKNQjRndNCLwLw): 对once深入理解，提了3点疑问
 
 - [理解真实世界中 Go 的并发 BUG](https://mp.weixin.qq.com/s/EnLxJEoPrASWytmM8jJtmg): 很多真实世界可能会发生的并发BUG，值得参考！
+
+## map
 - [go语言中的map实战](https://studygolang.com/articles/560): 并发修改哈希表
 - [go sync.Map源码分析](https://juejin.im/post/6844903598317371399): 对比sync.map与concurrent-map
 - [深入理解sync.Map](https://my.oschina.net/u/4587630/blog/4408032): 对比java和go的并发hash的标准库的区别
 - [Go 1.9 sync.Map揭秘](https://colobu.com/2017/07/11/dive-into-sync-Map/)
 - [通过实例深入理解sync.Map的工作原理](https://tonybai.com/2020/11/10/understand-sync-map-inside-through-examples/): 通过实例法，我们大致得到了sync.Map的工作原理和行为特征。read dirty之间的数据行为
+- [go基础之map-写在前面（一)](https://mp.weixin.qq.com/s/Aw8AjDmuvf7n7ACWl7mwaw) : 源码，编译原理。相关链接中的文章也较详细。 [抽丝剥茧—Go哈希Map的鬼魅神功](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651440382&idx=3&sn=2aa006a968994df6027f8e6c5392722a&chksm=80bb1a0cb7cc931a3ce45fb280d0f2e04c9e9032e1b952c42a231688b28740b11fcfff44166f&scene=21#wechat_redirect)
+- [1.8 万字详解 Go 是如何设计 Map 的](https://mp.weixin.qq.com/s/OJSxIXH87mjCkQn76eNQsQ): 太详细了，详细到底层分析
+
 
 ## GC
 - [浅析 Golang 垃圾回收机制](https://mp.weixin.qq.com/s/LTz8UjCvaxZvAPRqeFCxjQ): 挺清晰的介绍垃圾回收的入门概念
@@ -37,22 +42,21 @@
 - [如何实现一个协程池？](https://github.com/iswbm/GolangCodingTime/blob/master/source/c04/c04_10.rst): 使用通道的实现的方法很值得推敲。
 - [如何优雅地关闭Go channel](https://www.jianshu.com/p/d24dfbb33781): 有具体的准则和例子
 
-## 其他
+## error
 - [Go语言中的错误处理（Error Handling in Go）](http://ethancai.github.io/2017/12/29/Error-Handling-in-Go/): 理解goland的错误处理机制。
+- [关于 Golang 错误处理的一些思考](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651441294&idx=3&sn=bb20e907f3886961777c2368e8d05cdd&chksm=80bb167cb7cc9f6a1bca359641a9eaa2316fc57f016ca6cab3cd4f13f101874594c7291b06ee&scene=21#wechat_redirect): 创建错误的形式，处理方法error、xerror，一些提案
 
+## 其他
 - [[]T 还是 []*T, 这是一个问题](https://colobu.com/2017/01/05/-T-or-T-it-s-a-question/): 只是说明了副本创建的各种情况
 - [深度解密Go语言之关于 interface 的10个问题](https://www.cnblogs.com/qcrao-2018/p/10766091.html): 值接收者和指针接收者的区别
 - [接口](https://draveness.me/golang/docs/part2-foundation/ch04-basic/golang-interface): 从底层汇编解释接口。eface、iface
 - [说说 Go 语言中的空接口](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_05.rst) 、[2.6 图解: 静态类型与动态类型](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_06.rst)
-- [1.8 万字详解 Go 是如何设计 Map 的](https://mp.weixin.qq.com/s/OJSxIXH87mjCkQn76eNQsQ): 太详细了，详细到底层分析
 - [应用编译，计算机中一定要掌握的知识细节](https://mp.weixin.qq.com/s/YKZ3MJuGVgWJG69WATRPPQ): 预处理、编译、汇编以及链接。go实例分析前三个部分
 
-- [go基础之map-写在前面（一)](https://mp.weixin.qq.com/s/Aw8AjDmuvf7n7ACWl7mwaw) : 源码，编译原理。相关链接中的文章也较详细。 [抽丝剥茧—Go哈希Map的鬼魅神功](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651440382&idx=3&sn=2aa006a968994df6027f8e6c5392722a&chksm=80bb1a0cb7cc931a3ce45fb280d0f2e04c9e9032e1b952c42a231688b28740b11fcfff44166f&scene=21#wechat_redirect)
 
 ## network
-
 - [Go netpoller 原生网络模型之源码全面揭秘](https://strikefreedom.top/go-netpoll-io-multiplexing-reactor): 从源码和例子分析。引出reactor对比分析、gnet等。简单介绍了select、epoll的代码结束，而且详细对比了分析各自的优缺点，并且很好的从源码分析了几个问题，但是没有再深入介绍？。TODO
-- [谈半同步/半异步网络并发模型](https://zhuanlan.zhihu.com/p/58860015)： 这篇文章，总结了半同步/半异步与半同步/半反应堆的区别（架构队列设计,I/O发生的地方），也体现了reactor的含义，让人打通所有的概念的联系
+- [谈半同步/半异步网络并发模型](https://zhuanlan.zhihu.com/p/58860015): 这篇文章，总结了半同步/半异步与半同步/半反应堆的区别（架构队列设计,I/O发生的地方），也体现了reactor的含义，让人打通所有的概念的联系
 - [nginx不是使用epoll么? epoll貌似是同步的吧! 那nginx的异步非阻塞到底异步在哪里?](https://www.zhihu.com/question/63193746/answer/206682206): 这里有说到：开发者必须保证每一个事件handler都不得包含任何阻塞调用
 
 
@@ -154,3 +158,8 @@
 ## 锁
 
 - [搞懂 Java 并发中的 AQS 是怎么运行的](https://mp.weixin.qq.com/s/tMI6qV_ItuTqlKZiUnAlmg): 晦涩难懂
+
+---
+# 容器
+
+- [Kubernetes 如何使用 Nginx-Ingress 实现蓝绿和金丝雀发布](https://mp.weixin.qq.com/s/SAE4IvjVPVV1dfS4ZXwzbQ): Ingress-Nginx在0.21版本引入了Canary功能。一个具体的例子介绍使用。而且后面介绍了A/B测试和蓝绿部署以及金丝雀区别，
