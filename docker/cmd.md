@@ -46,15 +46,42 @@ docker run --rm -it -v `pwd`:/mnt -w /mnt busybox /bin/sh -c 'touch b.txt'
 docker run --user=1000:1000 --rm -it -v `pwd`:/mnt -w /mnt busybox /bin/sh -c 'touch b.txt'
 
 ---
- /etc/docker/daemon.json
+
+# 网络问题
+
+/etc/docker/daemon.json
+
 
 {
     "registry-mirrors": ["http://hub-mirror.c.163.com"]
 }
 
-https://www.daocloud.io/mirror#accelerator-doc
+curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://d1d9aef0.m.daocloud.io
+curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://hub-mirror.c.163.com
+curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s https://reg-mirror.qiniu.com
+
 
 sudo systemctl restart docker.service
+
+https_proxy=http://localhost:8123 curl https://www.google.com
+
+- [手把手教你在Ubuntu 20.04上通过docker安装微信和QQ - 最简单有效的方法](https://ugirc.blog.csdn.net/article/details/109487664)
+- [阿里云加速](https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors)
+- https://www.daocloud.io/mirror#accelerator-doc
+
+```shell script
+docker run -d --name wechat --device /dev/snd --ipc=host \
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-v $HOME/WeChatFiles:/WeChatFiles \
+-e DISPLAY=unix$DISPLAY \
+-e XMODIFIERS=@im=ibus \
+-e QT_IM_MODULE=ibus \
+-e GTK_IM_MODULE=ibus \
+-e AUDIO_GID=`getent group audio | cut -d: -f3` \
+-e GID=`id -g` \
+-e UID=`id -u` \
+bestwu/wechat
+```
 
 ---
 # docker compose
