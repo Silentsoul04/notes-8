@@ -1,3 +1,37 @@
+# 脚本查询
+
+```
+"query": {
+    "bool": {
+        "must": [
+            {
+                "script": {
+                    "script": "List x = new ArrayList(); for (v in doc['tag']) {if (Integer.parseInt(v) >= 100 && Integer.parseInt(v) <= 200) {x.add(v)}} return x.length ==  {{tag_length}};"
+                }
+            }
+        ]
+    }
+},
+```
+
+# 脚本聚合
+```
+GET material_v1/data/_search
+{
+  "aggs": {
+    "NAME": {
+      "terms": {
+        "script": {
+          "inline": "List x = new ArrayList(); for (v in doc['tag']) {if (Integer.parseInt(v) >= 100 && Integer.parseInt(v) <= 200) {x.add(v)}} return x.length;"
+        }
+      }
+    }
+  }
+}
+
+```
+
+---
 # keyword
 
 ```

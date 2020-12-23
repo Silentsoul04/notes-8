@@ -1,14 +1,30 @@
 ## LowCardinality Data Type
 
-将其他数据类型的内部表示更改为字典编码
+> 将其他数据类型的内部表示更改为[字典编码](https://baike.baidu.com/item/%E8%AF%8D%E5%85%B8%E7%BC%96%E7%A0%81/4097538)
 
 ### Syntax
 
 `LowCardinality(data_type)`
 
-低基数是改变数据存储方法和数据处理规则的上层结构。ClickHouse将[字典编码](https://baike.baidu.com/item/%E8%AF%8D%E5%85%B8%E7%BC%96%E7%A0%81/4097538)应用于低基数列。使用字典编码的数据可以显著提高许多应用程序的SELECT查询的性能。
+低基数是改变数据存储方法和数据处理规则的上层结构。ClickHouse将字典编码应用于低基数列。使用字典编码的数据可以显著提高许多应用程序的SELECT查询的性能。
 
 使用低基数数据类型的效率取决于数据的多样性。如果一个字典包含的不同值少于10000个，那么ClickHouse通常显示出更高的数据读取和存储效率。如果一个字典包含超过100000个不同的值，那么与使用普通数据类型相比，ClickHouse的性能会更差。
+
+LowCardinality 支持 String、Number、Date、DateTime、Nullable数据类型。
+
+在内部，ClickHouse 创建一个或多个文件以存储 LowCardinality 字典数据。如果所有 LowCardinality 列都符合 8192 个不同的值，那么每个表可以是一个单独的文件，如果去重值的数量更多，则每个 LowCardinality 列就使用一个文件。
+
+ClickHouse LowCardinality 优化不仅限于存储，它还使用字典 position 进行过滤、分组和加速某些查询功能（例如 length()）等。
+
+![LowCardinality 数据类型的神秘之旅](.LowCardinality_images/1a87e7d2.png)
+
+### LowCardinality 与 Enum
+
+值得一提的是，还有一种用字典编码字符串的可能性，那就是枚举类型：Enum。
+
+ClickHouse 完全支持枚举。从存储的角度来看，它可能甚至更高效，因为枚举值存储在表定义上而不是存储在单独的数据文件中。枚举适用于静态字典。但是，如果插入了原始枚举之外的值，ClickHouse 将抛出异常。枚举值中的每个更改都需要 ALTER TABLE，这可能会带来很多麻烦。LowCardinality 在这方面要灵活得多。
+
+在处理字符串时，请考虑使用LowCardinality而不是Enum。低基数在使用中提供了更大的灵活性，并且通常显示出相同或更高的效率
 
 
 ```sql
@@ -87,23 +103,6 @@ ORDER BY v2 ASC
 由于字典压缩和数据特征息息相关，所以这项特性的最终受益效果，需要在大家各自的环境中进行验证。通常来说，在**百万级别基数的数据**下，使用LowCardinality的收益效果都是不错的。
 
 ---
-
-LowCardinality 支持 String、Number、Date、DateTime、Nullable数据类型。
-
-在内部，ClickHouse 创建一个或多个文件以存储 LowCardinality 字典数据。如果所有 LowCardinality 列都符合 8192 个不同的值，那么每个表可以是一个单独的文件，如果去重值的数量更多，则每个 LowCardinality 列就使用一个文件。
-
-ClickHouse LowCardinality 优化不仅限于存储，它还使用字典 position 进行过滤、分组和加速某些查询功能（例如 length()）等。这就是为什么我们在 Query 1 中看到的改进要比纯粹从存储效率提升的效果更大的原因。在分布式查询中，ClickHouse 还将尝试在大多数查询处理中对词典 position 进行操作。
-
-![LowCardinality 数据类型的神秘之旅](.LowCardinality_images/1a87e7d2.png)
-
-### LowCardinality 与 Enum
-
-值得一提的是，还有一种用字典编码字符串的可能性，那就是枚举类型：Enum。
-
-ClickHouse 完全支持枚举。从存储的角度来看，它可能甚至更高效，因为枚举值存储在表定义上而不是存储在单独的数据文件中。枚举适用于静态字典。但是，如果插入了原始枚举之外的值，ClickHouse 将抛出异常。枚举值中的每个更改都需要 ALTER TABLE，这可能会带来很多麻烦。LowCardinality 在这方面要灵活得多。
-
-在处理字符串时，请考虑使用LowCardinality而不是Enum。低基数在使用中提供了更大的灵活性，并且通常显示出相同或更高的效率
-
 
 ## 参考链接
 

@@ -57,7 +57,15 @@ ${parameter%word}  # 最小限度从后面截取word
 ${parameter%%word} # 最大限度从后面截取word
 ${parameter#word}  # 最小限度从前面截取word
 ${parameter##word} # 最大限度从前面截取word
+
 ```
+
+## 例子
+
+`echo "ut > subtractMinutes(now(), $(( ${N:-10} + 3 + 360))) and ut < subtractMinutes(now(), $(( ${N:-10} + 3)))"`
+
+=>  `ut > subtractMinutes(now(), 373) and ut < subtractMinutes(now(), 13)`
+
 
 - [Shell Parameter Expansion 参数展开](http://xstarcd.github.io/wiki/shell/ShellParameterExpansion.html)
 
