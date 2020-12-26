@@ -138,6 +138,9 @@
 - [ClickHouse遇见RoaringBitmap](https://blog.csdn.net/nazeniwaresakini/article/details/108166089): 引出AggregateFunction、源码分析。
 - [bitmap-functions](https://clickhouse.tech/docs/en/sql-reference/functions/bitmap-functions/): 官方文档
 - [bitmap](/notebook/数据库/clickhouse/bitmap.md): 总结测试与例子。
+- [高效压缩位图RoaringBitmap的原理与应用](https://www.jianshu.com/p/818ac4e90daf): 前言介绍的挺好的，对比布隆过滤器和HyperLogLog。和用单纯的位图的空间占用引出RBM、相关论文。但是后面的算法详解有点简陋
+- [RoaringBitmap数据结构及原理](https://blog.csdn.net/yizishou/article/details/78342499): 有比较具体空间和过程的分析
+
 
 ---
 # 设计模式
@@ -163,3 +166,9 @@
 # 容器
 
 - [Kubernetes 如何使用 Nginx-Ingress 实现蓝绿和金丝雀发布](https://mp.weixin.qq.com/s/SAE4IvjVPVV1dfS4ZXwzbQ): Ingress-Nginx在0.21版本引入了Canary功能。一个具体的例子介绍使用。而且后面介绍了A/B测试和蓝绿部署以及金丝雀区别，
+
+
+---
+# 其他
+
+- [如何写出安全的、基本功能完善的Bash脚本](https://mp.weixin.qq.com/s/ZO5jKzQGDy1Di1WDl49d_g): 一个比较实用的模板

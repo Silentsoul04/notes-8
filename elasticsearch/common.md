@@ -121,6 +121,31 @@ for ( i in params._source ) { params._agg.transactions[i['tag_id]]  = i['method'
 ```
 * <https://www.elastic.co/guide/en/elasticsea>    rch/reference/5.5/search-aggregations-metrics-scripted-metric-aggregation.html
 
+例子：
+```
+GET advertisement/data/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "range": {
+          "createdAt": {
+            "gte": "2020-12-25"
+          }
+        }
+      },
+      "must": [
+        {
+          "script": {
+            "script": "params._source.ad_creative.size() > 10"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
 ---
 ## ES备份与恢复
 
