@@ -42,9 +42,11 @@
 
 - `%iowait`：Percentage of time that the CPU or CPUs were idle during which the system had an outstanding disk I/O request. I/O等待的CPU占用率。
 
+- `%steal`: Percentage of time spent in involuntary wait by the virtual CPU or CPUs while the hypervisor was servicing another virtual processor. 这个一般是在虚拟机中才能看到数值，比如：我的VPS供应商CPU overcommitment很严重，故我偶尔能看到%steal值有点高。
+
 - `%idle`：Percentage of time that the CPU or CPUs were idle and the system did not have an outstanding disk I/O request. %idle越高，说明CPU越空闲。
 
-Linux的Load（系统负载），是一个让新手不太容易了解的概念。top/uptime等工具默认会显示1分钟、5分钟、15分钟的平均Load。具体来说，平均Load是指，在特定的一段时间内统计的正在CPU中运行的(R状态)、正在等待CPU运行的、处于不可中断睡眠的(D状态)的任务数量的平均值。
+Linux的Load（系统负载），是一个让新手不太容易了解的概念。top/uptime等工具默认会显示1分钟、5分钟、15分钟的平均Load。具体来说，平均Load是指，在**特定的一段时间内统计的正在CPU中运行的(R状态)、正在等待CPU运行的、处于不可中断睡眠的(D状态)的任务数量的平均值**。
 
 一般来说，对于Load的数值不要大于系统的CPU核数（或者开启了超线程，超线程也当成CPU core吧）。当然，有人觉得Load等于CPU core数量的2倍也没事，不过，我自己是在Load达到CPU core数量时，一般都会去查看下是什么具体原因导致load较高的。
 
@@ -129,3 +131,71 @@ Linux和HP-UX的man page分别从两个角度描述了这个指标：Linux着眼
 多路复用IO模型，建立在多路事件分离函数select，poll，epoll之上。在发起read请求前，先更新select的socket监控列表，然后等待select函数返回（此过程是阻塞的，所以说多路复用IO也是阻塞IO模型）。当某个socket有数据到达时，select函数返回。此时用户线程才正式发起read请求，读取并处理数据。这种模式用一个专门的监视线程去检查多个socket，如果某个socket有数据到达就交给工作线程处理。由于等待Socket数据到达过程非常耗时，所以这种方式解决了阻塞IO模型一个Socket连接就需要一个线程的问题，也不存在非阻塞IO模型忙轮询带来的CPU性能损耗的问题。多路复用IO模型的实际应用场景很多，比如大家耳熟能详的Java NIO，Redis以及Dubbo采用的通信框架Netty都采用了这种模型。
 
 > 监控线程阻塞。交给工作线程。如何添加到监控列表
+
+---
+发生CPU占用率不准确的原因是：在一个时钟中断周期内，发生了多次进程调度。时钟中断的精度是1/HZ秒。
+
+top命令CPU使用率准确吗？只有在一个时钟中断周期内发生多次进程调度，才会出现CPU占用率不准的情况。
+
+那么top命令中CPU使用率是否准确与进程调度频率有关。若HZ的值为250，则ticks值为4ms；若HZ值为1000，则ticks值为1ms。在HZ为250时，只要进程的调度间隔大于4ms，CPU占用率就准确。HZ为1000时，调度间隔大于1ms，CPU占用率计算就准确。进程调度次数少，CPU占用率就准确；调度时间间隔小于时钟中断，就可能不准确。那么进程调度的时机是怎样的？如何观察进程调度次数？
+
+- [cpu显示信息](https://www.cnblogs.com/yjf512/p/3383915.html): 乏善可陈
+
+
+- [Linux CPU使用率含义及原理](https://www.cnblogs.com/aresxin/p/9152127.html)
+
+id: Idle time,空闲的cpu时间比。一般而言，idel + user + nice 约等于100%。
+
+- [Understand what is using up “nice” CPU](https://stackoverflow.com/a/26183000)
+- [What does 'nice' mean on CPU utilization graphs?](https://serverfault.com/a/116954)
+
+On a CPU graph NICE time is time spent running processes with positive nice value (ie low priority). This means that it is consuming CPU, but will give up that CPU time for most other processes. Any USER CPU time for one of the processes listed in the above ps command will show up as NICE.
+
+- [what-does-the-nice-value-mean-in-cpu-utilization-statistics](https://askubuntu.com/questions/399357/what-does-the-nice-value-mean-in-cpu-utilization-statistics)
+
+> the time the CPU has spent running users' processes that have been "niced".
+
+（摘自man top）“niced”过程是一个具有正nice值的过程。因此，如果处理器的nice值很高，这意味着它正在处理一些低优先级的进程。因此，当您看到高CPU利用率，并且您担心这种高负载会对您的系统产生不良影响时，此指示器非常有用：
+
+高CPU利用率和高nice值：没什么好担心的，没有那么重要的任务做他们的工作，重要的进程将很容易得到CPU时间，如果他们需要的话。这种情况并不是真正的瓶颈。
+
+高CPU利用率和低nice值：有点担心，因为CPU有重要的进程，所以这些或新的进程将不得不等待。这种情况是一个真正的瓶颈。
+
+---
+
+- [进程优先级，进程nice值和%nice的解释](https://blog.csdn.net/longdel/article/details/7317511): 概念
+
+PRI ：进程优先权，代表这个进程可被执行的优先级，其值越小，优先级就越高，越早被执行
+
+NI ：进程Nice值，代表这个进程的优先值
+
+%nice ：改变过优先级的进程的占用CPU的百分比
+
+
+PRI是比较好理解的，即进程的优先级，或者通俗点说就是程序被CPU执行的先后顺序，此值越小进程的优先级别越高。那NI呢？就是我们所要说的nice值了，其表示进程可被执行的优先级的修正数值。如前面所说，PRI值越小越快被执行，那么加入nice值后，将会使得PRI变为：PRI(new)=PRI(old)+nice。由此看出，PR是根据NICE排序的，规则是NICE越小PR越前（小，优先权更大），即其优先级会变高，则其越快被执行。如果NICE相同则进程uid是root的优先权更大。
+
+在LINUX系统中，Nice值的范围从-20到+19（不同系统的值范围是不一样的），正值表示低优先级，负值表示高优先级，值为零则表示不会调整该进程的优先级。具有最高优先级的程序，其nice值最低，所以在LINUX系统中，值-20使得一项任务变得非常重要；与之相反，如果任务的nice为+19，则表示它是一个高尚的、无私的任务，允许所有其他任务比自己享有宝贵的CPU时间的更大使用份额，这也就是nice的名称的来意。
+
+进程在创建时被赋予不同的优先级值，而如前面所说，nice的值是表示进程优先级值可被修正数据值，因此，每个进程都在其计划执行时被赋予一个nice值，这样系统就可以根据系统的资源以及具体进程的各类资源消耗情况，主动干预进程的优先级值。在通常情况下，子进程会继承父进程的nice值，比如在系统启动的过程中，init进程会被赋予0，其他所有进程继承了这个nice值（因为其他进程都是init的子进程）。
+
+对nice值一个形象比喻，假设在一个CPU轮转中，有2个runnable的进程A和B，如果他们的nice值都为0，假设内核会给他们每人分配1k个cpu时间片。但是假设进程A的为0，但是B的值为-10，那么此时CPU可能分别给A和B分配1k和1.5k的时间片。故可以形象的理解为，nice的值影响了内核分配给进程的cpu时间片的多少，时间片越多的进程，其优先级越高，其优先级值（PRI）越低。%nice，就是改变过优先级的进程的占用CPU的百分比，如上例中就是0.5k/2.5k=1/5=20%。
+
+
+- [嵌入式top nice很高问题](https://blog.csdn.net/heliangbin87/article/details/88052356)
+
+%nic：表示修改优先级的进程占CPU的百分比，很高说明不停的有进程切换优先级。
+
+发现相应进程一直死循环执行，没有主动退出机制，导致内核不停动态调整优先级，以便其他进程得以运行。
+
+解决方法：
+
+只要增加一个休眠机制即可解决问题。
+
+- [一个php进程cpu %nice很高的原因详解](https://www.aikaiyuan.com/8698.html)
+
+三、 判断问题：
+1、 NICE资源一般是用户端控制的行为产生；
+2、 除非程序中有大量的使用sleep，或者是调用了nice等函数，对自定义了优先级别，但一般程序不会这么变态；
+
+
+- [10分钟教会你看懂top](https://juejin.cn/post/6844903919588491278): 比较贴切实际
