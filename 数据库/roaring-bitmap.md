@@ -75,7 +75,9 @@ RunContainer在图中并未示出，初始的RBM实现中也没有它，而是�
 针对ArrayContainer：
 - 如果插入值后容量超过4096，则自动转换为BitmapContainer。因此正常使用的情况下不会出现容量超过4096的ArrayContainer。
 - 调用runOptimize()方法时，会比较和RunContainer的空间占用大小，选择是否转换为RunContainer。
+
 > toEfficientContainer arraycontainer.go:975 bitmapcontainer.go:1082 runcontainer.go:2452
+
 > 主要是通过比较各自的大小，bitmap大小固定8kb, 数组则根据数组的长度计算， 而runcontainer则需要调用numberOfRuns方法(bitmapcontainer.go:1058) 来算出转换后的大小
 
 针对BitmapContainer：

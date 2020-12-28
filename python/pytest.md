@@ -8,3 +8,11 @@ pytest-django采用保守的方法来启用数据库访问。默认情况下，�
 解决办法是需要：`multi_db = True`
 
 allow_migrate需要return True才能执行dumpdata
+
+
+---
+# unable-to-debug-in-pycharm-with-pytest
+
+如果pytest.ini中有--cov，则pycharm中的断点将不起作用，在删除pytest.ini中的所有--cov之后，pycharm中的断点将可以工作。
+
+- [unable-to-debug-in-pycharm-with-pytest](https://stackoverflow.com/questions/40718760/unable-to-debug-in-pycharm-with-pytest)
