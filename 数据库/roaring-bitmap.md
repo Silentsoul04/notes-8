@@ -25,8 +25,7 @@ RBM的主要思路是：将32位无符号整数按照高16位分桶，即最多�
 
 > 插入： roaring.go:569
 
-
-![](.roaring-bitmap_images/05234b66.png)
+![](.roaring_bitmap_images/05234b66.png)
 
 图中示出了三个container：
 
@@ -59,7 +58,7 @@ RunContainer在图中并未示出，初始的RBM实现中也没有它，而是�
 
 ## Container性能总结
 
-![](.roaring-bitmap_images/ba1c4f9e.png)
+![](.roaring_bitmap_images/ba1c4f9e.png)
 
 > array升级过程 arraycontainer.go:256
 
