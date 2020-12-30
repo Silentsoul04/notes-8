@@ -58,6 +58,8 @@
 - [Go netpoller 原生网络模型之源码全面揭秘](https://strikefreedom.top/go-netpoll-io-multiplexing-reactor): 从源码和例子分析。引出reactor对比分析、gnet等。简单介绍了select、epoll的代码结束，而且详细对比了分析各自的优缺点，并且很好的从源码分析了几个问题，但是没有再深入介绍？。TODO
 - [谈半同步/半异步网络并发模型](https://zhuanlan.zhihu.com/p/58860015): 这篇文章，总结了半同步/半异步与半同步/半反应堆的区别（架构队列设计,I/O发生的地方），也体现了reactor的含义，让人打通所有的概念的联系
 - [nginx不是使用epoll么? epoll貌似是同步的吧! 那nginx的异步非阻塞到底异步在哪里?](https://www.zhihu.com/question/63193746/answer/206682206): 这里有说到：开发者必须保证每一个事件handler都不得包含任何阻塞调用
+- [重大事故！IO问题引发线上20台机器同时崩溃](https://juejin.im/post/6875176737274724366): 这篇文章写得很好，值得多读。该博主也经常分析性能调优的文章。
+- [Linux的五种IO模型](https://juejin.cn/post/6844903687626686472): 这篇文章讲得很好！
 
 
 ## etcd
@@ -172,4 +174,4 @@
 # 其他
 
 - [如何写出安全的、基本功能完善的Bash脚本](https://mp.weixin.qq.com/s/ZO5jKzQGDy1Di1WDl49d_g): 一个比较实用的模板
-- [重大事故！IO问题引发线上20台机器同时崩溃](https://juejin.im/post/6875176737274724366): 这篇文章写得很好，值得多读。该博主也经常分析性能调优的文章。
+
