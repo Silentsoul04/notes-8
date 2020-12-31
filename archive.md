@@ -83,6 +83,8 @@
 - [去 async/await 之路](https://zhuanlan.zhihu.com/p/45996168): 说明python的异步的一些方式和对比。
 - [Gevent高并发网络库精解:一些数据通信的数据结构](https://www.jianshu.com/p/ccf3bd34340f)
 - [TODO: Python 开源异步并发框架的未来](https://segmentfault.com/a/1190000000471602)
+- [为什么 TCP 协议有 TIME_WAIT 状态](https://mp.weixin.qq.com/s/QTZJdxVzDNEvz7htDgGU-w): 为什么系列
+- [为什么 TCP 建立连接需要三次握手](https://mp.weixin.qq.com/s?__biz=MzU5NTAzNjc3Mg==&mid=2247484001&idx=1&sn=b7408aa515cb494b23237a01b92dee6a&chksm=fe795d6ac90ed47cf6dff54a139b70052f3a53b64363c1933ebb4d477a31beeae10aca70db61&scene=21#wechat_redirect): 『两次握手』：无法避免历史错误连接的初始化，浪费接收方的资源；『四次握手』：TCP 协议的设计可以让我们同时传递 ACK 和 SYN 两个控制信息，减少了通信次数，所以不需要使用更多的通信次数传输相同的信息；
 
 ## 数据结构
 - [sort](/notebook/algorithm/排序/sorted.md): python的排序是怎么实现的
