@@ -28,7 +28,6 @@
 - [go基础之map-写在前面（一)](https://mp.weixin.qq.com/s/Aw8AjDmuvf7n7ACWl7mwaw) : 源码，编译原理。相关链接中的文章也较详细。 [抽丝剥茧—Go哈希Map的鬼魅神功](https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651440382&idx=3&sn=2aa006a968994df6027f8e6c5392722a&chksm=80bb1a0cb7cc931a3ce45fb280d0f2e04c9e9032e1b952c42a231688b28740b11fcfff44166f&scene=21#wechat_redirect)
 - [1.8 万字详解 Go 是如何设计 Map 的](https://mp.weixin.qq.com/s/OJSxIXH87mjCkQn76eNQsQ): 太详细了，详细到底层分析
 
-
 ## GC
 - [浅析 Golang 垃圾回收机制](https://mp.weixin.qq.com/s/LTz8UjCvaxZvAPRqeFCxjQ): 挺清晰的介绍垃圾回收的入门概念
 - [GO GC 垃圾回收机制](https://segmentfault.com/a/1190000018161588): 比较概括。
@@ -53,14 +52,12 @@
 - [说说 Go 语言中的空接口](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_05.rst) 、[2.6 图解: 静态类型与动态类型](https://github.com/iswbm/GolangCodingTime/blob/master/source/c02/c02_06.rst)
 - [应用编译，计算机中一定要掌握的知识细节](https://mp.weixin.qq.com/s/YKZ3MJuGVgWJG69WATRPPQ): 预处理、编译、汇编以及链接。go实例分析前三个部分
 
-
-## network
+## 网络
 - [Go netpoller 原生网络模型之源码全面揭秘](https://strikefreedom.top/go-netpoll-io-multiplexing-reactor): 从源码和例子分析。引出reactor对比分析、gnet等。简单介绍了select、epoll的代码结束，而且详细对比了分析各自的优缺点，并且很好的从源码分析了几个问题，但是没有再深入介绍？。TODO
 - [谈半同步/半异步网络并发模型](https://zhuanlan.zhihu.com/p/58860015): 这篇文章，总结了半同步/半异步与半同步/半反应堆的区别（架构队列设计,I/O发生的地方），也体现了reactor的含义，让人打通所有的概念的联系
 - [nginx不是使用epoll么? epoll貌似是同步的吧! 那nginx的异步非阻塞到底异步在哪里?](https://www.zhihu.com/question/63193746/answer/206682206): 这里有说到：开发者必须保证每一个事件handler都不得包含任何阻塞调用
 - [重大事故！IO问题引发线上20台机器同时崩溃](https://juejin.im/post/6875176737274724366): 这篇文章写得很好，值得多读。该博主也经常分析性能调优的文章。
 - [Linux的五种IO模型](https://juejin.cn/post/6844903687626686472): 这篇文章讲得很好！
-
 
 ## etcd
 - [跟 etcd 学习数据库中事务隔离的实现](https://blog.betacat.io/post/2019/08/learn-transaction-isolation-levels-from-etcd/)
@@ -83,8 +80,6 @@
 - [去 async/await 之路](https://zhuanlan.zhihu.com/p/45996168): 说明python的异步的一些方式和对比。
 - [Gevent高并发网络库精解:一些数据通信的数据结构](https://www.jianshu.com/p/ccf3bd34340f)
 - [TODO: Python 开源异步并发框架的未来](https://segmentfault.com/a/1190000000471602)
-- [为什么 TCP 协议有 TIME_WAIT 状态](https://mp.weixin.qq.com/s/QTZJdxVzDNEvz7htDgGU-w): 为什么系列
-- [为什么 TCP 建立连接需要三次握手](https://mp.weixin.qq.com/s?__biz=MzU5NTAzNjc3Mg==&mid=2247484001&idx=1&sn=b7408aa515cb494b23237a01b92dee6a&chksm=fe795d6ac90ed47cf6dff54a139b70052f3a53b64363c1933ebb4d477a31beeae10aca70db61&scene=21#wechat_redirect): 『两次握手』：无法避免历史错误连接的初始化，浪费接收方的资源；『四次握手』：TCP 协议的设计可以让我们同时传递 ACK 和 SYN 两个控制信息，减少了通信次数，所以不需要使用更多的通信次数传输相同的信息；
 
 ## 数据结构
 - [sort](/notebook/algorithm/排序/sorted.md): python的排序是怎么实现的
@@ -120,6 +115,7 @@
 
 - [揭密容器环境下 Golang 回收子进程的运行机制](https://mp.weixin.qq.com/s/3HsqtHwWReX1S3ggP2_owg): reaper例子子进程提前回收，父进程wait失败。解决办法：同步锁
 
+
 ---
 # clickhouse
 
@@ -148,14 +144,11 @@
 
 ---
 # 设计模式
-
 - [ORM is an anti-pattern](https://seldo.com/posts/orm_is_an_antipattern): ORM的一些对比和作者说其反模式的理解
+
 
 ---
 # mysql
-
-##
-
 - [一次SQL查询优化原理分析](https://www.jianshu.com/p/0768ebc4e28d): 回表、分页优化。引出INNODB_BUFFER_PAGE的使用
 
 
@@ -163,17 +156,20 @@
 # java
 
 ## 锁
-
 - [搞懂 Java 并发中的 AQS 是怎么运行的](https://mp.weixin.qq.com/s/tMI6qV_ItuTqlKZiUnAlmg): 晦涩难懂
+
 
 ---
 # 容器
-
 - [Kubernetes 如何使用 Nginx-Ingress 实现蓝绿和金丝雀发布](https://mp.weixin.qq.com/s/SAE4IvjVPVV1dfS4ZXwzbQ): Ingress-Nginx在0.21版本引入了Canary功能。一个具体的例子介绍使用。而且后面介绍了A/B测试和蓝绿部署以及金丝雀区别，
 
 
 ---
 # 其他
-
 - [如何写出安全的、基本功能完善的Bash脚本](https://mp.weixin.qq.com/s/ZO5jKzQGDy1Di1WDl49d_g): 一个比较实用的模板
 
+
+---
+# 网络
+- [为什么 TCP 协议有 TIME_WAIT 状态](https://mp.weixin.qq.com/s/QTZJdxVzDNEvz7htDgGU-w): 为什么系列。 [time_wait的含义](/notebook/network/q.md#time_wait)
+- [**为什么 TCP 建立连接需要三次握手**](https://mp.weixin.qq.com/s?__biz=MzU5NTAzNjc3Mg==&mid=2247484001&idx=1&sn=b7408aa515cb494b23237a01b92dee6a&chksm=fe795d6ac90ed47cf6dff54a139b70052f3a53b64363c1933ebb4d477a31beeae10aca70db61&scene=21#wechat_redirect): 『两次握手』：无法避免历史错误连接的初始化，浪费接收方的资源；『四次握手』：TCP 协议的设计可以让我们同时传递 ACK 和 SYN 两个控制信息，减少了通信次数，所以不需要使用更多的通信次数传输相同的信息；
