@@ -210,7 +210,8 @@ A: 有等待时间配置项
 AIO的思想是当我们在等待结果的时候不阻塞，转而我们给框架一个回调函数作为参数，让框架在收到结果的时候通过回调函数继续操作。这样，服务器就可以被解放去接受其他客户端的请求了。
 
 
-Q：Tornado，类似node.js，那也就是事件循环是主线程监听epoll并回调。那是在哪里进行新的客户端连接监听的，放到epoll里的？回调是会阻塞下一个请求的回调吗？
+Q： Tornado，类似node.js，那也就是事件循环是主线程监听epoll并回调。那是在哪里进行新的客户端连接监听的，放到epoll里的？回调是会阻塞下一个请求的回调吗？
+A: node是有工作线程池，见上，或者IO与事件循环模块。不过很多文章介绍是单进程单线程的。需要总结一下。
 
 - [Tornado异步原理详析](https://www.jianshu.com/p/de7f04e65618)
 - [Tornado原理浅析及应用场景探讨](https://www.jiqizhixin.com/articles/2019-04-10-15)
@@ -221,7 +222,9 @@ Q：Tornado，类似node.js，那也就是事件循环是主线程监听epoll并
 
 当然异步还有第二层含义是:
 
-- 当我们通过监听系统io读写事件到达时，可以立刻就用当前线程去处理io读写事件，比如tornado就是这么做的。node也是？
+- 当我们通过监听系统io读写事件到达时，可以立刻就用当前线程去处理io读写事件，比如tornado就是这么做的。Q: node也是？A: node不是，会有工作线程！
+
+> tornado使用单一线程处理还有一个很重要的原因也是受python全局GIL锁的影响，统一时刻，只能有一个线程真实的在运行，所以在生产环境部署中，一般会创建和cpu核心数相同的进程来充分使用系统资源。
 
 - 也可以把这个事件一个队列里，之后再调度这个队列去处理io读写，调度的过程可以仍然由这个线程完成也可以由其他线程完成，比如java的Reactor(netty)，go语言的协程实现。第二种设计中，会使用一个线程(go:网络轮询器?)监听select或epoll等待系统io事件，而用和**cpu核心数相同的线程数**(go的MPG)处理io读写事件。
 
@@ -231,7 +234,8 @@ Q：2、为什么一个线程可以既处理select监听系统io事件，handle_
 
 ？：注册handler这个过程大部分情况会在handle_event的过程中发起，或者由外部的其他线程发起，所以虽然是个while死循环，但是仍然可以不停的处理各种事情。
 
-- [一个线程也能来轮询 + 注册handler之类的吗？](https://github.com/snower/TorMySQL/issues/28#issuecomment-358540466)
+- [一个线程也能来轮询 + 注册handler之类的吗？](https://github.com/snower/TorMySQL/issues/28#issuecomment-358540466): [](#bookmark)
+
 
 TODO:
 - nginx 如何实现异步?
