@@ -171,6 +171,9 @@
 
 ---
 # 网络
+
+- **[network](/notebook/network): 摘抄与总结**
+
 - [为什么 TCP 协议有 TIME_WAIT 状态](https://mp.weixin.qq.com/s/QTZJdxVzDNEvz7htDgGU-w): 为什么系列。 [time_wait的含义](/notebook/network/q.md#time_wait)
 - [**为什么 TCP 建立连接需要三次握手**](https://mp.weixin.qq.com/s?__biz=MzU5NTAzNjc3Mg==&mid=2247484001&idx=1&sn=b7408aa515cb494b23237a01b92dee6a&chksm=fe795d6ac90ed47cf6dff54a139b70052f3a53b64363c1933ebb4d477a31beeae10aca70db61&scene=21#wechat_redirect): 『两次握手』：无法避免历史错误连接的初始化，浪费接收方的资源；『四次握手』：TCP 协议的设计可以让我们同时传递 ACK 和 SYN 两个控制信息，减少了通信次数，所以不需要使用更多的通信次数传输相同的信息；
 - [通过实例理解Go标准库http包是如何处理keep-alive连接的](https://tonybai.com/2021/01/08/understand-how-http-package-deal-with-keep-alive-connection/): keep-alive的基本使用、idletimeout。TODO: 长连接、底层TCP的状态是怎么样的？
