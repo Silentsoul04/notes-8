@@ -17,4 +17,6 @@ Socket是应用层与TCP/IP协议族通信的中间软件抽象层，它是一�
 
 参考链接：
 
-- [X](https://juejin.im/post/5e9412d951882573c04cd9c1)
+- [什么是Socket](https://juejin.cn/post/6844904125692379143#heading-31)
+
+在《计算机网络》一书有介绍到socket，是一个很多含义的单词，需要具体场景具体分析。

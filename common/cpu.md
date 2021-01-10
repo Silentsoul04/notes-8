@@ -32,7 +32,7 @@
 - [进程生命周期与PCB（进程控制块）](https://www.cnblogs.com/mickole/p/3185889.html)
 
 ---
-# cpu概述
+# Cpu概述
 
 - `%user`：Percentage of CPU utilization that occurred while executing at the user level (application). Note that this field includes time spent running virtual processors. （未标志nice值的）用户态程序的CPU占用率。
 
@@ -83,7 +83,6 @@ Linux和HP-UX的man page分别从两个角度描述了这个指标：Linux着眼
 
 我们不妨采纳Linux的措辞，%iowait 表示**在一个采样周期内有百分之几的时间属于以下情况：CPU空闲、并且有仍未完成的I/O请求**。
 
-
 ## 误解
 
 对 %iowait 常见的误解有两个：
@@ -115,6 +114,8 @@ Linux和HP-UX的man page分别从两个角度描述了这个指标：Linux着眼
 
 
 ---
+## IO问题
+
 - [重大事故！IO问题引发线上20台机器同时崩溃](https://juejin.im/post/6875176737274724366)
 
 所谓的I/O（Input/Output）操作实际上就是输入输出的数据传输行为。程序员最关注的主要是磁盘IO和网络IO，因为这两个IO操作和应用程序的关系最直接最紧密。

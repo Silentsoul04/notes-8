@@ -157,7 +157,7 @@
 
 ## 锁
 - [搞懂 Java 并发中的 AQS 是怎么运行的](https://mp.weixin.qq.com/s/tMI6qV_ItuTqlKZiUnAlmg): 晦涩难懂
-
+- [i++ 是线程安全的吗？](https://mp.weixin.qq.com/s/H0E_y6tC4d8-AxqJS3u--A): volatile解决了线程间共享变量的可见性问题、 volatile并不能解决线程同步问题
 
 ---
 # 容器
@@ -173,3 +173,8 @@
 # 网络
 - [为什么 TCP 协议有 TIME_WAIT 状态](https://mp.weixin.qq.com/s/QTZJdxVzDNEvz7htDgGU-w): 为什么系列。 [time_wait的含义](/notebook/network/q.md#time_wait)
 - [**为什么 TCP 建立连接需要三次握手**](https://mp.weixin.qq.com/s?__biz=MzU5NTAzNjc3Mg==&mid=2247484001&idx=1&sn=b7408aa515cb494b23237a01b92dee6a&chksm=fe795d6ac90ed47cf6dff54a139b70052f3a53b64363c1933ebb4d477a31beeae10aca70db61&scene=21#wechat_redirect): 『两次握手』：无法避免历史错误连接的初始化，浪费接收方的资源；『四次握手』：TCP 协议的设计可以让我们同时传递 ACK 和 SYN 两个控制信息，减少了通信次数，所以不需要使用更多的通信次数传输相同的信息；
+- [通过实例理解Go标准库http包是如何处理keep-alive连接的](https://tonybai.com/2021/01/08/understand-how-http-package-deal-with-keep-alive-connection/): keep-alive的基本使用、idletimeout。TODO: 长连接、底层TCP的状态是怎么样的？
+
+---
+# 操作系统
+- [自己动手实现一个malloc内存分配器](https://mp.weixin.qq.com/s/FpXLBOVm5P-sNTr2S7PyhQ): 比较直白的内存分配器介绍：我们的简单内存分配器采用了First Fit分配算法；找到一个满足要求的内存块后会进行切分，剩下的作为新的内存块；同时当释放内存时会立即合并相邻的空闲内存块，同时为加快合并速度，我们引入了Donald Knuth的设计方法，为每个内存块增加footer信息。
