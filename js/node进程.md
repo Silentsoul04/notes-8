@@ -54,7 +54,9 @@ master 监听默认的 80 端口，用户的请求都打在 80 上，其他子�
 
 > master监听，生成对应的socket，通过管道传递给worker。
 
-如下图，在之后 master 停止监听 80port，因为已经把文件描述符给了 worker，之后 worker 直接**监听这个套接字**即可。
+如下图，在之后 master **停止监听 80port**，因为已经把文件描述符给了 worker，之后 worker 直接**监听这个套接字**即可。
+
+![](.node进程_images/4e796829.png)
 
 于是就有了下面那种模式，**多个 worker 直接监听同一个 port**。
 
@@ -77,3 +79,4 @@ A: 多个进程利用SO_REUSEPORT特性可以各自申请socket监听同一个�
 > 将每个连接的socket都传到子进程中的，通过子进程监听抢占进行读写。所以会有惊群问题，nginx通过mutex互斥锁解决这个问题， epoll_wait()之前先去申请锁。负载均衡算法，负载7/8
 
 - [多进程模型底层实现](https://juejin.im/post/5e7732aa518825492e497fe0)
+
