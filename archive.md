@@ -180,7 +180,7 @@
 
 - [Node.js 线程你理解的可能是错的](https://juejin.im/post/5b1e55cbe51d45067e6fcb84): 从问题出发，解析线程与异步操作
 - [**不要阻塞你的事件循环**](https://nodejs.org/zh-cn/docs/guides/dont-block-the-event-loop/): 对事件循环有很详细的介绍，适合多读
-
+- [网络库libevent、libev、libuv对比](https://blog.csdn.net/lijinqi1987/java/article/details/71214974)
 
 ---
 # 操作系统
