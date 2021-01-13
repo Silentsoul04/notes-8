@@ -167,7 +167,8 @@
 ---
 # 其他
 - [如何写出安全的、基本功能完善的Bash脚本](https://mp.weixin.qq.com/s/ZO5jKzQGDy1Di1WDl49d_g): 一个比较实用的模板
-
+- [高效的数据压缩编码方式 Protobuf](https://mp.weixin.qq.com/s/Llg1Rb11KRNS1N-seqjeLg )、 [高效的序列化/反序列化数据方式 Protobuf](https://mp.weixin.qq.com/s/22p3VucucXkxxhDq--AYaw ) TODO 如何高效
+- TODO prometheus的时序时间库原理
 
 ---
 # 网络
