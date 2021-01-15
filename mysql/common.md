@@ -121,11 +121,22 @@ mysqldump -C -uroot -proot --databases aso_www
 
 --default-character-set=utf8
 
---single-transaction： 不加锁
+--single-transaction： 不加锁。
 
+不加只读帐号会报错： mysqldump: Got error: 1044: Access denied for user 'aso_ro'@'%' to database 'adData' when doing LOCK TABLES
 
 --quick
 
+导数据库例子:
+```shell script
+mysqldump -h 172.19.40.141 -uaso_ro -p adData ad_aggs_outer --single-transaction --no-create-info --where='ad_year_month=2101' > ./ad_aggs_outer.sql
+mysql -h db-test.ag.alishh -A adData -uaso_ro -p -e 'source ./ad_aggs_outer.sql'
+```
+写数据会执行`LOCK TABLES `ad_aggs_outer` WRITE;` 需要单独给帐号的LOCK TABLES权限
+
+定时执行任务： `while true; do ll -thr ad_aggs_outer.sql; date ; sleep 5; done`
+
+---
 
 mysqldump -u aso_ro -p --no-data adData_multi  > schema.sql
 
