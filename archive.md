@@ -94,6 +94,9 @@
 - [分布式锁的实现之 redis 篇](https://xiaomi-info.github.io/2019/12/17/redis-distributed-lock/): redis锁相关会存在的问题与图分析
 - [分布式锁用 Redis 还是 Zookeeper？](https://juejin.im/post/6894853961761685517): 分析具体场景，两种解决办法的简单使用与对比。
 
+## 分布式锁
+- [分布式柔性事务的TCC方案](https://mp.weixin.qq.com/s/tnmQaHpo49XUtYBvsrx1Ig): TCC的总结
+
 
 ---
 # 优雅退出
@@ -170,9 +173,9 @@
 - [高效的数据压缩编码方式 Protobuf](https://mp.weixin.qq.com/s/Llg1Rb11KRNS1N-seqjeLg )、 [高效的序列化/反序列化数据方式 Protobuf](https://mp.weixin.qq.com/s/22p3VucucXkxxhDq--AYaw ) TODO 如何高效
 - TODO prometheus的时序时间库原理
 
+
 ---
 # 网络
-
 - **[network](/notebook/network): 摘抄与总结**
 
 - [为什么 TCP 协议有 TIME_WAIT 状态](https://mp.weixin.qq.com/s/QTZJdxVzDNEvz7htDgGU-w): 为什么系列。 [time_wait的含义](/notebook/network/q.md#time_wait)
@@ -183,6 +186,8 @@
 - [**不要阻塞你的事件循环**](https://nodejs.org/zh-cn/docs/guides/dont-block-the-event-loop/): 对事件循环有很详细的介绍，适合多读
 - [网络库libevent、libev、libuv对比](https://blog.csdn.net/lijinqi1987/java/article/details/71214974)
 
+
 ---
 # 操作系统
 - [自己动手实现一个malloc内存分配器](https://mp.weixin.qq.com/s/FpXLBOVm5P-sNTr2S7PyhQ): 比较直白的内存分配器介绍：我们的简单内存分配器采用了First Fit分配算法；找到一个满足要求的内存块后会进行切分，剩下的作为新的内存块；同时当释放内存时会立即合并相邻的空闲内存块，同时为加快合并速度，我们引入了Donald Knuth的设计方法，为每个内存块增加footer信息。
+- [函数运行时在内存中是什么样子？](https://mp.weixin.qq.com/s?__biz=MzU2NTYyOTQ4OQ==&mid=2247484963&idx=1&sn=542d3bec57c6a9dfc17c83005fd2c030&chksm=fcb9817dcbce086b10cb44cad7c9777b0088fb8d9d6baf71ae36a9b03e1f8ef5bec62b79d6f7&scene=21#wechat_redirect): 跳转地址、存放参数、局部变量、寄存器初始值。不要创建过大的局部变量、函数栈帧，也就是调用层次不能太多
