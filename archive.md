@@ -191,3 +191,5 @@
 # 操作系统
 - [自己动手实现一个malloc内存分配器](https://mp.weixin.qq.com/s/FpXLBOVm5P-sNTr2S7PyhQ): 比较直白的内存分配器介绍：我们的简单内存分配器采用了First Fit分配算法；找到一个满足要求的内存块后会进行切分，剩下的作为新的内存块；同时当释放内存时会立即合并相邻的空闲内存块，同时为加快合并速度，我们引入了Donald Knuth的设计方法，为每个内存块增加footer信息。
 - [函数运行时在内存中是什么样子？](https://mp.weixin.qq.com/s?__biz=MzU2NTYyOTQ4OQ==&mid=2247484963&idx=1&sn=542d3bec57c6a9dfc17c83005fd2c030&chksm=fcb9817dcbce086b10cb44cad7c9777b0088fb8d9d6baf71ae36a9b03e1f8ef5bec62b79d6f7&scene=21#wechat_redirect): 跳转地址、存放参数、局部变量、寄存器初始值。不要创建过大的局部变量、函数栈帧，也就是调用层次不能太多
+
+- [记一次面试：进程之间究竟有哪些通信方式？](https://mp.weixin.qq.com/s/CGqy0j5WvarN6mTmYB8vSA)
