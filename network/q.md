@@ -1,4 +1,3 @@
----
 # time wait
 
 在web00上看到很多time wait
