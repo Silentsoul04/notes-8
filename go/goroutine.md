@@ -196,9 +196,10 @@ A: 如果文件描述符不可读或者不可写，当前 Goroutine 就会执行
 A: 每一个M在执行的时候都有可能处理epoll事件轮询器的G。
 
 ---
-# [netpoller](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-netpoller)
+# Netpoller
 
-[](#bookmark)
+## 参考链接
+- [Netpoller](https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-netpoller): 比较复杂，还可以再深入了解 [](#bookmark)
 
 ## 轮询等待
 Go 语言的运行时会在调度或者系统监控中调用 runtime.netpoll 轮询网络，该函数的执行过程可以分成以下几个部分：
