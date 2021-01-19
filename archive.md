@@ -153,6 +153,7 @@
 ---
 # mysql
 - [一次SQL查询优化原理分析](https://www.jianshu.com/p/0768ebc4e28d): 回表、分页优化。引出INNODB_BUFFER_PAGE的使用
+- [优化 SQLite 在 Go 中的性能](https://turriate.com/articles/making-sqlite-faster-in-go): 连接池和prepare
 
 
 ---
@@ -185,6 +186,8 @@
 - [Node.js 线程你理解的可能是错的](https://juejin.im/post/5b1e55cbe51d45067e6fcb84): 从问题出发，解析线程与异步操作
 - [**不要阻塞你的事件循环**](https://nodejs.org/zh-cn/docs/guides/dont-block-the-event-loop/): 对事件循环有很详细的介绍，适合多读
 - [网络库libevent、libev、libuv对比](https://blog.csdn.net/lijinqi1987/java/article/details/71214974)
+
+- [如何优化 Go HTTP client 的性能](https://www.loginradius.com/blog/async/tune-the-go-http-client-for-high-performance/): Client的Timeout参数与DefaultMaxIdleConnsPerHost
 
 
 ---

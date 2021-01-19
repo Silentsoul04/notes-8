@@ -1,3 +1,10 @@
+# prepared
+
+prepared语句是可多次使用的已编译SQL语句。当我们向数据库引擎发送SQL时，它需要解析SQL，这需要时间。如果我们要反复发送同一个SQL语句，我们应该有礼貌，让数据库只解析一次粗糙的SQL语法。缓存准备好的语句可以节省大量时间。
+
+- [making-sqlite-faster-in-go](https://turriate.com/articles/making-sqlite-faster-in-go)
+
+---
 # 命中页
 
 InnoDB中有buffer pool。里面存有最近访问过的数据页，包括数据页和索引页。所以我们需要运行两个sql，来比较buffer pool中的数据页的数量。

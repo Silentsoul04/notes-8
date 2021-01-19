@@ -103,7 +103,7 @@ cd opt/kafka
 # 国内
 ssh -p36000 kafka-00.ag.alishh
 
-cd bin/kakfa
+cd bin/kafka
 
 
 ## 主题信息
@@ -122,7 +122,7 @@ bin/kafka-topics.sh --describe --zookeeper 172.19.33.30:2181 --topic binlog-pub-
 ### 消费最多10个消息
 ./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --max-messages 10
 
-./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-ag-db-41-addata-advertisement --max-messages 10  --consumer-property group.id=es_sync_advertisement_uni
+./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-ag-db-41-addata-ad-shop --max-messages 10  --consumer-property group.id=test_dj_ad_campaign_tmp
 
 
 
