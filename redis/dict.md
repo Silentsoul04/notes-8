@@ -1,4 +1,6 @@
-## redis的关注点
+# Redis内部数据结构详解(1)——dict
+
+## Redis的关注点
 关注以下几点：
 
 - 存储效率（memory efficiency）。**Redis是专用于存储数据的，它对于计算机资源的主要消耗就在于内存，因此节省内存是它非常非常重要的一个方面**。这意味着Redis一定是非常精细地考虑了**压缩数据、减少内存碎片**等问题。
@@ -22,6 +24,8 @@ dict本质上是为了解决算法中的查找问题（Searching），一般查�
 
 dictRehash每次将重哈希至少向前推进n步（除非不到n步整个重哈希就结束了），每一步都将ht[0]上某一个bucket（即一个dictEntry链表）上的每一个dictEntry**移动**到ht[1]上，它在ht[1]上的新位置根据ht[1]的**sizemask进行重新计算**。**rehashidx记录了当前尚未迁移**（有待迁移）的ht[0]的bucket位置。
 
+> **rehashidx记录了当前尚未迁移**（有待迁移）的ht[0]的bucket位置
+
 如果dictRehash被调用的时候，rehashidx指向的bucket里一个dictEntry也没有，那么它就没有可迁移的数据。这时它尝试在ht[0].table数组中不断向后遍历，直到找到下一个存有数据的bucket位置。如果一直找不到，则最多走**`n*10`步**，本次重哈希暂告结束。
 
 最后，如果ht[0]上的数据都迁移到ht[1]上了（即d->ht[0].used == 0），那么整个重哈希结束，ht[0]变成ht[1]的内容，而ht[1]重置为空。
@@ -42,7 +46,7 @@ dictAdd插入新的一对key和value，如果key已经存在，则插入失败�
 
 - _dictKeyIndex在dict中寻找插入位置。如果不在重哈希过程中，它**只查找**ht[0]；否则查找ht[0]和ht[1]。
 
-- _dictKeyIndex可能触发dict内存扩展
+- _dictKeyIndex可能触发dict内存扩展?
 
 > dictAdd只会执行不存在的key，触发重哈希、直接插入ht[1]、先插头部、查找规律、
 
@@ -55,7 +59,7 @@ dictReplace也是插入一对key和value，不过在key存在的时候，它会�
 > replace通过dictAdd添加，如果ok代表旧的key不存在，失败代表已存在，通过dictFind、dictSetVal重设
 
 
-# 参考链接：
+## 参考链接
 - [Redis内部数据结构详解(1)——dict](https://mp.weixin.qq.com/s?__biz=MzA4NTg1MjM0Mg==&mid=2657261203&idx=1&sn=f7ff61ce42e29b874a8026683875bbb1&scene=21#wechat_redirect)
 
 ---
@@ -177,6 +181,6 @@ dictRehashMilliseconds 可以在指定的毫秒数内， 对字典进行 rehash 
 - 哈希表使用链地址法来解决键冲突， 被分配到同一个索引上的多个键值对会连接成一个单向链表。
 - 在对哈希表进行扩展或者收缩操作时， 程序需要将现有哈希表包含的所有键值对 rehash 到新哈希表里面， 并且这个 rehash 过程并不是一次性地完成的， 而是渐进式地完成的。
 
-# 参考链接：
+## 参考链接
 
 - [字典](https://redisbook.readthedocs.io/en/latest/internal-datastruct/dict.html)
