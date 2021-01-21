@@ -1,3 +1,10 @@
+## healthcheck
+
+```yaml
+        healthcheck:
+          test: mysqladmin ping -h 127.0.0.1 --password=$$MYSQL_ROOT_PASSWORD
+```
+
 ---
 ## overlay2
 
