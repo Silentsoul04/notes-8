@@ -36,7 +36,6 @@
 - redis的实现特殊性，分值重复、计算排名。
 - sort set的实现与升级。ziplist何时转成zset（dict、zskiplist）。
 
-
 ## [quicklist](quicklist.md)
 - 版本前后的列表的底层实现。
 - quicklist的数据结构
