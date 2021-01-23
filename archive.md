@@ -166,6 +166,7 @@
 ---
 # 容器
 - [Kubernetes 如何使用 Nginx-Ingress 实现蓝绿和金丝雀发布](https://mp.weixin.qq.com/s/SAE4IvjVPVV1dfS4ZXwzbQ): Ingress-Nginx在0.21版本引入了Canary功能。一个具体的例子介绍使用。而且后面介绍了A/B测试和蓝绿部署以及金丝雀区别，
+- [如何为服务网格选择入口网关？](https://zhaohuabing.com/post/2019-03-29-how-to-choose-ingress-for-service-mesh/): 介绍了内部服务间的通信(Cluster IP、Istio Sidecar Proxy)的优缺点。如何从外部网络访问， 如何为服务网格选择入口网关？。介绍包括Pod、Service、NodePort、LoadBalancer、Ingress、Gateway、VirtualService等，最后采用API Gateway + Sidecar Proxy作为服务网格的流量入口还不能很好理解。
 
 
 ---
