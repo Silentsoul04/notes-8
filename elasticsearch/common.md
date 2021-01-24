@@ -1,3 +1,15 @@
+
+# list to set
+
+```
+Set myset = new HashSet(ctx._source[p.array_field]);
+```
+
+- https://stackoverflow.com/questions/53079144/elasticsearch-make-a-field-behave-like-set-instead-of-list
+
+> 性能没啥提升-_-
+>
+---
 # 脚本查询
 
 ```
@@ -77,9 +89,9 @@ es_rejected_execution_exception[bulk] 是批量队列错误。当对 Elasticsear
 
 使用以下方法之一解决 es_rejected_execution_exception 错误：
 
-- 添加更多节点：每个节点都有一个批量队列，因此添加更多节点可以为您提供更大的队列容量。要添加节点，请参阅配置 Amazon ES 域（控制台）。注意：如果**没有足够的活跃索引分片**分配到新节点，添加更多数据节点并无济于事。“活跃索引分片”是在**最近 5 分钟内收到至少一个索引请求的分片**。
+- 添加更多节点：每个节点都有一个批量队列，因此**添加更多节点可以为您提供更大的队列容量**。要添加节点，请参阅配置 Amazon ES 域（控制台）。注意：如果**没有足够的活跃索引分片**分配到新节点，添加更多数据节点并无济于事。“活跃索引分片”是在**最近 5 分钟内收到至少一个索引请求的分片**。
 - 切换到更大的实例类型：批量请求的每个节点上的线程池中的线程数等于**可用处理器的数量**。切换到具有更多虚拟 CPU (vCPU) 的实例可获取更多线程来处理批量请求。有关更多信息，请参阅选择实例类型和测试。
-- 提高索引性能：当文档索引速度更快时，批量队列达到容量限制的可能性就会降低。有关性能调整的更多信息，请参阅如何提高我的 Elasticsearch 集群上的索引性能？
+- 提高索引性能：**当文档索引速度更快时，批量队列达到容量限制的可能性就会降低**。有关性能调整的更多信息，请参阅如何提高我的 Elasticsearch 集群上的索引性能？
 
 
 
@@ -96,12 +108,13 @@ Global timeout can be set when constructing the client (see Connection’s timeo
 ## update_by_query
 查询更新操作会发生版本冲突，这时候可以通过`conflicts=proceed`参数进行继续，否则会中止该操作，但不会回滚之前所做的更新操作
 
-并没有Retry on conflicts, 原因是因为版本冲突后，不能确认已经被更新后的文档是否适合之前的查询。除非再次查询，然后retry，ES社区并不打算提供，因为比较繁琐。所以他的建议是程序里做相应的这个逻辑，如果有冲突，重新执行update_by_query操作.
+并没有Retry on conflicts, 原因是因为版本冲突后，不能确认已经被更新后的文档是否适合之前的查询。除非再次查询，然后retry，ES社区并不打算提供，因为比较繁琐。所以他的建议是程序里做相应的这个逻辑，**如果有冲突，重新执行update_by_query操作**.
 
 疑问：
 返回的retries是什么含义?
 
-获取正在执行的更新语句
+## 获取正在执行的更新语句
+
 ```
 GET _tasks?detailed=true&actions=*byquery
 ```
@@ -115,7 +128,7 @@ GET _tasks?detailed=true&actions=*byquery
 ## nested
 
 疑问： 怎么获取到nested里面的文档
-答案： 通过params._source 获取，会造成内存问题
+答案： 通过params._source 获取，**会造成内存问题**
 ```
 for ( i in params._source ) { params._agg.transactions[i['tag_id]]  = i['method']}
 ```
@@ -219,10 +232,10 @@ PUT /ag_advertisement_test/_settings
 }
 ```
 设置后，更新并不能通过_search是获取到最新的数据，
-但是如果：直接去获取单个文档的数据（`GET ag_advertisement_test/data/1000003?parent=1900d3a59d00c93b26678287e6df0185`），
+但是如果：**直接去获取单个文档的数据**（`GET ag_advertisement_test/data/1000003?parent=1900d3a59d00c93b26678287e6df0185`），
 会发现最新的数据.并且发现_search的部分数据已经刷新到最新。
 
-而且如果再次再次更新单个文档的， 会把旧的版本刷新到可搜素，但仍不是最新的，而且也发现_search的部分数据已经刷新到最新
+而且如果再次再次更新单个文档的， 会把旧的版本刷新到可搜素，**但仍不是最新的**，而且也发现_search的**部分数据**已经刷新到最新
 
 
 
@@ -312,7 +325,6 @@ nested聚合，得到的是个桶(doc_count)的，而不是度量(value)
 
 ---
 ## 慢查询kill掉
-
 
 You can can kill/cancel a search query using standard task cancellation API:
 

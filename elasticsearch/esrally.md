@@ -1,3 +1,5 @@
+- [Elasticsearch 压测方案之 esrally 简介](https://segmentfault.com/a/1190000011174694)
+
 ```shell script
 esrally --track-path=/data/secoo_program/esrally/tutorial/ --pipeline=benchmark-only --target-hosts=192.168.41.4:9200,192.168.41.5:9200,192.168.41.6:9200,192.168.41.7:9200,192.168.41.8:9200,192.168.41.9:9200 --client-options="use_ssl:false,verify_certs:true,basic_auth_user:'elastic',basic_auth_password:'fcj5cU1Oh3YUcU3NL6vw'" --offline --report-file=/tmp/logs/report.md
 ```
