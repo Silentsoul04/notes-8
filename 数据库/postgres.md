@@ -1,6 +1,6 @@
 ---
 # cmd
-psql -U username -h hostname -p port -d dbname 
+psql -U username -h hostname -p port -d dbname
 
 \l : show databases;
 \c test: use test;
@@ -31,8 +31,8 @@ insert into t_btree select generate_series(1,100000),  random()*1000,  random()*
 create index idx_t_btree_1 on t_btree using btree (f_1);
 create index idx_t_btree_2 on t_btree using btree (f_2);
 
-explain (analyze,verbose,timing,costs,buffers) select * from t_btree where f_1 < 1000 and f_2 < 2000;  
-                                                           QUERY PLAN                                                           
+explain (analyze,verbose,timing,costs,buffers) select * from t_btree where f_1 < 1000 and f_2 < 2000;
+                                                           QUERY PLAN
 --------------------------------------------------------------------------------------------------------------------------------
  Bitmap Heap Scan on public.t_btree  (cost=753.35..2286.54 rows=39879 width=45) (actual time=2.921..9.756 rows=39938 loops=1)
    Output: id, f_1, f_2, info
@@ -48,9 +48,9 @@ explain (analyze,verbose,timing,costs,buffers) select * from t_btree where f_1 <
  Execution time: 11.029 ms
 (12 rows)
 
-explain (analyze,verbose,timing,costs,buffers) select * from t_btree where f_1 = 1000 and f_2 = 2000;  
-                                                          QUERY PLAN                                               
-           
+explain (analyze,verbose,timing,costs,buffers) select * from t_btree where f_1 = 1000 and f_2 = 2000;
+                                                          QUERY PLAN
+
 -------------------------------------------------------------------------------------------------------------------
 -----------
  Bitmap Heap Scan on public.t_btree  (cost=9.71..13.73 rows=1 width=45) (actual time=0.028..0.028 rows=0 loops=1)
@@ -77,16 +77,16 @@ explain (analyze,verbose,timing,costs,buffers) select * from t_btree where f_1 =
 # gin
 
 ```
-create table t_gin1 (id int, arr int[]);  
+create table t_gin1 (id int, arr int[]);
 
 
-do language plpgsql $$  
-declare                      
-begin  
-  for i in 1..1000000 loop  
-    insert into t_gin1 select i, array(select random()*1000 from generate_series(1,10));  
-  end loop;  
-end;  
+do language plpgsql $$
+declare
+begin
+  for i in 1..1000000 loop
+    insert into t_gin1 select i, array(select random()*1000 from generate_series(1,10));
+  end loop;
+end;
 $$;
 
 create index idx_t_gin1_1 on t_gin1 using gin (arr);
@@ -97,7 +97,7 @@ create index idx_t_gin1_2 on t_gin1 using gin (arr gin__int_ops);
 ```
 ```
 test=# explain (analyze,verbose,timing,costs,buffers) select * from t_gin1 where  arr[1]  = 1;
-                                                    QUERY PLAN                                                     
+                                                    QUERY PLAN
 -------------------------------------------------------------------------------------------------------------------
  Seq Scan on public.t_gin1  (cost=0.00..24846.00 rows=5000 width=65) (actual time=0.174..155.621 rows=975 loops=1)
    Output: id, arr
@@ -109,13 +109,13 @@ test=# explain (analyze,verbose,timing,costs,buffers) select * from t_gin1 where
 (7 rows)
 ```
 
-> 正常索引, 支持： <@ @> = &&  也不支持二维数组    
+> 正常索引, 支持： <@ @> = &&  也不支持二维数组
 > 不能支持下标的索引查询Seq Scan .但是可以单独对数组的某个下标建立索引: https://stackoverflow.com/a/13353472
 
 
 test=# explain (analyze,verbose,timing,costs,buffers) select * from t_gin1 where  arr  @> array[1,2];
-                                                        QUERY PLAN                                                 
-       
+                                                        QUERY PLAN
+
 -------------------------------------------------------------------------------------------------------------------
 -------
  Bitmap Heap Scan on public.t_gin1  (cost=47.75..3102.65 rows=1000 width=65) (actual time=1.503..1.646 rows=99 loop
