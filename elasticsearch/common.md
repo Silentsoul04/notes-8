@@ -1,4 +1,27 @@
+# 常用命令
 
+```shell script
+GET _cat/indices
+
+
+GET _nodes/172.19.31.135
+
+GET _nodes/hot_threads
+
+GET _nodes/stats
+
+GET _cluster/pending_tasks
+
+GET /_tasks
+GET /_tasks?nodes=nodeId1,nodeId2&actions=cluster:*&pretty
+GET /_tasks?detailed=true&actions=*byquery
+GET /_tasks?nodes=85g-AxR1TeitmvHS7pRNMA
+GET /_tasks/JgNKVH7_QGmOModx1VKJww:216610517
+
+
+```
+
+---
 # list to set
 
 ```
@@ -8,7 +31,7 @@ Set myset = new HashSet(ctx._source[p.array_field]);
 - https://stackoverflow.com/questions/53079144/elasticsearch-make-a-field-behave-like-set-instead-of-list
 
 > 性能没啥提升-_-
->
+
 ---
 # 脚本查询
 
