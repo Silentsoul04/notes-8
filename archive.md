@@ -154,7 +154,7 @@
 # mysql
 - [一次SQL查询优化原理分析](https://www.jianshu.com/p/0768ebc4e28d): 回表、分页优化。引出INNODB_BUFFER_PAGE的使用
 - [优化 SQLite 在 Go 中的性能](https://turriate.com/articles/making-sqlite-faster-in-go): 连接池和prepare
-
+- [从网友对 MySQL 手册的一个疑问聊起](https://mp.weixin.qq.com/s/EwLTpzIbtRE3Mlt0OtRyVg): 如何用3个字节表示年月日
 
 ---
 # java
@@ -190,6 +190,12 @@
 
 - [如何优化 Go HTTP client 的性能](https://www.loginradius.com/blog/async/tune-the-go-http-client-for-high-performance/): Client的Timeout参数与DefaultMaxIdleConnsPerHost
 
+---
+# ES
+- [官方博客](https://www.elastic.co/cn/blog/)
+
+- [ES查询性能优化-优先选择keyword类型](https://summerisgreen.com/blog/2019-12-01-2019-12-01-es%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%BC%98%E5%85%88%E9%80%89%E6%8B%A9keyword%E7%B1%BB%E5%9E%8B.html): 优先使用keyword而不是number!
+- [number?keyword?傻傻分不清楚](https://elasticsearch.cn/article/446): wood大叔
 
 ---
 # 操作系统

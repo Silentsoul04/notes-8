@@ -261,3 +261,7 @@ cond(no)->op
   [6]: http://highlightjs.org/
   [7]: http://bramp.github.io/js-sequence-diagrams/
   [8]: http://adrai.github.io/flowchart.js/
+
+### Support pre code
+
+- <details><summary>命令返回非0还想继续往下执行可以怎么做？</summary><pre><code>false || exit_code=$?</code></pre></details>
