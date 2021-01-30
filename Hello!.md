@@ -264,4 +264,8 @@ cond(no)->op
 
 ### Support pre code
 
-- <details><summary>命令返回非0还想继续往下执行可以怎么做？</summary><pre><code>false || exit_code=$?</code></pre></details>
+<details><summary>
+命令返回非0还想继续往下执行可以怎么做？
+</summary><pre><code>
+false || exit_code=$?
+</code></pre></details>

@@ -17,7 +17,7 @@ GET /_tasks?nodes=nodeId1,nodeId2&actions=cluster:*&pretty
 GET /_tasks?detailed=true&actions=*byquery
 GET /_tasks?nodes=85g-AxR1TeitmvHS7pRNMA
 GET /_tasks/JgNKVH7_QGmOModx1VKJww:216610517
-
+POST _tasks/To4q4mFAQLO7uzSs7PpLQg:103199051/_cancel
 
 ```
 
