@@ -155,6 +155,7 @@
 - [一次SQL查询优化原理分析](https://www.jianshu.com/p/0768ebc4e28d): 回表、分页优化。引出INNODB_BUFFER_PAGE的使用
 - [优化 SQLite 在 Go 中的性能](https://turriate.com/articles/making-sqlite-faster-in-go): 连接池和prepare
 - [从网友对 MySQL 手册的一个疑问聊起](https://mp.weixin.qq.com/s/EwLTpzIbtRE3Mlt0OtRyVg): 如何用3个字节表示年月日
+- [为什么MySQL不建议delete删除数据](https://juejin.cn/post/6913695663028961293): 详细解析删除操作。有具体的工具分析底层数据的分布，而且通过对比物理读次数、逻辑读次数分析结果。碎片：删除数据会在页面上留下一些”空洞”。
 
 ---
 # java
@@ -189,6 +190,9 @@
 - [网络库libevent、libev、libuv对比](https://blog.csdn.net/lijinqi1987/java/article/details/71214974)
 
 - [如何优化 Go HTTP client 的性能](https://www.loginradius.com/blog/async/tune-the-go-http-client-for-high-performance/): Client的Timeout参数与DefaultMaxIdleConnsPerHost
+
+- [Socket粘包问题终极解决方案—Netty版（2W字）！](https://juejin.cn/post/6917043797684584461): netty的源码分析
+
 
 ---
 # ES

@@ -1,4 +1,4 @@
-# 常用命令
+## 常用命令
 
 ```shell script
 GET _cat/indices
@@ -22,7 +22,7 @@ POST _tasks/To4q4mFAQLO7uzSs7PpLQg:103199051/_cancel
 ```
 
 ---
-# list to set
+## list to set
 
 ```
 Set myset = new HashSet(ctx._source[p.array_field]);
@@ -33,7 +33,7 @@ Set myset = new HashSet(ctx._source[p.array_field]);
 > 性能没啥提升-_-
 
 ---
-# 脚本查询
+## 脚本查询
 
 ```
 "query": {
@@ -49,7 +49,7 @@ Set myset = new HashSet(ctx._source[p.array_field]);
 },
 ```
 
-# 脚本聚合
+## 脚本聚合
 ```
 GET material_v1/data/_search
 {
@@ -67,7 +67,7 @@ GET material_v1/data/_search
 ```
 
 ---
-# keyword
+## keyword
 
 ```
 "brand_id": {
@@ -78,6 +78,8 @@ GET material_v1/data/_search
 存储的是字符串的数字，因为ES不支持大数bigint64。keyword字段的比较在数字层次还是可以比较成功的
 
 `"gt": 0` 能符合预期
+
+> 注意keyword和number类型的性能区别
 
 ---
 - [Elasticsearch优化思路](https://zhuanlan.zhihu.com/p/84173080)
@@ -126,26 +128,6 @@ es_rejected_execution_exception[bulk] 是批量队列错误。当对 Elasticsear
 Timeout
 Global timeout can be set when constructing the client (see Connection’s timeout parameter) or on a per-request basis using request_timeout (float value in seconds) as part of any API call, this value will get passed to the perform_request method of the connection class:
 
-
----
-## update_by_query
-查询更新操作会发生版本冲突，这时候可以通过`conflicts=proceed`参数进行继续，否则会中止该操作，但不会回滚之前所做的更新操作
-
-并没有Retry on conflicts, 原因是因为版本冲突后，不能确认已经被更新后的文档是否适合之前的查询。除非再次查询，然后retry，ES社区并不打算提供，因为比较繁琐。所以他的建议是程序里做相应的这个逻辑，**如果有冲突，重新执行update_by_query操作**.
-
-疑问：
-返回的retries是什么含义?
-
-## 获取正在执行的更新语句
-
-```
-GET _tasks?detailed=true&actions=*byquery
-```
-
-
-参考链接:
-* <https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html>
-* <https://github.com/elastic/elasticsearch/issues/19632>
 
 ---
 ## nested
