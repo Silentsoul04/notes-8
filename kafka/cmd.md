@@ -114,7 +114,7 @@ bin/kafka-topics.sh --describe --zookeeper 172.19.33.30:2181 --topic binlog-pub-
 
 ## 描述
 ./bin/kafka-consumer-groups.sh --describe --bootstrap-server 172.19.33.10:9092 --group ag_ec_sync_product_qs
-./bin/kafka-consumer-groups.sh --describe --bootstrap-server 172.19.33.10:9092 --group test_ag_web_uni
+./bin/kafka-consumer-groups.sh --describe --bootstrap-server 172.19.33.10:9092 --group es_sync_campaign_record
 
 ## 消费消息
 ./bin/kafka-console-consumer.sh --bootstrap-server 172.19.33.10:9092 --topic binlog-db10-ecData-product-qs-growth --from-beginning
@@ -133,5 +133,5 @@ bin/kafka-topics.sh --describe --zookeeper 172.19.33.30:2181 --topic binlog-pub-
 
 ./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group test_ag_web_uni --reset-offsets --to-latest --topic binlog-db40-adData-ad-heat --execute
 
-./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group es_sync_ec_ad_log --reset-offsets --to-datetime 2020-01-08T15:00:00.000  --topic binlog-ag-db-41-addata-ad-log-aggs --execute
+./bin/kafka-consumer-groups.sh --bootstrap-server 172.19.33.10:9092 --group es_sync_campaign_record --reset-offsets --to-datetime 2021-01-29T12:00:00.000+0800  --topic binlog-ag-db-41-addata-campaign-record --execute
 
