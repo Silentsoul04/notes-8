@@ -107,7 +107,7 @@ GET material_v1/data/_search
 ## es_rejected_execution_exception
 
 ### 简短描述
-es_rejected_execution_exception[bulk] 是批量队列错误。当对 Elasticsearch 集群的请求数超过批量队列大小 (threadpool.bulk.queue_size) 时，会发生此问题。每个节点上的批量队列可以容纳 50 到 200 个请求，具体取决于您使用的 Elasticsearch 版本。队列已满时，将拒绝新请求。
+es_rejected_execution_exception[bulk] 是批量队列错误。当对 Elasticsearch 集群的请求数超过**批量队列大小** (threadpool.bulk.queue_size) 时，会发生此问题。每个节点上的批量队列可以容纳 50 到 200 个请求，具体取决于您使用的 Elasticsearch 版本。队列已满时，将拒绝新请求。
 
 ### 解决方法
 注意：对于大多数 Amazon ES 版本，您并无法增加批量队列大小。之所以设置队列是为了将请求限制在可管理的数量之类。有关更多信息，请参阅 Elasticsearch 文档中的 Threadpool Section。
