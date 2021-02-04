@@ -128,6 +128,16 @@ es_rejected_execution_exception[bulk] 是批量队列错误。当对 Elasticsear
 Timeout
 Global timeout can be set when constructing the client (see Connection’s timeout parameter) or on a per-request basis using request_timeout (float value in seconds) as part of any API call, this value will get passed to the perform_request method of the connection class:
 
+> timeout全局超时设置。每个请求的timeout可以通过request_timeout进行覆盖。
+
+> 代码： elasticsearch/transport.py:303
+
+## retry_on_timeout
+
+注意设置这个参数后的影响，默认是False的，如果设成True，则查询/更新操作等操作耗时教久，timeout了，会进行重试。导致重复的高负载请求。
+而retry_on_timeout只能在声明client的时候进行设置
+
+retry_on_status支持特定错误码重试，如(502, 503, 504)
 
 ---
 ## nested
