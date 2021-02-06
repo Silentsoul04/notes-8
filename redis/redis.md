@@ -3,11 +3,35 @@
 
 ## Redis分布式锁
 
+- [大家所推崇的 Redis 分布式锁，真的万无一失吗？](https://juejin.im/post/5d41c94bf265da03a715b18f)
+
 先拿setnx来争抢锁，抢到之后，再用expire给锁加一个过期时间防止锁忘记了释放。
 如果在setnx之后执行expire之前进程意外crash或者要重启维护了，那会怎么样？
 这个锁就永远得不到释放了。set指令有非常复杂的参数，这个应该是可以同时把setnx和expire合成一条指令来用的！
 
-- [大家所推崇的 Redis 分布式锁，真的万无一失吗？](https://juejin.im/post/5d41c94bf265da03a715b18f)
+
+- [redis分布式锁的这些坑，我怀疑你是假的开发](https://my.oschina.net/u/4526289/blog/4946239)
+
+### 续期
+
+redis分布式锁过期，而业务逻辑没执行完的场景。为了解决这个问题我们使用redis客户端redisson，redisson很好的解决了redis在分布式环境下的一些棘手问题，它的宗旨就是让使用者减少对Redis的关注，将更多精力用在处理业务逻辑上。
+
+redisson对分布式锁做了很好封装，只需调用API即可。
+
+`RLock lock = redissonClient.getLock("stockLock");`
+
+redisson在加锁成功后，会注册一个定时任务监听这个锁，每隔10秒就去查看这个锁，如果还持有锁，就对过期时间进行续期。默认过期时间30秒。这个机制也被叫做：“看门狗”
+
+
+### 主从复制的坑
+redis cluster集群环境下，假如现在A客户端想要加锁，它会根据路由规则选择一台master节点写入key mylock，在加锁成功后，master节点会把key异步复制给对应的slave节点。
+
+如果此时redis master节点宕机从节点复制失败，为保证集群可用性，会进行主备切换，slave变为了redis master。B客户端在新的master节点上加锁成功，而A客户端也以为自己还是成功加了锁的。另外如果主从复制延迟同样也会造成加锁和解锁延迟的问题。
+
+此时就会导致同一时间内多个客户端对一个分布式锁完成了加锁，导致各种脏数据的产生。
+
+毕竟redis是保持的AP而非CP，如果要追求强一致性可以使用zookeeper分布式锁。
+
 
 ## 搜索指令
 

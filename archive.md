@@ -157,6 +157,8 @@
 - [从网友对 MySQL 手册的一个疑问聊起](https://mp.weixin.qq.com/s/EwLTpzIbtRE3Mlt0OtRyVg): 如何用3个字节表示年月日
 - [为什么MySQL不建议delete删除数据](https://juejin.cn/post/6913695663028961293): 详细解析删除操作。有具体的工具分析底层数据的分布，而且通过对比物理读次数、逻辑读次数分析结果。碎片：删除数据会在页面上留下一些”空洞”。
 - [优化 | 实例解析MySQL性能瓶颈排查定位](https://mp.weixin.qq.com/s?__biz=MjM5NzAzMTY4NQ==&mid=506446073&idx=6&sn=74335facf3bcf7ede3af7ce03765b343&scene=19): 实例优化。
+- [MySQL客户端连接登入hang住原因分析](https://my.oschina.net/yejr/blog/4815112): pstack和SIGSTOP、mysql处理信号的方式
+- [数据库查询性能优化指南](https://my.oschina.net/u/4273516/blog/4934611): 比较全面命令的系统性能优化指南。vmstat, uptime、top、mpstat或者sar, perf top、iostat、pidstat和iotop
 
 ---
 # java

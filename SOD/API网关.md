@@ -51,5 +51,8 @@ BFF（Backend For Frontend）的引入会让 Service Mesh 和 API Gateway 走到
 ![](.API网关_images/d3251c1a.png)
 
 
-## 参考链接: 
+## 参考链接:
 - [Service Mesh 和 API Gateway 关系深度探讨](https://mp.weixin.qq.com/s/zhJ3koaApEOVfdyyXuAGUQ)
+
+---
+- [如何为服务网格选择入口网关？](https://zhaohuabing.com/post/2019-03-29-how-to-choose-ingress-for-service-mesh/): 介绍了内部服务间的通信(Cluster IP、Istio Sidecar Proxy)的优缺点。如何从外部网络访问， 如何为服务网格选择入口网关？。介绍包括Pod、Service、NodePort、LoadBalancer、Ingress、Gateway、VirtualService等，最后采用API Gateway + Sidecar Proxy作为服务网格的流量入口还不能很好理解。
