@@ -102,6 +102,7 @@ _有了这些预备知识，再来解答文首抛出的3个问题_。
 - [number?keyword?傻傻分不清楚](https://elasticsearch.cn/article/446): wood大叔
 - [ES查询性能优化-优先选择keyword类型](https://summerisgreen.com/blog/2019-12-01-2019-12-01-es%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%BC%98%E5%85%88%E9%80%89%E6%8B%A9keyword%E7%B1%BB%E5%9E%8B.html): 优先使用keyword而不是number!
 - [Elasticsearch中keyword和numeric对性能的影响分析](https://my.oschina.net/u/4604498/blog/4915225) [原创|ES广告倒排索引架构演进与优化](https://juejin.cn/post/6844904009292054535)
+- [searching-numb3rs-in-5.0](https://www.elastic.co/cn/blog/searching-numb3rs-in-5.0)
 
 ---
 - [range过滤](https://bbs.huaweicloud.com/blogs/191274)
@@ -137,3 +138,16 @@ range 的原理：在查询基础上，基于 SStable 文件（已有序）向�
 ![](.range-term_images/7ae021e1.png)
 
 > LSM-Tree的核心数据结构SSTable，一个有序的key-vaule的结构，以block块进行存储，并将block的索引存储在SSTable的尾部。以二分查找进行查找。
+
+---
+- [Elasticsearch中keyword和numeric对性能的影响分析](https://my.oschina.net/u/4604498/blog/4915225)
+
+kd-tree（k-dimensional树的简称），是一种对**k维空间中的实例点进行存储以便对其进行快速检索的树形数据结构**。这种存储结构类似于mysql里的B+数，我们知道B+数这种数据结构**对于范围查找的支持是非常好的**。不同于mysql， Block KD tree的叶子节点**存储的是一组值的集合(block)**，大概是512~1024个值一组。这也是为什么叫block kd tree。
+
+> 存储的是一组值的集合(block)
+
+Block KD tree对于范围查询，邻近搜索支持的非常好，尤其是多维空间的情况下。
+
+![](.range-term_images/3a92f01b.png)
+
+看上图，每个节点有三个元素，所以这里K=3，不同于简单二叉树每个节点都是一个元素（如下面这个图）。这样就可以方便的在一个三维的空间进行范围的比较。
