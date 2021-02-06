@@ -1,13 +1,13 @@
 # prepared
 
-prepared语句是可多次使用的已编译SQL语句。当我们向数据库引擎发送SQL时，它需要解析SQL，这需要时间。如果我们要反复发送同一个SQL语句，我们应该有礼貌，让数据库只解析一次粗糙的SQL语法。缓存准备好的语句可以节省大量时间。
+prepared语句是可多次使用的已编译SQL语句。当我们向数据库引擎发送SQL时，**它需要解析SQL，这需要时间**。如果我们要**反复发送同一个SQL语句**，我们应该有礼貌，让数据库只解析一次粗糙的SQL语法。**缓存准备好的语句可以节省大量时间**。
 
 - [making-sqlite-faster-in-go](https://turriate.com/articles/making-sqlite-faster-in-go)
 
 ---
 # 命中页
 
-InnoDB中有buffer pool。里面存有最近访问过的数据页，包括数据页和索引页。所以我们需要运行两个sql，来比较buffer pool中的数据页的数量。
+InnoDB中有buffer pool。里面存有**最近访问过的数据页，包括数据页和索引页**。所以我们需要运行两个sql，来比较buffer pool中的数据页的数量。
 
 ```sql
 select index_name,count(*) from information_schema.INNODB_BUFFER_PAGE where INDEX_NAME in('val','primary') and TABLE_NAME like '%test%' group by index_name;
@@ -21,8 +21,7 @@ mysqladmin shutdown
 /usr/local/bin/mysqld_safe &
 ```
 
-为了在每次重启时确保清空buffer pool，我们需要关闭innodb_buffer_pool_dump_at_shutdown和innodb_buffer_pool_load_at_startup，这两个选项能够控制数据库关闭时dump出buffer pool中的数据和在数据库开启时载入在磁盘上备份buffer pool的数据。
-
+为了在**每次重启时确保清空buffer pool**，我们需要关闭innodb_buffer_pool_dump_at_shutdown和innodb_buffer_pool_load_at_startup，这两个选项能够控制数据库关闭时dump出buffer pool中的数据和在数据库开启时载入在磁盘上备份buffer pool的数据。
 
 - [一次SQL查询优化原理分析（900W+数据，从17s到300ms）](https://www.jianshu.com/p/0768ebc4e28d)
 
@@ -37,7 +36,6 @@ The ENCRYPT(), DES_ENCRYPT() and DES_DECRYPT() functions based on the Data Encry
 # ALLOW_INVALID_DATES
 
 背景：　｀panic: Error 1292: Incorrect date value: '2017-07-13T00:00:00+08:00' for column 'first_date' at row 1｀
-
 
 当我们插入非法时间值时，虽然会被纠正，但是在严格模式下，不会插入数据，反而会报错：
 
@@ -85,13 +83,14 @@ ANSI_QUOTES：
 
 
 ---
-# 字符串字段
+# 字符串char字段
 
 待验证： char(32) 如果默认不为空，即使是空字符，当插入的时候，也会申请了空间。
 
 
 ---
 # binlog
+```
 server-id               = 1
 log_bin                 = /var/log/mysql/mysql-bin.log
 expire_logs_days        = 10
@@ -100,14 +99,14 @@ binlog_format="ROW"
 binlog_row_image="full"
 
 show variables like '%log_bin%';
-
+```
 
 ---
 # 时区
 ```sql
 SET GLOBAL time_zone = '+8:00';
-
 ```
+
 ---
 # general log
 ```sql
@@ -123,12 +122,13 @@ SET GLOBAL general_log_file = 'XX';
 # mysqldump
 导出表结构
 
+```shell script
 mysqldump -C -uroot -proot --databases aso_www
-
 
 --default-character-set=utf8
 
 --single-transaction： 不加锁。
+```
 
 不加只读帐号会报错： mysqldump: Got error: 1044: Access denied for user 'aso_ro'@'%' to database 'adData' when doing LOCK TABLES
 
@@ -143,27 +143,28 @@ mysql -h db-test.ag.alishh -A adData -uaso_ro -p -e 'source ./ad_aggs_outer.sql'
 
 定时执行任务： `while true; do ll -thr ad_aggs_outer.sql; date ; sleep 5; done`
 
----
+```shell script
 
 mysqldump -u aso_ro -p --no-data adData_multi  > schema.sql
 
 mysqldump --user=root -proot --host=localhost --port=3306  --no-data --skip-triggers --skip-add-drop-table --single-transaction --quick --databases "aso_www"
 
 --result-file=/home/youmi/Documents/note/work/aso-www/mysql/data/ddl/aso_www.sql
+```
 
 去除一些分区代码
+```shell script
 
 sed -i -e 's/ AUTO_INCREMENT=[0-9]*\b//g' -e 's/CREATE TABLE/CREATE TABLE IF NOT EXISTS/g' -e 's/^\/\*![0-9]* PARTITION BY.*$/;/' -e 's/^.PARTITION.*ENGINE = .*$//' /home/youmi/Documents/note/work/aso-www/mysql/data/ddl/aso_www.sql
 
-或者：
+#或者：
 
 |  sed 's/ AUTO_INCREMENT=[0-9]*\b//g' | sed 's/CREATE TABLE/CREATE TABLE IF NOT EXISTS/g' | sed -e 's/^\/\*![0-9]* PARTITION BY.*$/;/' -e 's/^.PARTITION.*ENGINE = .*$//'  > /home/youmi/Documents/note/work/aso-www/mysql/data/ddl/aso_www.sql
-
+```
 例子：
 
-```
+```shell script
 mysqldump --no-data  --user=aso_ro -p -h172.19.31.101 --skip-triggers --skip-add-drop-table --single-transaction --quick --databases "aso_www" |  sed 's/ AUTO_INCREMENT=[0-9]*\b//g' | sed 's/CREATE TABLE/CREATE TABLE IF NOT EXISTS/g' | sed -e 's/^\/\*![0-9]* PARTITION BY.*$/;/' -e 's/^.PARTITION.*ENGINE = .*$//'  > ~/tmp/ddl/aso_www.sql
-
 
 # 常量表删除表，直接覆盖
 mysqldump --user=aso_ro -p -h172.19.31.111 --skip-triggers  --single-transaction --quick --databases "agconstants"  | sed -e 's/^\/\*![0-9]* PARTITION BY.*$/;/' -e 's/^.PARTITION.*ENGINE = .*$//'  > ~/tmp/ddl/agconstants.sql
@@ -174,57 +175,51 @@ mysqldump --no-data  --user=aso_ro -p -h172.19.31.111 --skip-triggers  --skip-ad
 # 20的asoData
 mysqldump --no-data  --user=aso_ro -p -h172.19.30.120 --skip-triggers  --skip-add-drop-table --single-transaction --quick --databases "asoData"  |  sed 's/ AUTO_INCREMENT=[0-9]*\b//g' | sed 's/CREATE TABLE/CREATE TABLE IF NOT EXISTS/g' | sed -e 's/^\/\*![0-9]* PARTITION BY.*$/;/' -e 's/^.PARTITION.*ENGINE = .*$//'  > ~/tmp/ddl/asoData_20.sql
 
-
 # 20的asoDataKwr做了分表，导致有很多表，根据时间创建相应的表
-
 
 # 41的adData
 mysqldump --no-data  --user=aso_ro -p -h172.19.40.141 --skip-triggers  --skip-add-drop-table --single-transaction --quick --databases "adData"  |  sed 's/ AUTO_INCREMENT=[0-9]*\b//g' | sed 's/CREATE TABLE/CREATE TABLE IF NOT EXISTS/g' | sed -e 's/^\/\*![0-9]* PARTITION BY.*$/;/' -e 's/^.PARTITION.*ENGINE = .*$//'  > ~/tmp/ddl/adData.sql
 ```
+
 参考链接:
 - https://dev.mysql.com/doc/refman/5.5/en/mysqldump.html
 
 
 ---
-## 事务
+# 事务
 瞬间有两个事务，分别插入唯一冲突的相同记录，另一个记录只会等待先行的事务结束才执行。但是后的事务会报重复插入的错误
 
-
 ---
-## 基准测试
+# 基准测试
+```shell script
+sysbench --mysql-host=127.0.0.1 --mysql-port=3306 --mysql-user=root --mysql-password=root /usr/share/sysbench/oltp_common.lua --tables=10 --table_size=100000 --db-driver=mysql prepare
+
+sysbench --mysql-host=127.0.0.1 --mysql-port=13306 --mysql-user=root --mysql-password=123456 /usr/share/sysbench/oltp_common.lua --tables=10 --table_size=100000 --db-driver=mysql prepare
+
+sysbench --threads=4 --time=20 --report-interval=5 --mysql-host=127.0.0.1 --mysql-port=3306 --mysql-user=root --mysql-password=root /usr/share/sysbench/oltp_read_write.lua --tables=10 --table_size=100000 --db-driver=mysql run
+
+sysbench --threads=4 --time=20 --report-interval=5 --mysql-host=127.0.0.1 --mysql-port=13306 --mysql-user=root --mysql-password=123456 /usr/share/sysbench/oltp_read_write.lua --tables=10 --table_size=100000 --db-driver=mysql run
 ```
-sysbench --mysql-host=127.0.0.1         --mysql-port=3306         --mysql-user=root         --mysql-password=root         /usr/share/sysbench/oltp_common.lua         --tables=10         --table_size=100000 --db-driver=mysql         prepare
-
-sysbench --mysql-host=127.0.0.1         --mysql-port=13306         --mysql-user=root         --mysql-password=123456         /usr/share/sysbench/oltp_common.lua         --tables=10         --table_size=100000 --db-driver=mysql         prepare
-
-sysbench --threads=4         --time=20         --report-interval=5         --mysql-host=127.0.0.1         --mysql-port=3306         --mysql-user=root         --mysql-password=root         /usr/share/sysbench/oltp_read_write.lua         --tables=10         --table_size=100000 --db-driver=mysql         run
-
-sysbench --threads=4         --time=20         --report-interval=5         --mysql-host=127.0.0.1         --mysql-port=13306         --mysql-user=root         --mysql-password=123456         /usr/share/sysbench/oltp_read_write.lua         --tables=10         --table_size=100000 --db-driver=mysql         run
-```
 
 ---
-## partition
+# partition
 
-大表加分区
-https://dba.stackexchange.com/questions/65504/partitioning-large-mysql-table
 
+[大表加分区](https://dba.stackexchange.com/questions/65504/partitioning-large-mysql-table)
 
 ---
-## ch, dla, presto
+# ch, dla, presto
 
 CH用array join
 
-[DLA](https://help.aliyun.com/document_detail/71065.html)
-[Presto](https://prestosql.io/docs/current/functions.html)
-[CH](https://clickhouse.yandex/docs/en/query_language/functions/)
+- [DLA](https://help.aliyun.com/document_detail/71065.html)
+- [Presto](https://prestosql.io/docs/current/functions.html)
+- [CH](https://clickhouse.yandex/docs/en/query_language/functions/)
+
 (是presto的)用cross join unnnest
 
-dla的ad
-
-开始2019/10/13 13:14:6 结束2019/11/13 12:59:59
-
 ---
-## 增量更新的套路
+# 增量更新的套路
 
 ```sql
 
@@ -253,7 +248,6 @@ select ... from tbl where modify_time > @last_modify_time and modify_time <= now
 那能通过now() - 1秒 去解决么？
 
 每小时跑该小时的数据, 具体也有类似的错误？
-
 
 ----
 
