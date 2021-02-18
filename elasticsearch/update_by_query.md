@@ -54,7 +54,43 @@ wait_time = target_time - delete_time = 2 seconds - .5 seconds = 1.5 seconds
 
 运行时主导查询或更新性能，取决于重新索引的文档和集群资源。
 
-虽然能加快任务速度，但要注意并发导致的CPU增加。
+虽然能加快任务速度，但要注意**并发导致的CPU增加**。
+
+---
+## sliced-scroll
+
+```shell script
+GET /twitter/tweet/_search?scroll=1m
+{
+    "slice": {
+        "id": 0,
+        "max": 2
+    },
+    "query": {
+        "match" : {
+            "title" : "elasticsearch"
+        }
+    }
+}
+GET /twitter/tweet/_search?scroll=1m
+{
+    "slice": {
+        "id": 1,
+        "max": 2
+    },
+    "query": {
+        "match" : {
+            "title" : "elasticsearch"
+        }
+    }
+}
+```
+
+上面的栗子，第一个请求返回的是第一个切片（id : 0）的文档，第二个请求返回的是第二个切片的文档。因为我们设置了最大切片数量是 2 ，所以两个请求的结果等价于一次不切片的 scroll 查询结果。
+
+
+- [sliced-scroll](https://www.elastic.co/guide/en/elasticsearch/reference/5.4/search-request-scroll.html#sliced-scroll)
+- [Scroll(示例代码)](https://www.136.la/tech/show-804943.html)
 
 ---
 ## update_by_query

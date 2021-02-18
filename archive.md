@@ -179,6 +179,10 @@
 - [高效的数据压缩编码方式 Protobuf](https://mp.weixin.qq.com/s/Llg1Rb11KRNS1N-seqjeLg )、 [高效的序列化/反序列化数据方式 Protobuf](https://mp.weixin.qq.com/s/22p3VucucXkxxhDq--AYaw ) TODO 如何高效
 - TODO prometheus的时序时间库原理
 
+---
+# 中间件
+- [认识长轮询：配置中心是如何实现推送的？](https://mp.weixin.qq.com/s/YjvL0sUTGHxR3GJFqrP8qg)
+
 
 ---
 # 网络
