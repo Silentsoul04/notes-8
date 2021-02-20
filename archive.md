@@ -200,6 +200,7 @@
 
 - [Socket粘包问题终极解决方案—Netty版（2W字）！](https://juejin.cn/post/6917043797684584461): netty的源码分析
 
+- [K8s中Pod的服务发现](https://mp.weixin.qq.com/s/tjKSq79nrzOt9mLX24dblQ): 简单介绍iptable的概念、具体的代码例子介绍k8s的网络链
 
 ---
 # ES
