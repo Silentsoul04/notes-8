@@ -22,6 +22,8 @@
 
 > 区别
 
+[indices-forcemerge](https://www.elastic.co/guide/en/elasticsearch/reference/5.5/indices-forcemerge.html): only_expunge_deletes参数
+
 ## 6.1 集群节点监控
 活跃线程查看
 

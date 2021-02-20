@@ -209,6 +209,9 @@
 - [ES查询性能优化-优先选择keyword类型](https://summerisgreen.com/blog/2019-12-01-2019-12-01-es%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%BC%98%E5%85%88%E9%80%89%E6%8B%A9keyword%E7%B1%BB%E5%9E%8B.html): 优先使用keyword而不是number!
 - [number?keyword?傻傻分不清楚](https://elasticsearch.cn/article/446): wood大叔
 
+- [Elasticsearch性能监控（一）](https://mp.weixin.qq.com/s/QBjSSYVjHJMLJ6-7yj1bzA): todo
+- [elasticsearch-unassigned-shards](https://www.datadoghq.com/blog/elasticsearch-unassigned-shards): elasticsearch对unassigned-shards的问题排查与恢复
+
 ---
 # 操作系统
 - [自己动手实现一个malloc内存分配器](https://mp.weixin.qq.com/s/FpXLBOVm5P-sNTr2S7PyhQ): 比较直白的内存分配器介绍：我们的简单内存分配器采用了First Fit分配算法；找到一个满足要求的内存块后会进行切分，剩下的作为新的内存块；同时当释放内存时会立即合并相邻的空闲内存块，同时为加快合并速度，我们引入了Donald Knuth的设计方法，为每个内存块增加footer信息。
