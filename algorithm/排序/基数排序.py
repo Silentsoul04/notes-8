@@ -28,7 +28,7 @@ def radix_sort(nums):
     i = 0
     # 从个位出发开始进行排序
     while i < max_digit:
-        # 声明10个数字的数组
+        # 声明20个数字的数组, 包含负数的情况
         res = [[] for _ in range(20)]
         # 获取位数上面的数
         for one in nums:
