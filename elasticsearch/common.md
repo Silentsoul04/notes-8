@@ -3,14 +3,11 @@
 ```shell script
 GET _cat/indices
 
+GET _cluster/pending_tasks
 
 GET _nodes/172.19.31.135
-
 GET _nodes/hot_threads
-
 GET _nodes/stats
-
-GET _cluster/pending_tasks
 
 GET /_tasks
 GET /_tasks?nodes=nodeId1,nodeId2&actions=cluster:*&pretty
@@ -18,6 +15,26 @@ GET /_tasks?detailed=true&actions=*byquery
 GET /_tasks?nodes=85g-AxR1TeitmvHS7pRNMA
 GET /_tasks/JgNKVH7_QGmOModx1VKJww:216610517
 POST _tasks/To4q4mFAQLO7uzSs7PpLQg:103199051/_cancel
+# 按组查询当前的查询语句 show processlist
+GET /_tasks?group_by=parents&detailed=true&actions=*search*
+
+# 每行列出索引的名称，分片号，它是主（p）还是副本（r）分片以及未分配的原因
+GET /_cat/shards?h=index,shard,prirep,state,unassigned.reason
+# 获取有关分片分配问题的更多信息
+GET /_cluster/allocation/explain?pretty
+# 查看各节点的limits配置
+GET _nodes/stats/process?filter_path=**.max_file_descriptors
+
+
+# 获取index的配置包括默认: https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html
+GET advertisement/_settings?include_defaults
+
+GET advertisement/_stats
+
+POST /appinfo/_forcemerge?only_expunge_deletes=true
+POST /appinfo/_forcemerge?max_num_segments=1
+
+GET _cat/thread_pool/force_merge?v&s=name
 
 ```
 
