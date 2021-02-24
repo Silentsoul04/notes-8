@@ -33,9 +33,26 @@ GET advertisement/_stats
 
 POST /appinfo/_forcemerge?only_expunge_deletes=true
 POST /appinfo/_forcemerge?max_num_segments=1
+# 获取段大小
+GET /_cat/segments
+GET /_cat/segments?index=ag*&s=size:desc&v=true
 
 GET _cat/thread_pool/force_merge?v&s=name
 
+PUT /*/_settings
+{
+  "index" : {
+    "number_of_replicas" : 0
+  }
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "brand_v5.0.1", "alias" : "brand" } },
+        { "add" : { "index" : "ag_brand_v8.0.0", "alias" : "brand" } }
+    ]
+}
 ```
 
 ---

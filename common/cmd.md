@@ -1,3 +1,20 @@
+# expr
+
+'expr'支持模式匹配和字符串操作。字符串表达式的优先级高于数值表达式和逻辑关系表达式。
+
+```
+'STRING : REGEX'
+'length STRING'
+```
+
+例子：
+
+```shell script
+# 正则匹配
+expr $CI_BUILD_REF_NAME : "\(master\|develop\|.*\)$" && export DOCKER_IMAGE_TAG=$CI_BUILD_REF_NAME
+```
+
+
 # 详解用$获取变量值是否要加双引号或者大括号
 
 单引号： 单引号定义字符串所见即所得，即将单引号内的内容原样输出，或者描述为单引号里面看到的是什么就会输出什么。单引号是全引用，被单引号括起的内容不管是常量还是变量都不会发生替换。
