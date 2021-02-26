@@ -167,9 +167,29 @@ bitXor(exp2(31) - 1, exp2(toDayOfMonth(s_d) - 1) - 1) as s_b,
 exp2(toDayOfMonth(e_d)) - 1 as e_b
 ```
 
+# 数组函数
+
+```sql
+select  has(bitmaskToArray(2147483649), 2147483648), bitmaskToArray(0), arrayElement(bitmaskToArray(1032), 1)
+-- 1 [] 8
+```
+
+# style位图展开
+
+```sql
+select
+   arrayConcat(arrayMap(x -> log2(x) + 1 + 2000, bitmaskToArray(style_game)), arrayMap(x -> log2(x) + 1 + 1000, bitmaskToArray(style_app))),
+   *
+from
+   mt.ad_aggs_outer
+where
+   ad_year_month = 2101
+   and style_app > 0
+   or style_game > 0 limit 100
+```
 
 ---
-# 数据表统计
+# 数据表信息统计
 
 ```sql
 
@@ -202,8 +222,6 @@ ClickHouse本机协议是同步的：所有传入查询都连续执行。Clickho
 - https://clickhouse-driver.readthedocs.io/en/latest/quickstart.html#async-and-multithreading
 
 ```python
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from clickhouse_driver import Client
 
 CH_CLIENT = Client("172.16.8.4", user="default", password="")
