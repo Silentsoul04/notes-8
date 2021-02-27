@@ -8,19 +8,29 @@ https://leetcode-cn.com/problems/sort-an-array/
 import random
 
 
+def charu_sort(nums):
+    length = len(nums)
+    for i in range(1, length):
+        while (i - 1) >= 0 and nums[i-1] > nums[i]:
+            # 可以不用每次交换两个，等到最后在交换
+            nums[i-1], nums[i] = nums[i], nums[i-1]
+            i -= 1
+    return nums
+
+
 class Solution(object):
-    def sort(self, arrays):
-        for i in range(len(arrays)):
+    def sort(self, nums):
+        for i in range(len(nums)):
             # i = 2
             index = i
-            current = arrays[index]
-            while index > 0 and arrays[index - 1] > current:
-                arrays[index] = arrays[index - 1]
+            current = nums[index]
+            while index > 0 and nums[index - 1] > current:
+                nums[index] = nums[index - 1]
                 index -= 1
-            arrays[index] = current
+            nums[index] = current
 
-        # return sorted(arrays)
-        return arrays
+        # return sorted(nums)
+        return nums
 
 
 print(Solution().sort([2, 3, 1, 4]))
