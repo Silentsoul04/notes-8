@@ -48,6 +48,7 @@ def partition(arr, left, right):
         # 通过i来进行递增遍历所有的参数，如果发现数值小于基准的数值，则移动index和i的位置（第一次都是相同的值不移动）
         # index： **index记录的是比基准值要大数字的下标位置， 比基准值要小的数字都在index的左边。所以遇到大于基准值的不移动，以作下次的交换。**
         if arr[i] < arr[pivot]:
+            # 跟下面的算法导论版本一致
             swap(arr, i, index)
             index += 1
         i += 1
@@ -96,6 +97,7 @@ class Solution:
         x = array[r]  # 最后一个元素作为基准值
         i = l
         for j in range(l, r):
+            # i指向的是比基准要大的窗口的首个元素的下标
             # 如果发现比基准值的数值要大，则停止i下标，用作下一次的交换
             # 从左往右进行遍历，说是进行交换。但是如果都是有序的话，就交换一个寂寞。
             # 交换的场景：当某个数比基准值要大，这时候i停止移动，但是j继续移动。
@@ -111,7 +113,32 @@ class Solution:
         """另一种排序方式"""
 
 
-
-
 arr = [5, 3, 2, 4, 7, 8, 1]
 print('--2', Solution().sortArray(arr))
+
+
+# 严蔚敏《数据结构》
+def quick(nums, l, r):
+    if l >= r:
+        return
+    s = l
+    e = r
+    while s < e:
+        # 从后面先遍历就可以了？
+        while s < e and nums[e] > nums[l]:
+            e -= 1
+        # 该遍历放前面会造成s会停留在比基准大的位置
+        # 而从后面遍历则会让s停留在比基准小的位置
+        while s < e and nums[s] <= nums[l]:
+            s += 1
+        nums[s], nums[e] = nums[e], nums[s]
+    # s停留在比基准小的位置，所有还得把基准移到s的位置上
+    nums[s], nums[l] = nums[l], nums[s]
+    quick(nums, l, s-1)
+    quick(nums, s+1, r)
+
+
+def quick_sort(nums):
+    length = len(nums)
+    quick(nums, 0, length-1)
+    return nums
