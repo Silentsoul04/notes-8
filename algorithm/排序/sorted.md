@@ -2,6 +2,8 @@
 - [leetcode排序数组](https://leetcode-cn.com/problems/sort-an-array/)
 
 
+![](./lADPBGKocQu6oKTNC9DND8A_4032_3024.jpg)
+
 # python思想
 
 完善的基本工作过程是：
