@@ -25,6 +25,8 @@ class Solution:
         for j in strs[1:]:
             if result == '':
                 return result
+            # 返回的0为开始下标，-1是失败
+            # result等到最后为''空字符，find完也就是0了
             while j.find(result) != 0:
                 result = result[:-1]
         return result
@@ -42,6 +44,7 @@ class Solution:
         :rtype: str
         """
         res = ""
+        # [["f", "f", "f"], "l", "a","a"]
         for tmp in zip(*strs):
             tmp_set = set(tmp)
             if len(tmp_set) == 1:
