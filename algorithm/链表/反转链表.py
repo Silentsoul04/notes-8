@@ -17,6 +17,10 @@
 
 
 # Definition for singly-linked list.
+from notebook.algorithm.链表.utils import init_ln
+from notebook.algorithm.链表.utils import print_ln
+
+
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -25,4 +29,35 @@ class ListNode:
 
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
-        pass
+        if not head:
+            return head
+
+        tmp = head.next
+        # 第一个节点置空，防止死循环
+        head.next = None
+
+        while tmp is not None:
+            # 保留下下节点
+            nn = tmp.next
+            # 反转节点
+            tmp.next = head
+            head = tmp
+            tmp = nn
+        return head
+
+
+
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        prev = None
+        curr = head
+        while curr is not None:
+            next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next
+        # 返回的是prev
+        return prev
+head = init_ln([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+print_ln(Solution().reverseList(head))

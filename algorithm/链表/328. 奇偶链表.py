@@ -24,12 +24,72 @@
 
 
 # Definition for singly-linked list.
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
+from notebook.algorithm.链表.utils import ListNode
+from notebook.algorithm.链表.utils import init_ln
+from notebook.algorithm.链表.utils import print_ln
+
+
+class SolutionF:
+    def oddEvenList(self, head: ListNode) -> ListNode:
+        # 这个代码只是后面的两个数依次移动，与题目不符
+        tmp = head
+        while tmp.next and tmp.next.next:
+            next = tmp.next
+            nn = next.next
+            tmp.next = next.next
+            next.next = nn.next
+            nn.next = next
+            tmp = tmp.next.next
+        return head
 
 
 class Solution:
     def oddEvenList(self, head: ListNode) -> ListNode:
-        pass
+        if not head:
+            return head
+        ji_ln = head
+        ou_ln = head.next
+        # 将下一个基数移到前一个基数的后面，最后的偶数的next为该移动基数的next
+        while ou_ln is not None and ou_ln.next:
+            nextji_ln = ou_ln.next
+            ou_ln.next = nextji_ln.next
+            nextji_ln.next = ji_ln.next
+            ji_ln.next = nextji_ln
+            ji_ln = ji_ln.next
+            ou_ln = ou_ln.next
+
+        return head
+
+
+"""
+官方题解
+
+作者：LeetCode-Solution
+链接：https://leetcode-cn.com/problems/odd-even-linked-list/solution/qi-ou-lian-biao-by-leetcode-solution/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+"""
+
+
+class Solution:
+    def oddEvenList(self, head: ListNode) -> ListNode:
+        """比自己想得移动简单. 偶节点的头不移动，最后再补回来"""
+        if not head:
+            return head
+
+        evenHead = head.next
+        odd, even = head, evenHead
+        # 都看懂了吧，先一个左正蹬，把奇数节点串一块儿，再一个右鞭腿，把偶数节点串一起，然后啪，很快啊，把两个连成一条链表，可以说是训练有素，有bear来了。
+        while even and even.next:
+            odd.next = even.next
+            odd = odd.next
+            even.next = odd.next
+            even = even.next
+        odd.next = evenHead
+        return head
+
+
+head = init_ln([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+print_ln(Solution().oddEvenList(head))
