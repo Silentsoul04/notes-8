@@ -46,7 +46,10 @@ class Solution:
         return head
 
 
-
+"""
+迭代： 当前节点的下一个节点，暂存。当前节点的下个节点变成前一个节点。
+进入下一次迭代： 当前节点变成前一个节点，暂存的下一个节点变成当前节点。
+"""
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
         prev = None
