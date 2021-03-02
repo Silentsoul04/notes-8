@@ -58,6 +58,23 @@ class Solution:
             curr = next
         # 返回的是prev
         return prev
+
+"""
+递归
+
+返回末尾，倒数第二个（当前）指向末尾，所以当前（倒数第二个）的下一个（末尾）的下一个指向当前，然后将当前置空，返回末尾。
+
+"""
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        if not head or head.next is None:
+            return head
+        new_head = self.reverseList(head.next)
+        head.next.next = head
+        head.next = None
+        return new_head
+        # 返回的是prev
+
 head = init_ln([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
 print_ln(Solution().reverseList(head))
