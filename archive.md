@@ -219,3 +219,5 @@
 - [函数运行时在内存中是什么样子？](https://mp.weixin.qq.com/s?__biz=MzU2NTYyOTQ4OQ==&mid=2247484963&idx=1&sn=542d3bec57c6a9dfc17c83005fd2c030&chksm=fcb9817dcbce086b10cb44cad7c9777b0088fb8d9d6baf71ae36a9b03e1f8ef5bec62b79d6f7&scene=21#wechat_redirect): 跳转地址、存放参数、局部变量、寄存器初始值。不要创建过大的局部变量、函数栈帧，也就是调用层次不能太多
 
 - [记一次面试：进程之间究竟有哪些通信方式？](https://mp.weixin.qq.com/s/CGqy0j5WvarN6mTmYB8vSA)
+
+- [read文件一个字节实际会发生多大的磁盘IO？](https://mp.weixin.qq.com/s/LcuWAg10hxZjCoyR1cMJSQ): 深入内核组件，读取文件的过程
