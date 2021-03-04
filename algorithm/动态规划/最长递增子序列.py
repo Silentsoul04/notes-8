@@ -14,8 +14,10 @@ dp[i] 表示以 nums[i] 这个数结尾的最长递增子序列的长度。
 nums[5] = 3，既然是递增子序列，我们只要找到前面那些结尾比 3 小的子序列，然后把 3 接到最后，就可以形成一个新的递增子序列，而且这个新的子序列长度加一。
 
 """
+from typing import List
 
 
+"""时间复杂度：O(n^2)"""
 class Solution:
     def lengthOfLIS(self, nums):
         if not nums:
@@ -72,7 +74,24 @@ class SolutionHalf:
         return piles
 
 
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        dp = [1]
+        max_dp = 1
+        for idx in range(1, len(nums)):
+            v = nums[idx]
+            idx -= 1
+            max_cur = 1
+            while idx >= 0:
+                if nums[idx] < v and (dp[idx] + 1) > max_cur:
+                    max_cur = dp[idx] + 1
+                idx -= 1
+            dp.append(max_cur)
+            if max_cur > max_dp:
+                max_dp = max_cur
+        return max_dp
+
+
 arr = [10, 9, 2, 5, 3, 7, 101, 18]
 print(Solution().lengthOfLIS(arr))
 print(SolutionHalf().lengthOfLIS(arr))
-

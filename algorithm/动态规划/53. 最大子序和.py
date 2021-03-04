@@ -23,10 +23,15 @@ from typing import List
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         dp = [nums[0]]
+        result = nums[0]
         for idx, v in enumerate(nums[1:]):
             # 可以理解为，如果上一个元素>0则加上
-            dp.append(max(dp[idx] + v, v))
-        return max(dp)
+            # 偷懒了，不能用max
+            dpv = max(dp[idx] + v, v)
+            dp.append(dpv)
+            result = max(dpv, result)
+        # ！：不能用max，直接通过在循环里面比较结果得到最大
+        return result
 
 
 print(Solution().maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
