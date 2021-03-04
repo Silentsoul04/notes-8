@@ -13,12 +13,34 @@
 
 
 # Definition for singly-linked list.
+from notebook.algorithm.链表.utils import init_ln
+
+
 class ListNode:
     def __init__(self, x):
         self.val = x
         self.next = None
 
 
+"""hash表也可以"""
 class Solution:
     def hasCycle(self, head: ListNode) -> bool:
-        pass
+        cur = head
+        two_cur = head
+        while two_cur and two_cur.next:
+            two_cur = two_cur.next.next
+            cur = cur.next
+            if two_cur == cur:
+                return True
+        return False
+
+
+head1 = init_ln([1, 3, 5, 7, 9])
+
+ln_list = []
+while head1:
+    ln_list.append(head1)
+    head1 = head1.next
+pos = 2
+ln_list[-1].next = ln_list[2]
+print(Solution().hasCycle(ln_list[0]))
