@@ -15,7 +15,6 @@
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 """
 
-
 # Definition for singly-linked list.
 from notebook.algorithm.链表.utils import init_ln
 from notebook.algorithm.链表.utils import print_ln
@@ -50,6 +49,8 @@ class Solution:
 迭代： 当前节点的下一个节点，暂存。当前节点的下个节点变成前一个节点。
 进入下一次迭代： 当前节点变成前一个节点，暂存的下一个节点变成当前节点。
 """
+
+
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
         prev = None
@@ -62,12 +63,15 @@ class Solution:
         # 返回的是prev
         return prev
 
+
 """
 递归
 
 返回末尾，倒数第二个（当前）指向末尾，所以当前（倒数第二个）的下一个（末尾）的下一个指向当前，然后将当前置空，返回末尾。
 
 """
+
+
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
         if not head or head.next is None:
@@ -77,6 +81,7 @@ class Solution:
         head.next = None
         return new_head
         # 返回的是prev
+
 
 head = init_ln([1, 2, 3, 4, 5, 6, 7, 8, 9])
 

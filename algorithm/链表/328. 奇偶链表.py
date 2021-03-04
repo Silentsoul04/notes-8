@@ -43,6 +43,20 @@ class SolutionF:
         return head
 
 
+"""
+当偶数的后面还存在：
+则将下一个基数暂存，
+
+插入偶数节点：
+然后下一个基数的偶数放到当前偶数后面
+
+插入基数节点：
+将下个基数的下一个节点设为当前基数的下一个
+当前基数的下个节点设为下一个基数，完成插入
+
+迭代奇偶节点
+
+"""
 class Solution:
     def oddEvenList(self, head: ListNode) -> ListNode:
         if not head:
@@ -62,7 +76,7 @@ class Solution:
 
 
 """
-官方题解
+官方题解： 都看懂了吧，先一个左正蹬，把奇数节点串一块儿，再一个右鞭腿，把偶数节点串一起，然后啪，很快啊，把两个连成一条链表，可以说是训练有素，有bear来了。
 
 作者：LeetCode-Solution
 链接：https://leetcode-cn.com/problems/odd-even-linked-list/solution/qi-ou-lian-biao-by-leetcode-solution/

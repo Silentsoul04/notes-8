@@ -47,3 +47,28 @@ class Solution:
         # h.next则是要删除的节点
         h.next = h.next.next
         return s.next
+
+
+"""
+双指针
+作者：LeetCode-Solution
+链接：https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/solution/shan-chu-lian-biao-de-dao-shu-di-nge-jie-dian-b-61/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+"""
+
+
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        dummy = ListNode(0, head)
+        first = head
+        second = dummy
+        for i in range(n):
+            first = first.next
+
+        while first:
+            first = first.next
+            second = second.next
+
+        second.next = second.next.next
+        return dummy.next
