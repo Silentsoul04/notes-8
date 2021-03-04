@@ -148,6 +148,7 @@
 ---
 # 设计模式
 - [ORM is an anti-pattern](https://seldo.com/posts/orm_is_an_antipattern): ORM的一些对比和作者说其反模式的理解
+- [我们为什么要用IoC和AOP](https://www.jianshu.com/p/feb9521388cf): 本质是组件的调用方参与了组件的创建和配置工作。
 
 
 ---
