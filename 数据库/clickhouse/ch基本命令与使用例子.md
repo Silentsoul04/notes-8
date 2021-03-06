@@ -8,14 +8,53 @@ select * from mt.ad_effect where stat_time = '2020-12-11' and ad_id in (11973184
 
 ---
 # 随机数
-```
+```sql
 SELECT * FROM numbers(10);
 SELECT * FROM numbers(0, 10);
 SELECT * FROM system.numbers LIMIT 10;
+select arrayJoin(range(intDiv(max(ad_id), 10000000) + 1)) as round from mt.ad_aggs_outer;
+```
+
+```sql
+SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2) LIMIT 3
+```
+
+- [新版本随机数据生成](https://clickhouse.tech/docs/en/sql-reference/table-functions/generate/)
+
+```sql
+-- 数机数组的随机元素
+
+
+select range(3);
+
+select (rand() % length(range(3))) + 1;
+
+select range((rand() % 3) + 1);
+
+-- 生成一个5位之内的顺序数组，然后加上3之内的随机数
+select arrayMap((x) -> x + rand() % 3, range((rand() % 5) + 1))
+
+select number, arrayMap((x) -> x + rand() % 10, range((rand() % 5) + 1)) FROM system.numbers LIMIT 10;
+
+
+SELECT arrayElement(range(3), ((rand() % length(range(3))) + 1));
+
+-- 获取数组的任意一位
+with [101, 102, 103, 104, 105, 106, 107, 108, 109, 110] as constant
+select arrayElement(constant, ((rand() % length(constant)) + 1))
+
+select arraySort((x) -> x + rand(), [1, 2, 3])
+
+select arrayMap((x) -> x + rand(), [1, 2, 3])
+
+-- 随机数在arrayMap是一样的
+with [101, 102, 103, 104, 105, 106, 107, 108, 109, 110] as constant
+select arrayMap((x) -> arrayElement(constant, ((rand() % length(constant)) + 1)), [1, 2, 3])
+
 ```
 
 ---
-ch的python的clent
+# ch的python的clent
 
 ```python
 client.db_execute(
