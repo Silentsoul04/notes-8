@@ -33,8 +33,9 @@ class Solution:
         length = len(s)
         for i in range(length):
             for j in range(length - i - 1):
-                s[j], s[j+1] = s[j+1], s[j]
+                s[j], s[j + 1] = s[j + 1], s[j]
         return s
+
 
 input = [random.randint(1, 20) for _ in range(0, 10)]
 # 无法处理有负数的例子， 注意负数取于取模问题， 注意有负数查找最大位数的长度逻辑
@@ -56,6 +57,7 @@ class Solution:
             l += 1
             r -= 1
         return s
+
 
 input = [random.randint(1, 20) for _ in range(0, 10)]
 # 无法处理有负数的例子， 注意负数取于取模问题， 注意有负数查找最大位数的长度逻辑
