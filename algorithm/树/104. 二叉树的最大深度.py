@@ -23,8 +23,9 @@
 from notebook.algorithm.树.utils import TreeNode
 from notebook.algorithm.树.utils import init_tree
 
-
 """递归思路"""
+
+
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
         if not root:
@@ -43,8 +44,9 @@ class Solution:
 a = init_tree([3, 9, 20, None, None, 15, 7])
 print(Solution().maxDepth(a))
 
-
 """优雅很多"""
+
+
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
         if not root:
@@ -64,6 +66,7 @@ print(Solution().maxDepth(a))
 
 队列的形式广度遍历
 """
+
 
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
