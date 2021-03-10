@@ -27,7 +27,7 @@ GET _nodes/stats/process?filter_path=**.max_file_descriptors
 
 
 # 获取index的配置包括默认: https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html
-GET advertisement/_settings?include_defaults
+GET advertisement/_settgitings?include_defaults
 
 GET advertisement/_stats
 

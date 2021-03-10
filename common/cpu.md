@@ -227,3 +227,25 @@ PRI是比较好理解的，即进程的优先级，或者通俗点说就是程�
 
 > nice值高，可以说是改变过优先级的进程的占用CPU百分比。一般高，说明不停的有进程切换优先级。
 
+
+---
+# Linux系统的ECS实例中如何查看物理CPU和内存信息
+
+说明：
+
+总核数 = 物理CPU个数 × 每颗物理CPU的核数
+总逻辑CPU数 = 物理CPU个数 × 每颗物理CPU的核数 × 超线程数
+
+查看物理CPU个数。
+`cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l`
+查看每个物理CPU中core的个数，即CPU核数。
+`cat /proc/cpuinfo| grep "cpu cores"| uniq`
+查看逻辑CPU的个数。
+`cat /proc/cpuinfo| grep "processor"| wc -l`
+查看CPU型号。
+`cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c`
+查看内存信息。
+`cat /proc/meminfo`
+
+- [Linux系统的ECS实例中如何查看物理CPU和内存信息](https://help.aliyun.com/document_detail/41569.html)
+- [云产品定价](https://cn.aliyun.com/price/product#/ecs/detail)

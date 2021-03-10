@@ -12,7 +12,24 @@ select * from mt.ad_effect where stat_time = '2020-12-11' and ad_id in (11973184
 SELECT * FROM numbers(10);
 SELECT * FROM numbers(0, 10);
 SELECT * FROM system.numbers LIMIT 10;
+-- 获取广告id的分批数，一千万一批
 select arrayJoin(range(intDiv(max(ad_id), 10000000) + 1)) as round from mt.ad_aggs_outer;
+
+-- 获取年月和广告批次
+select ad_year_month,
+       round
+from
+  (select toInt32(formatDateTime(addMonths(today(), -number), '%y%m')) as ad_year_month,
+          1 as f
+   from system.numbers
+   limit 6
+   offset 2) t1
+left join
+  (select arrayJoin(range(intDiv(max(ad_id), 10000000) + 1)) as round,
+          1 as f
+   from mt.ad_aggs_outer) t2 on (t1.f = t2.f)
+order by ad_year_month,
+         round
 ```
 
 ```sql
@@ -458,3 +475,13 @@ move partition 是新版本特性，19.16还没有该功能
 ```sql
 ALTER TABLE mt.ad_aggs_outer REPLACE PARTITION 1 FROM mt.ad_aggs_outer_shadow
 ```
+
+# bitmap
+
+`bitmapToArray(groupBitmapOrState(ad_id_bm)) AS ad_ids`
+
+# LowCardinality
+
+搬电脑后ch的容器不能正常启动，是因为某个连mysql引擎的host改变了，无法连接。更改metadata里面的建表语句，或者直接删除进行解决
+
+创建表的时候LowCardinality(UInt32)，默认不允许。可以将session的配置更改为: SET allow_suspicious_low_cardinality_types=1

@@ -1,3 +1,14 @@
+# for循环、循环变量值
+
+```shell script
+for AD_YEAR_MONTH in 2101
+do
+    source ./export_outer.sh
+done
+```
+
+- [shell for循环、循环变量值付给其他shell脚本](https://blog.csdn.net/July_whj/article/details/73480076)
+
 # expr
 
 'expr'支持模式匹配和字符串操作。字符串表达式的优先级高于数值表达式和逻辑关系表达式。
