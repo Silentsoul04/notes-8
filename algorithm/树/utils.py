@@ -20,6 +20,25 @@ def init_tree(input):
     return nums[0]
 
 
+def print_tree(root):
+    # TODO: fix
+    tmp = [root]
+    result = []
+    while tmp:
+        new_tmp = []
+        # 要判断是不是下一层，需不需要补左边的空
+        for i in tmp:
+            result.append(i.val if i else None)
+            if i.left or i.right:
+                new_tmp.append(i.left)
+                new_tmp.append(i.right)
+        tmp = new_tmp
+    print(result)
+
+
+
+
+
 if __name__ == "__main__":
     a = init_tree([3, 9, 20, None, None, 15, 7])
-    print(a)
+    print_tree(a)
