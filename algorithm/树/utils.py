@@ -8,7 +8,7 @@ class TreeNode:
 
 def init_tree(input):
     length = len(input)
-    nums = [TreeNode(val=i) if i else None for i in input]
+    nums = [TreeNode(val=i) if i is not None else None for i in input]
     for i in range(length):
         left = 2 * i + 1
         right = 2 * i + 2
