@@ -166,3 +166,14 @@ a = init_tree([1, 1])
 a = init_tree([0, None, -1])
 res = Solution().isValidBST(a)
 print(res)
+
+"""
+返回中序遍历的数组
+
+作者：LeetCode
+链接：https://leetcode-cn.com/problems/delete-node-in-a-bst/solution/shan-chu-er-cha-sou-suo-shu-zhong-de-jie-dian-by-l/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+"""
+def inorder(root):
+    return inorder(root.left) + [root.val] + inorder(root.right) if root else []

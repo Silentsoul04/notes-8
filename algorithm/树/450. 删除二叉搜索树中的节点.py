@@ -114,8 +114,6 @@ class Solution:
         return root
 
 
-
-
 a = init_tree([5, 3, 6, 2, 4, None, 7])
 res = Solution().deleteNode(a, 3)
 res = Solution().deleteNode(a, 0)
@@ -136,3 +134,70 @@ print(res.val)
 
 也没错吧？
 """
+
+"""
+题解：递归！
+
+作者：LeetCode
+链接：https://leetcode-cn.com/problems/delete-node-in-a-bst/solution/shan-chu-er-cha-sou-suo-shu-zhong-de-jie-dian-by-l/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+"""
+
+
+class Solution:
+    """
+    注意找前驱和后驱是直接把跟节点传进去。而且是判断至少有一个才进来
+
+    重要的是其然后利用递归的思路，再次找到替换的节点进行删除！
+
+    这样避免了我上面代码里面的各种pre_node的临时变量
+
+    题解跟我写的代码思路不一样的场景是其没有右子树，拿的是左子树的最大节点，而我是直接把子树跟节点往上移
+    """
+    def successor(self, root):
+        """
+        One step right and then always left
+        """
+        root = root.right
+        while root.left:
+            root = root.left
+        return root.val
+
+    def predecessor(self, root):
+        """
+        One step left and then always right
+        """
+        root = root.left
+        while root.right:
+            root = root.right
+        return root.val
+
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        if not root:
+            return None
+
+        # 递归的思路往下走
+        # delete from the right subtree
+        if key > root.val:
+            root.right = self.deleteNode(root.right, key)
+        # delete from the left subtree
+        elif key < root.val:
+            root.left = self.deleteNode(root.left, key)
+        # delete the current node
+        else:
+            # the node is a leaf
+            if not (root.left or root.right):
+                root = None
+            # the node is not a leaf and has a right child
+            elif root.right:
+                # 判断至少有子树才进来。用右子树的最少值替换掉当前节点
+                root.val = self.successor(root)
+                # 然后利用递归的思路，再次找到替换的节点进行删除！
+                root.right = self.deleteNode(root.right, root.val)
+            # the node is not a leaf, has no right child, and has a left child
+            else:
+                root.val = self.predecessor(root)
+                root.left = self.deleteNode(root.left, root.val)
+
+        return root
