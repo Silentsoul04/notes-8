@@ -36,6 +36,11 @@ def print_tree(root):
     print(result)
 
 
+def check(func, args, exc):
+    res = func(*args)
+    print(res)
+    assert res == exc
+
 
 
 
