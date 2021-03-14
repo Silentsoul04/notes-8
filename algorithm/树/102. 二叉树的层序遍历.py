@@ -9,6 +9,10 @@
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/binary-tree-level-order-traversal
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+层序遍历需要区分每一层，如果是队列的形式，需要每次进入队列前，进行操作。获取队列的长度。
+
+深度遍历的应用场景：最短路径
 """
 from typing import List
 
@@ -39,6 +43,13 @@ class Solution:
         return result
 
 
+"""
+记树上所有节点的个数为 nn。
+
+时间复杂度：每个点进队出队各一次，故渐进时间复杂度为 O(n)O(n)。
+空间复杂度：队列中元素的个数不超过 nn 个，故渐进空间复杂度为 O(n)O(n)。
+
+"""
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         if not root:
