@@ -485,3 +485,17 @@ ALTER TABLE mt.ad_aggs_outer REPLACE PARTITION 1 FROM mt.ad_aggs_outer_shadow
 搬电脑后ch的容器不能正常启动，是因为某个连mysql引擎的host改变了，无法连接。更改metadata里面的建表语句，或者直接删除进行解决
 
 创建表的时候LowCardinality(UInt32)，默认不允许。可以将session的配置更改为: SET allow_suspicious_low_cardinality_types=1
+
+```sql
+ALTER TABLE ad_industry_tag MODIFY COLUMN `tag_id` Array(LowCardinality(Int32))
+
+ALTER TABLE ad_aggs_by_day_channel MODIFY COLUMN `channel_id` LowCardinality(UInt32);
+
+set allow_suspicious_low_cardinality_types=1
+```
+
+# rename
+
+```sql
+RENAME TABLE [db11.]name11 TO [db12.]name12, [db21.]name21 TO [db22.]name22, ... [ON CLUSTER cluster]
+```
