@@ -5,7 +5,16 @@
 select dt from (
     select ARRAY [SUBDATE(current_date, 1), SUBDATE(current_date, 2)] as map_data
 ) cross join unnest(map_data) as t(dt)
+
+
+SELECT t.m, t.n
+FROM (
+  SELECT MAP(ARRAY['foo', 'bar'], ARRAY[1, 2]) as map_data
+)
+CROSS JOIN unnest(map_data) AS t(m, n);
+
 ```
+
 
 
 ---

@@ -28,8 +28,9 @@
 """
 from notebook.algorithm.树.utils import check
 
+"""注意是子串！而不是子序列，子序列直接遍历set的长度就是了"""
 
-"""注意是子串！而不是子序列"""
+
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         # 通过字典维护窗口的重复字符信息
@@ -76,6 +77,8 @@ check(Solution().lengthOfLongestSubstring, ["pwwkew"], 3)
 来源：力扣（LeetCode）
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 """
+
+
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         # 哈希集合，记录每个字符是否出现过
@@ -106,6 +109,7 @@ class Solution:
 https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/wu-zhong-fu-zi-fu-de-zui-chang-zi-chuan-by-leetc-2/376956
 """
 
+
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         k, res, c_dict = -1, 0, {}
@@ -115,5 +119,5 @@ class Solution:
                 c_dict[c] = i
             else:
                 c_dict[c] = i
-                res = max(res, i-k)
+                res = max(res, i - k)
         return res
