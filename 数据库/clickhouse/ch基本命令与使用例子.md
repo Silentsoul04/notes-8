@@ -5,6 +5,13 @@
 select * from mt.ad_effect where stat_time = '2020-12-11' and ad_id in (119731843, 127855423)  order by ad_id, modify_time desc limit 3 by ad_id
 
 
+---
+# 排查cpu
+
+```shell script
+sudo perf top -p $(pidof clickhouse-server)
+sudo gdb -p $(pidof clickhouse-server) + thread apply all bt
+```
 
 ---
 # 随机数
