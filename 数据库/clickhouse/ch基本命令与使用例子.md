@@ -304,6 +304,10 @@ redash导出的数据，如果是datetime的话，格式会不正常，少了秒
 ```shell script
 select dt,area,ad_id,ad_creative_id,toUnixTimestamp(ad_create),platform,format,media,appid,position from mt.ad_log where dt = today() and ad_create between '2020-03-12 15:53:00' and '2020-03-12 15:54:00'
 
+clickhouse-client --query "SELECT * FROM table INTO OUTFILE 'file' FORMAT CSV"
+
+clickhouse-client --query "SELECT * from table" --format FormatName > result.txt
+
 docker cp ~/Downloads/获取ad_log聚合数据_2020_03_12.csv my-clickhouse-server-v2:/2020_03_12.csv
 
 cat /2020_03_12.csv | clickhouse-client --query="INSERT INTO test.ad_log FORMAT CSVWithNames";
