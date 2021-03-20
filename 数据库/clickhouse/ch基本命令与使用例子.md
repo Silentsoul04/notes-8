@@ -6,10 +6,28 @@ SELECT name, value FROM system.settings WHERE name LIKE 'log_queries';
 
 -- 查询日志
 select * from system.query_log;
+SELECT  user,
+    client_hostname AS host,
+    client_name AS client,
+    formatDateTime(query_start_time, '%T') AS started,
+    query_duration_ms / 1000 AS sec,
+    round(memory_usage / 1048576) AS MEM_MB,
+    result_rows AS RES_CNT,
+    toDecimal32(result_bytes / 1048576, 6) AS RES_MB,
+    read_rows AS R_CNT,
+    round(read_bytes / 1048576) AS R_MB,
+    written_rows AS W_CNT,
+    round(written_bytes / 1048576) AS W_MB,
+    query
+  FROM system.query_log
+WHERE type = 2
+ORDER BY query_duration_ms DESC
+LIMIT 10
 ```
 
 - https://clickhouse.tech/docs/en/operations/system-tables/#system-tables
 - https://clickhouse.tech/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-query-log
+- [sql-for-clickhouse-dba](https://altinity.com/blog/2020/5/12/sql-for-clickhouse-dba)
 
 ---
 # 排查cpu

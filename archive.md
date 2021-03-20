@@ -131,10 +131,15 @@
 
 - [LowCardinality](./数据库/clickhouse/LowCardinality.md)： 总结与测试
 
-## 其他
+## 文章
 - [five-ways-to-handle-as-of-queries-in-clickhouse](https://altinity.com/blog/2020/4/8/five-ways-to-handle-as-of-queries-in-clickhouse): 通过比较5种方式去，来说明怎么拿时间序列的最靠近的一行（窗口、Top K 的场景）。比较贴近生产的例子。
 - [joins-in-clickhouse-materialized-views](https://altinity.com/blog/2020-07-14-joins-in-clickhouse-materialized-views):  通过物化视图和join操作，进行实时汇总进汇总表的操作。但是要注意join的一些小陷阱。ClickHouse只触发联接中最左边的表。其他表可以为转换提供数据，但是视图不会对这些表上的插入做出反应。
 - [clickhouse-dictionaries-reloaded](https://altinity.com/blog/2020/5/19/clickhouse-dictionaries-reloaded): 字典的一个改版优化。之前字典声明和使用的不便。新版本可以直接通过ddl进行管理，而且能更好优化join查询。它只需要5次调用，而不需要扫描1000万行表（？：字面理解是左边直接调用了5次join。还是说字典直接在内存，所以能优化数据装载过程而已）。
+- [大规模并行日志处理对比](https://altinity.com/blog/2017/9/13/massive-parallel-log-processing-with-clickhouse): 通过限制cpu核数测试其性能差距。查询的姿势影响着并发性。
+- [集群的查询分析对比](https://altinity.com/blog/2017/6/16/clickhouse-in-a-general-analytical-workload-based-on-star-schema-benchmark): 集群和子查询都线性提升3倍，两表join提升不到2倍，三表join只略微提升。通过子查询避免多表join，能优化6倍
+- [lz4和zstd对比](https://altinity.com/blog/2017/11/21/compression-in-clickhouse): zstd压缩率更高。冷运行时间几乎没有差异（因为IO时间占优势的减压时间），但热运行中LZ4的速度要快得多（因为IO操作少得多，并且解码性能成为主要因素）。如果涉及到大范围扫描，则zstd。如果io足够快，则lz4。如果超快ssd，可以指定无压缩。
+- [sql-for-clickhouse-dba](https://altinity.com/blog/2020/5/12/sql-for-clickhouse-dba): 系统表的一些指标、查询相关信息的查询语句
+
 
 ## 位图
 - [ClickHouse留存分析工具十亿数据秒级查询方案](https://mp.weixin.qq.com/s/Bh5aEvpBgSEDkTozpfMFkw): 通过位图的，优化留存用户的分析。有具体代码与总结、参考文献。
