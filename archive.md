@@ -140,6 +140,7 @@
 - [lz4和zstd对比](https://altinity.com/blog/2017/11/21/compression-in-clickhouse): zstd压缩率更高。冷运行时间几乎没有差异（因为IO时间占优势的减压时间），但热运行中LZ4的速度要快得多（因为IO操作少得多，并且解码性能成为主要因素）。如果涉及到大范围扫描，则zstd。如果io足够快，则lz4。如果超快ssd，可以指定无压缩。
 - [sql-for-clickhouse-dba](https://altinity.com/blog/2020/5/12/sql-for-clickhouse-dba): 系统表的一些指标、查询相关信息的查询语句
 - [NEW ENCODINGS TO IMPROVE CLICKHOUSE EFFICIENCY](https://altinity.com/blog/2019/7/new-encodings-to-improve-clickhouse): [编码压缩对比](/notebook/数据库/clickhouse/编码压缩对比.md)
+- [clickhouse-aggregatefunctions-and-aggregatestate](https://altinity.com/blog/2017/7/10/clickhouse-aggregatefunctions-and-aggregatestate): AggregatingMergeTree，clickhouse聚合状态的特性，让多维度的去重需求更快。
 
 
 ## 位图

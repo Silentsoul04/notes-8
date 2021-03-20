@@ -16,11 +16,6 @@ The client cannot read logs that are sent with send_logs_level setting.
 In distributed setup, servers will forward logs to the initiator server, then they are sent to the client and the client will show an error
 ```
 
-
-## LOWCARDINALITY
-
-- [ClickHouse中的低基数字段优化](https://mp.weixin.qq.com/s/XKQk4hsdj8VN8TnYdrOnuw)： 指如何优化低基数的字符串字段。通过LowCardinality把字段通过类似position的压缩技术，改成字典。字符越长效果越佳。 官网文档： [LowCardinality Data Type](https://clickhouse.tech/docs/en/sql-reference/data-types/lowcardinality/)、 [A MAGICAL MYSTERY TOUR OF THE LOWCARDINALITY DATA TYPE](https://altinity.com/blog/2019/3/27/low-cardinality)。不知道对数值类型有多少优化空间。
-
 ---
 
 ## update后实时
@@ -34,6 +29,16 @@ Q: 更新过程中，进行并发查询会怎么样？final会相互阻塞查询
 ---
 ## PREWHERE 子句
 
+- [prewhere-clause](https://clickhouse.tech/docs/en/sql-reference/statements/select/prewhere/)
+使用PREWHERE时，首先只读取执行PREWHERE所需的列。然后读取运行查询所需的其他列，但仅读那些 PREWHERE 表示为真实的block。
+
+如果查询中的少数列使用过滤条件，但提供强大的数据过滤，则使用 PREWHERE 是有意义的。这减少了要读取的数据量。
+
+例如，为**提取大量列**但**只对少数列进行过滤**的查询编写PREWHERE非常有用
+
+> 指的是**提取**大量的列的过滤页。对同样是过滤条件的列是没有帮助的？
+
+---
 与WHERE子句的意思相同。主要不同在于表数据的读取；PREWHERE 仅支持*MergeTree系列引擎
 
 使用PREWHERE，只读取PREWHERE表达式中需要的列，根据PREWHERE执行的结果读取其他需要的列。
