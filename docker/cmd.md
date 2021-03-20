@@ -270,7 +270,7 @@ docker run  --rm -p 9000:9000 --name my-clickhouse-server-v2 --ulimit nofile=262
 
 docker run  --rm -p 9000:9000 --name my-clickhouse-server-v2 --ulimit nofile=262144:262144 --volume=/home/youmi/data/ch:/var/lib/clickhouse  -v /home/youmi/config/ch/config.xml:/etc/clickhouse-server/config.xml yandex/clickhouse-server
 
-docker run  --rm -p 9001:9000 -p 8123:8123 --name my-clickhouse-server-19 --ulimit nofile=262144:262144 --volume=/home/youmi/data/ch-19:/var/lib/clickhouse  -v /home/youmi/config/ch/config.xml:/etc/clickhouse-server/config.xml yandex/clickhouse-server:19.16.6.17
+docker run  --rm -p 9001:9000 -p 8123:8123 --name my-clickhouse-server-19 --ulimit nofile=262144:262144 --volume=/home/youmi/data/ch-19:/var/lib/clickhouse  -v /home/youmi/config/ch/config.xml:/etc/clickhouse-server/config.xml -v /home/youmi/config/ch/users.xml:/etc/clickhouse-server/users.xml -v /home/youmi/log/clickhouse:/var/log/clickhouse-server yandex/clickhouse-server:19.16.6.17
 
 
 docker run -it --rm --link my-clickhouse-server-v2:clickhouse-server yandex/clickhouse-client --host clickhouse-server

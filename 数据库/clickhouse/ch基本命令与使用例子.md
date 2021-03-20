@@ -1,9 +1,15 @@
-# top k
+# 配置
 
-## limit by
+```sql
+SELECT name, value FROM system.settings WHERE name LIKE 'max_threads';
+SELECT name, value FROM system.settings WHERE name LIKE 'log_queries';
 
-select * from mt.ad_effect where stat_time = '2020-12-11' and ad_id in (119731843, 127855423)  order by ad_id, modify_time desc limit 3 by ad_id
+-- 查询日志
+select * from system.query_log;
+```
 
+- https://clickhouse.tech/docs/en/operations/system-tables/#system-tables
+- https://clickhouse.tech/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-query-log
 
 ---
 # 排查cpu
@@ -12,9 +18,40 @@ select * from mt.ad_effect where stat_time = '2020-12-11' and ad_id in (11973184
 sudo perf top -p $(pidof clickhouse-server)
 sudo gdb -p $(pidof clickhouse-server) + thread apply all bt
 ```
+---
+# ch的python的clent
+
+需要注意时间的格式，不支持字符。而且类型强校验，字符不能是int。跳过类型校验, 可以直接通过curl命令直接执行，不经过client
+
 
 ---
-# 随机数
+# update
+
+```sql
+
+ALTER TABLE [db.]table UPDATE column1 = expr1 [, ...] WHERE filter_expr;
+
+ALTER TABLE ad_effect UPDATE app_id = 1 WHERE media_id = 1;
+```
+
+无法更新order by 的字段。
+
+- [Updates and Deletes in ClickHouse](https://medium.com/@AltinityDB/updates-and-deletes-in-clickhouse-d5df6f336ce9)
+
+---
+
+# 函数
+
+## top k
+
+### limit by
+
+```shell script
+select * from mt.ad_effect where stat_time = '2020-12-11' and ad_id in (119731843, 127855423)  order by ad_id, modify_time desc limit 3 by ad_id
+```
+
+
+## 随机数
 ```sql
 SELECT * FROM numbers(10);
 SELECT * FROM numbers(0, 10);
@@ -47,8 +84,6 @@ SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(
 
 ```sql
 -- 数机数组的随机元素
-
-
 select range(3);
 
 select (rand() % length(range(3))) + 1;
@@ -74,58 +109,9 @@ select arrayMap((x) -> x + rand(), [1, 2, 3])
 -- 随机数在arrayMap是一样的
 with [101, 102, 103, 104, 105, 106, 107, 108, 109, 110] as constant
 select arrayMap((x) -> arrayElement(constant, ((rand() % length(constant)) + 1)), [1, 2, 3])
-
 ```
 
----
-# ch的python的clent
-
-```python
-client.db_execute(
-        DATABASE_CH_MT_DSN,
-        """
-    insert into mt.ad_log
-    (dt, area, ad_id, ad_creative_id, ad_create, platform, format, media, appid, channel, position, cnt, ut)
-    values (？, ？, ？, ？, ？, ？, ？, ？, ？, ？, ？, ？, ？)
-    """,
-        rows=(
-            (
-                date(2020, 10, 13),
-                '4406',
-                32758,
-                137289591,
-                datetime(2020, 10, 13, 0, 1, 16),
-                1,
-                106,
-                60,
-                0,
-                106,
-                106001,
-                0,
-                datetime(2020, 10, 13, 0, 0, 16),
-            ),
-        ),
-    )
-```
-需要注意时间的格式，不支持字符。而且类型强校验，字符不能是int。TODO: 跳过类型校验
-
-
----
-# update
-
-```sql
-
-ALTER TABLE [db.]table UPDATE column1 = expr1 [, ...] WHERE filter_expr;
-
-ALTER TABLE ad_effect UPDATE app_id = 1 WHERE media_id = 1;
-```
-
-无法更新order by 的字段。
-
-- [Updates and Deletes in ClickHouse](https://medium.com/@AltinityDB/updates-and-deletes-in-clickhouse-d5df6f336ce9)
-
----
-# groupBitOr
+## groupBitOr
 ```sql
 SELECT a, groupBitOr(b) from (
     SELECT 1 as a, 5 as b
@@ -136,7 +122,7 @@ SELECT a, groupBitOr(b) from (
 -- 1    7
 ```
 
-# groupUniqArray
+## groupUniqArray
 ```sql
 SELECT a, groupUniqArray(b) from (
     SELECT 1 as a, 5 as b
@@ -145,8 +131,8 @@ SELECT a, groupUniqArray(b) from (
 ) GROUP by a
 ```
 
----
-# 聚合函数组合器
+## 聚合函数组合器
+
 ```sql
 -- uniqArray是一个聚合函数组合器
 SELECT ad_id, uniqArray(arrayMap(x -> x + ad_year_month * 100, bitmaskToArray(ad_month))) as duration from (
@@ -179,7 +165,7 @@ SELECT c, count(distinct a), uniqExactArray(b), groupUniqArrayArray(b) from (
 
 参考链接： https://clickhouse.tech/docs/en/sql-reference/aggregate-functions/combinators/
 
-## uniqArray arrayMap bitmaskToArray
+### uniqArray arrayMap bitmaskToArray
 ```sql
 
 SELECT ad_id,  groupUniqArrayArray(arrayMap(x -> x + ad_year_month * 100, bitmaskToArray(ad_month))) as duration from (
@@ -205,11 +191,10 @@ SELECT ad_id,  groupUniqArrayArray(arrayMap(x -> x + ad_year_month * 100, bitmas
 
 ```
 
-
 - [Is there a way to join all arrays in clickhouse column and then filter for duplicates?](https://stackoverflow.com/a/55501025)
 
 ---
-# 最近天/月数生成
+## 最近天/月数生成
 
 ```sql
 select
@@ -222,7 +207,7 @@ from system.numbers limit 24;
 ```
 
 ---
-# 如何生成位图
+## 如何生成位图
 
 ```sql
 with toDate('{{start_date}}') as s_d, toDate('{{end_date}}') as e_d, toYYYYMM(s_d) % 10000 as s_m, toYYYYMM(e_d) % 10000 as e_m,
@@ -230,14 +215,14 @@ bitXor(exp2(31) - 1, exp2(toDayOfMonth(s_d) - 1) - 1) as s_b,
 exp2(toDayOfMonth(e_d)) - 1 as e_b
 ```
 
-# 数组函数
+## 数组函数
 
 ```sql
 select  has(bitmaskToArray(2147483649), 2147483648), bitmaskToArray(0), arrayElement(bitmaskToArray(1032), 1)
 -- 1 [] 8
 ```
 
-# style位图展开
+## style位图展开
 
 ```sql
 select
@@ -252,7 +237,7 @@ where
 ```
 
 ---
-# 数据表信息统计
+## 数据表信息统计
 
 ```sql
 
@@ -274,6 +259,107 @@ from system.parts
 where database not in ('system') and active
 group by database, table order by sum(bytes) desc
 ```
+
+
+---
+## 位运算
+
+```sql
+-- 左移天数位
+select bitShiftLeft(toUInt32(1), toDayOfMonth(today()) -1);
+```
+
+> 需要toUInt32，不然默认1为8位
+
+
+---
+## arrayjoin
+
+```
+select arrayJoin([1, 2]), arrayJoin([4, 5, 6])  as t
+```
+得到的是一个笛卡尔积，6行数据
+
+
+---
+## tuple
+
+arrayMap得到的是一个元祖, 获取元祖元素: `tupleElement(tuple, n)`
+
+- https://clickhouse.tech/docs/zh/data_types/tuple/
+
+---
+## 获取字段类型
+
+```sql
+select toTypeName(cast('2018-01-01 01:02:03' AS DateTime))
+
+select toColumnTypeName(cast('2018-01-01 01:02:03' AS DateTime))
+```
+- https://clickhouse.tech/docs/zh/query_language/functions/other_functions/#tocolumntypename
+
+
+----
+## 如何每个间隔时间进行切分
+
+```sql
+SELECT arrayJoin(timeSlots(now() - toIntervalHour(1), toUInt32(3600), 300)) AS slot
+
+# 最近7天，每小时
+SELECT arrayJoin(timeSlots( now() - toIntervalDay(7), toUInt32(24 * 3600 * 7), 3600)) AS slot
+```
+
+> clickhouse left join 得到的不是null，而是默认值。可以通过配置进行更改为sql一致。
+
+- https://stackoverflow.com/a/54008813
+- https://clickhouse.tech/docs/zh/query_language/functions/date_time_functions/#timeslots-starttime-duration-91-size-93
+
+
+----
+## 时间
+
+```sql
+SELECT toDateTime('2016-06-15 23:00:00') AS time
+```
+┌────────────────time─┐
+│ 2016-06-15 15:00:00 │
+└─────────────────────┘
+
+```sql
+SELECT toUnixTimestamp(toDateTime('2016-06-15 23:00:00')) AS time
+```
+┌───────time─┐
+│ 1466002800 │
+└────────────┘
+
+### 时区问题
+> 字符串是+8的，客户端toDateTime显示的是0时区的，
+
+redash 显示会+8，查询也是正常的查就可以了，会自动帮忙处理。
+client 则要注意显示是0时区的就可以了，查询也是按照正常一样处理就可以了。
+
+
+> group by 字段名有些注意的东西, 如果有字段冲突，select 得指定表名， group by 该字段也需要指定表名，否则需要select 时候 as alias
+
+### 时间转换
+`select toInt32(formatDateTime(toDate('2020-03-12'), '%y%m%d'))`
+
+result：200312
+
+### 偏移
+```sql
+select now(), toStartOfHour(now()), subtractMinutes(now(), 30)
+
+
+-- 2020-08-07 14:48:43
+-- 2020-08-07 14:00:00
+-- 2020-08-07 14:18:43
+```
+
+---
+## bitmap
+
+`bitmapToArray(groupBitmapOrState(ad_id_bm)) AS ad_ids`
 
 
 ----
@@ -328,112 +414,6 @@ docker run -it --rm yandex/clickhouse-client --host 172.19.42.160 --port 8123 --
 
 
 ---
-# 位运算
-
-```sql
--- 左移天数位
-select bitShiftLeft(toUInt32(1), toDayOfMonth(today()) -1);
-```
-
-> 需要toUInt32，不然默认1为8位
-
-
----
-# arrayjoin
-
-```
-select arrayJoin([1, 2]), arrayJoin([4, 5, 6])  as t
-```
-得到的是一个笛卡尔积，6行数据
-
-
----
-# tuple
-
-arrayMap得到的是一个元祖, 获取元祖元素: `tupleElement(tuple, n)`
-
-- https://clickhouse.tech/docs/zh/data_types/tuple/
-
-
----
-# range
-
-```sql
-select range(10)
-```
-result:
-[0,1,2,3,4,5,6,7,8,9]
-
-
----
-# 获取字段类型
-
-```sql
-select toTypeName(cast('2018-01-01 01:02:03' AS DateTime))
-
-select toColumnTypeName(cast('2018-01-01 01:02:03' AS DateTime))
-```
-- https://clickhouse.tech/docs/zh/query_language/functions/other_functions/#tocolumntypename
-
-
-----
-# 如何每个间隔时间进行切分
-
-```sql
-SELECT arrayJoin(timeSlots(now() - toIntervalHour(1), toUInt32(3600), 300)) AS slot
-
-# 最近7天，每小时
-SELECT arrayJoin(timeSlots( now() - toIntervalDay(7), toUInt32(24 * 3600 * 7), 3600)) AS slot
-```
-
-> clickhouse left join 得到的不是null，而是默认值。可以通过配置进行更改为sql一致。
-
-- https://stackoverflow.com/a/54008813
-- https://clickhouse.tech/docs/zh/query_language/functions/date_time_functions/#timeslots-starttime-duration-91-size-93
-
-
-----
-# 时间
-
-```sql
-SELECT toDateTime('2016-06-15 23:00:00') AS time
-```
-┌────────────────time─┐
-│ 2016-06-15 15:00:00 │
-└─────────────────────┘
-
-```sql
-SELECT toUnixTimestamp(toDateTime('2016-06-15 23:00:00')) AS time
-```
-┌───────time─┐
-│ 1466002800 │
-└────────────┘
-
-## 时区问题
-> 字符串是+8的，客户端toDateTime显示的是0时区的，
-
-redash 显示会+8，查询也是正常的查就可以了，会自动帮忙处理。
-client 则要注意显示是0时区的就可以了，查询也是按照正常一样处理就可以了。
-
-
-> group by 字段名有些注意的东西, 如果有字段冲突，select 得指定表名， group by 该字段也需要指定表名，否则需要select 时候 as alias
-
-## 时间转换
-`select toInt32(formatDateTime(toDate('2020-03-12'), '%y%m%d'))`
-
-result：200312
-
-## 偏移
-```sql
-select now(), toStartOfHour(now()), subtractMinutes(now(), 30)
-
-```
-
-2020-08-07 14:48:43
-2020-08-07 14:00:00
-2020-08-07 14:18:43
-
----
 # 查看查询语句和杀掉
 
 ```sql
@@ -450,19 +430,19 @@ clickhouse-client --send_logs_level=debug
 
 
 ---
-## docker
+# docker
 
 /home/youmi/data/ch
 
 ```shell script
-docker run  --rm -p 9000:9000 --name my-clickhouse-server-v2 --ulimit nofile=262144:262144 --volume=/home/youmi/data/ch:/var/lib/clickhouse  -v /home/youmi/config/ch/config.xml:/etc/clickhouse-server/config.xml yandex/clickhouse-server
+docker run  --rm -p 9001:9000 -p 8123:8123 --name my-clickhouse-server-19 --ulimit nofile=262144:262144 --volume=/home/youmi/data/ch-19:/var/lib/clickhouse  -v /home/youmi/config/ch/config.xml:/etc/clickhouse-server/config.xml -v /home/youmi/config/ch/users.xml:/etc/clickhouse-server/users.xml -v /home/youmi/log/clickhouse:/var/log/clickhouse-server yandex/clickhouse-server:19.16.6.17
 
 docker run -it --rm --link my-clickhouse-server:clickhouse-server yandex/clickhouse-client --host clickhouse-server
 
 docker run -it --rm yandex/clickhouse-client --host 172.16.1.157:30025
 ```
 
-## mysql引擎
+# mysql引擎
 ```sql
 CREATE DATABASE agconstants ENGINE = MySQL('172.16.6.111:3306', 'agconstants_media', 'root', 'root');
 
@@ -480,16 +460,12 @@ truncate table  test.ad_aggs_outer
 
 ```
 
-## move partition
+# move partition
 move partition 是新版本特性，19.16还没有该功能
 
 ```sql
 ALTER TABLE mt.ad_aggs_outer REPLACE PARTITION 1 FROM mt.ad_aggs_outer_shadow
 ```
-
-# bitmap
-
-`bitmapToArray(groupBitmapOrState(ad_id_bm)) AS ad_ids`
 
 # LowCardinality
 
