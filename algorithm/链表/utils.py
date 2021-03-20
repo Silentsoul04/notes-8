@@ -8,10 +8,11 @@ def init_ln(nums):
 
 
 def print_ln(head):
-    print(head.val)
+    res = [head.val]
     while head.next:
         head = head.next
-        print(head.val)
+        res.append(head.val)
+    print(res)
 
 
 class ListNode:

@@ -53,9 +53,34 @@ class Solution:
         tmp.next = nxt
         return head
 
+    def reverseTopK2(self, head: ListNode, k):
+        """
+        pre上一个节点，head当前节点、next下一个节点
+
+        当当前节点仍然有下一个节点的时候。将当前节点的方向反转, 移动到下一个节点继续操作。
+
+        """
+        tmp = head
+
+        # 当前节点的前一个节点
+        # 保留反转后的下一个节点
+        pre = nxt = None
+        # 保留下一个节点
+        while head and k + 1 > 0:
+            # 当前节点反转到前一个节点
+            nxt = head.next
+            head.next = pre
+            # 顺序下去
+            pre = head
+            head = nxt
+            k -= 1
+        # 记录之前的头，作为非反转的头
+        tmp.next = nxt
+        return pre
+
 
 head1 = init_ln([1, 2, 3, 4, 5])
-# print_ln(Solution().reverseTopK(head1, 2))
+print_ln(Solution().reverseTopK2(head1, 2))
 # print_ln(Solution().reverseBetween(head1, 2, 4))
 # print_ln(Solution().reverseBetween(init_ln([5]), 1, 1))
-print_ln(Solution().reverseBetween(init_ln([3, 5]), 1, 2))
+# print_ln(Solution().reverseBetween(init_ln([3, 5]), 1, 2))

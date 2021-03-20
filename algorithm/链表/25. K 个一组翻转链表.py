@@ -64,6 +64,7 @@ class Solution:
     // 反转前 k 个元素。可以改为传入tail的节点，通过while比较到tail结束
     """
     def reverseTopKGroup(self, head: ListNode, k: int) -> ListNode:
+        # 问题： k若是0有问题！
         pre = None
         before_head = head
         cur = head
@@ -131,11 +132,13 @@ class Solution:
                 tail = tail.next
                 if not tail:
                     return hair.next
+            # 保留旧的下一个节点
             nex = tail.next
             head, tail = self.reverse(head, tail)
             # 把子链表重新接回原链表
             pre.next = head
             tail.next = nex
+            # 下一个末尾继续循环
             pre = tail
             head = tail.next
 
