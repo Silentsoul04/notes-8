@@ -121,14 +121,14 @@ class Solution():
         if N == 1:
             self.successor = head.next
             return head
-        nhead = reverseN(head.next, N - 1)
-        head.next.next = self.successor
-        head.next = None
+        nhead = self.reverseN(head.next, N - 1)
+        head.next.next = head
+        head.next = self.successor
         return nhead
 
 
 head1 = init_ln([1, 2, 3, 4, 5])
-print_ln(reverseN(head1, 3))
+print_ln(Solution().reverseN(head1, 3))
 
 print("一个更简洁的递归")
 
