@@ -245,7 +245,84 @@ ClickHouse不是一个键值存储，但是我们的结果证实了ClickHouse在
 
 
 ---
-# clickhouse资源
+# clickhouse文章
 
 - [压测例子](https://github.com/Altinity/clickhouse-sts/)
 - [博客](https://altinity.com/blog/)
+
+---
+# timeout
+
+## 背景
+
+```
+2021.03.20 20:51:34.432503 [ 286 ] {a66f562c-18c4-40b0-9e83-ddf2e757f882} <Warning> TCPHandler: Client has gone away.
+2021.03.20 20:51:34.849092 [ 286 ] {a66f562c-18c4-40b0-9e83-ddf2e757f882} <Information> TCPHandler: Processed in 266.890 sec.
+```
+
+定时任务每次3m后都失败。查询太久了，导致客户端的连接已经主动断开？是什么原因导致主动断开的？
+
+
+## read_timeout
+
+默认值是0。go的client的超时控制，因为没有配置该项，所以应该也不是这个原因导致的。
+
+例子： clickhouse_test.go:Test_Timeout
+
+- [read_timeout/write_timeout](https://github.com/ClickHouse/clickhouse-go#dsn)
+
+
+## max-execution-time
+
+默认是0。执行时间的超时控制。因为查询是能正常执行完，也不是这个原因导致的。
+
+- [max-execution-time](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#max-execution-time)
+
+## idle_connection_timeout
+
+默认3600s，在指定的秒数后关闭空闲的TCP连接。不是，不过好像找不到可设置的文档？
+
+> This is especially important for large clusters with multiple distributed tables on every server, because every server can possibly keep a connection pool to every other server, and after peak query concurrency, connections will stall.
+
+- [Close idle TCP connections](https://github.com/ClickHouse/ClickHouse/pull/5880)
+
+
+## query_settings
+
+配置在：query_settings.go:querySettingList 里面。跟receive_timeout是clickhouse相关的client查询配置
+
+- [Core/Settings](https://github.com/ClickHouse/ClickHouse/blob/v19.16.6.17-stable/dbms/src/Core/Settings.h)
+- [connect-timeout-receive-timeout-send-timeout](https://clickhouse.tech/docs/en/operations/settings/settings/#connect-timeout-receive-timeout-send-timeout)
+
+### receive_timeout
+
+默认是300秒，该配置指的是插入和接收数据的时间。这个错误应该不是造成本例子的原因。因为例子是因为慢查询导致的tcp断开，还没接收到数据，而不是接受数据太多导致的超时。而且是receive_timeout，数据库应该报错`DB::Exception: Timeout exceeded while receiving data from client`。
+
+- [Timeout exceeded while receiving data from client](https://github.com/ClickHouse/ClickHouse/issues/2833): 配置的是clickhouse的receive_timeout、send_timeout配置。
+- [connect-timeout-receive-timeout-send-timeout](https://clickhouse.tech/docs/en/operations/settings/settings/#connect-timeout-receive-timeout-send-timeout)
+
+
+### tcp_keep_alive_timeout
+
+> The time in seconds the connection needs to remain idle before TCP starts sending keepalive probes
+
+被http_keep_alive_timeout取代
+
+
+
+## 复现
+
+通过模拟慢查询复现？
+
+```sql
+set max_execution_speed=10;
+select count(1) from system.numbers ;
+```
+
+不能复现，反而发现这个查询即使程序停止了，也没有kill掉。TODO
+
+不是慢查询的问题？联想到其在发生期间，负载是很高的，或者是因为服务端的连接配置主动让client的连接kill掉了？
+
+可能要得生产环境出现后，实地排查更好？
+
+> 所以是啥原因？tcp本身自带的连接超时配置？`Client has gone away`是客户端因为一些原因挂掉了，可能是tcp的设置，也可能是超出内存被kill掉之类的。
