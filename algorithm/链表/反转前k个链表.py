@@ -122,7 +122,11 @@ class Solution():
             self.successor = head.next
             return head
         nhead = self.reverseN(head.next, N - 1)
+        # 递归中能成立的规则：
+        # 当前节点的下一个节点已经变成递归子问题的末尾了
+        # 让末尾连上当前节点，实现反转
         head.next.next = head
+        # 末尾连上n节点后的后驱
         head.next = self.successor
         return nhead
 
@@ -146,3 +150,15 @@ def reverseN(head, N):
 
 head1 = init_ln([1, 2, 3, 4, 5])
 print_ln(reverseN(head1, 3))
+
+
+def reverseBetween(head, M, N):
+    if M == 1:
+        return reverseN(head, N)
+    head.next = reverseBetween(head.next, M - 1, N - 1)
+    return head
+
+
+print("reverseBetween")
+head1 = init_ln([1, 2, 3, 4, 5])
+print_ln(reverseBetween(head1, 3, 4))
