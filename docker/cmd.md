@@ -181,6 +181,7 @@ docker run -it --env CFGENV=LOCAL --env CFGAUTH=ag-apollo:xx --env CFGAPP=ag-tes
 
 
 ## ES
+```shell script
 docker build -t yzs/myes build/elasticsearch-ik/.
 
 docker run --rm --network host -e "ES_JAVA_OPTS=-Xms256m -Xmx256m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" yzs/myes
@@ -190,6 +191,12 @@ docker tag 2f16c2609583 registry.umlife.net:443/mt-service/schema/elasticsearch-
 docker push registry.umlife.net:443/mt-service/schema/elasticsearch-ik:5.5.3
 
 docker run --rm --network host -e "ES_JAVA_OPTS=-Xms256m -Xmx256m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+```
+
+- https://github.com/elastic/elasticsearch-docker
+- https://github.com/elastic/elasticsearch-docker/blob/5.5/templates/Dockerfile.j2
+- https://github.com/elastic/elasticsearch/tree/v5.5.3
+- https://hub.docker.com/layers/elasticsearch/library/elasticsearch/5.5/images/sha256-d1ac13423d3cf7664e2b158049330c713f777473815b0ffe03d4103412505f0c?context=explore
 
 ## kafka
 ```

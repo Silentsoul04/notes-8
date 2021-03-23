@@ -1,3 +1,14 @@
+# curl --fail
+
+```shell script
+STATUSCODE=$(curl --silent --output /dev/stderr --write-out "%{http_code}" URL)
+
+if test $STATUSCODE -ne 200; then
+    # error handling
+fi
+```
+- https://superuser.com/questions/590099/can-i-make-curl-fail-with-an-exitcode-different-than-0-if-the-http-status-code-i
+
 # for循环、循环变量值
 
 ```shell script

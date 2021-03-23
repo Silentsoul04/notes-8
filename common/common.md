@@ -160,6 +160,9 @@ put to next output 选项
 
 将用户添加组 sudo gpasswd -a www-data ymserver
 
+
+who users whoami id -un
+
 ---
 ## vim 多行注释
 
