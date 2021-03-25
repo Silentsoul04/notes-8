@@ -29,6 +29,21 @@ LIMIT 10
 - https://clickhouse.tech/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-query-log
 - [sql-for-clickhouse-dba](https://altinity.com/blog/2020/5/12/sql-for-clickhouse-dba)
 
+## max_bytes_in_join
+
+如果将它们设置得比**允许的内存**大，则不允许在磁盘上加入。如果您不希望此类查询的性能受到影响，而希望使用异常，那么这种情况本身就很有用。
+
+这里的另一点是，max_bytes_in_join/max_rows_in_join设置会分别影响查询中的每个JOIN。因此，如果您有2个联接并且限制为1Gb，则最多可能会吃掉2Gb。
+
+- [max_bytes_in_join](https://github.com/ClickHouse/ClickHouse/issues/9702)
+
+## max_execution_speed
+
+每秒最大执行行数。当“ timeout_before_checking_execution_speed”到期时，检查每个数据块。如果执行速度很高，执行速度将降低
+
+- [max-execution-speed](https://clickhouse.tech/docs/en/operations/settings/query-complexity/#max-execution-speed)
+
+
 ---
 # 排查cpu
 
@@ -222,6 +237,23 @@ from system.numbers limit 10;
 select
 toInt32(formatDateTime(addMonths(today(), -number), '%y%m')) as dt, dt
 from system.numbers limit 24;
+```
+
+---
+## 最近每分钟生成
+```sql
+
+select
+    beg_ts + round * 60 as beg_ts,
+    if(beg_ts + 60 > 1616574300, 1616574300, beg_ts + 60) as end_ts
+from (
+    select 1616574100 as beg_ts, 1616574300 as end_ts, arrayJoin(range(toUInt32(ceil((end_ts- beg_ts) / 60)))) as round
+)
+
+
+with 1616574300 as _end_ts, 1616574100 as _beg_ts
+select _beg_ts + 60 * number as beg_ts, if(beg_ts + 60 > 1616574300, 1616574300, beg_ts + 60) as end_ts from system.numbers limit ceil((_end_ts- _beg_ts) / 60)
+
 ```
 
 ---

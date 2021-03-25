@@ -1,3 +1,10 @@
+# oom
+
+排查：
+```shell script
+tail -1000 /var/log/syslog | grep -i kill
+```
+
 # curl --fail
 
 ```shell script
@@ -236,6 +243,22 @@ tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      
 ---
 # grep
 grep -R --include='*.py' 'print' .
+
+
+## context
+
+For BSD or GNU grep you can use -B num to set how many lines before the match and -A num for the number of lines after the match.
+
+If you want the same number of lines before and after you can use -C num.
+
+```shell script
+
+grep -B 3 -A 2 foo README.txt
+
+grep -C 3 foo README.txt
+```
+
+- [grep-a-file-but-show-several-surrounding-lines](https://stackoverflow.com/questions/9081/grep-a-file-but-show-several-surrounding-lines)
 
 ---
 # nautilus

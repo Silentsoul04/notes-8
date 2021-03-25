@@ -1,3 +1,15 @@
+## command
+
+```shell script
+command: bash -c 'while [[ "$(curl --connect-timeout 2 -s -o /dev/null -w ''%{http_code}'' https://mock-server:4000/readiness)" != "200" ]]; do echo ..; sleep 5; done; echo backend is up; npm start'
+
+```
+
+need to escape the $ with $$
+
+- [docker-compose-command-invalid-interpolation-format-for-command-option-in-ser](https://stackoverflow.com/questions/59158629/docker-compose-command-invalid-interpolation-format-for-command-option-in-ser)
+
+
 ## healthcheck
 
 ```yaml
