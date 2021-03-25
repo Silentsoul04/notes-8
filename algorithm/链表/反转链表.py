@@ -16,14 +16,9 @@
 """
 
 # Definition for singly-linked list.
+from notebook.algorithm.链表.utils import ListNode
 from notebook.algorithm.链表.utils import init_ln
 from notebook.algorithm.链表.utils import print_ln
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
 
 
 class Solution:
