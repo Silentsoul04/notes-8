@@ -35,7 +35,6 @@ class Solution:
 
 check(Solution().singleNumber, [[4, 1, 2, 1, 2]], 4)
 
-
 """
 解法二：排序
 使用快排，复杂度 O(nlogn)O(nlogn)

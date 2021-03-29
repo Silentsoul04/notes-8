@@ -90,6 +90,7 @@ class Solution:
         head.next = self.deleteDuplicates(head.next, head.val)
         return head
 
+
 head = init_ln([1, 1, 3, 3, 4, 4, 5])
 
 print_ln(Solution().deleteDuplicates(head))
