@@ -390,4 +390,35 @@ However, it comes with an additional overhead of more frequent cancellation chec
 
 找了一下bulk的更新操作的retry_on_conflict的配置，官方文档都需要在每个文档上面加上retry_on_conflict的配置。默认是0，先找一下全局的配置，避免每个文档都需要重复加上。
 
-但是找不到～～
+但是找不到。解决办法：代码程序包一层以供默认值。
+
+---
+# indices
+
+`curl  elastic:changeme@0.0.0.0:9200/_cat/indices`
+
+---
+# slow slog
+
+```shell script
+PUT advertisement_v9.0.1/_settings
+{
+  "index.search.slowlog.threshold.query.warn": "1s",
+  "index.search.slowlog.threshold.query.info": "800ms",
+  "index.search.slowlog.threshold.query.debug": "500ms",
+  "index.search.slowlog.threshold.query.trace": "200ms",
+  "index.search.slowlog.threshold.fetch.warn": "1s",
+  "index.search.slowlog.threshold.fetch.info": "800ms",
+  "index.search.slowlog.threshold.fetch.debug": "500ms",
+  "index.search.slowlog.threshold.fetch.trace": "200ms",
+  "index.search.slowlog.level": "warn",
+  "index.indexing.slowlog.threshold.index.warn":"2s",
+  "index.indexing.slowlog.threshold.index.info":"1s",
+  "index.indexing.slowlog.threshold.index.debug":"800ms",
+  "index.indexing.slowlog.threshold.index.trace":"500ms",
+  "index.indexing.slowlog.level": "warn"
+}
+
+GET _all/_settings
+
+```

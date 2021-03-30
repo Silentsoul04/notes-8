@@ -5,7 +5,7 @@ command: bash -c 'while [[ "$(curl --connect-timeout 2 -s -o /dev/null -w ''%{ht
 
 ```
 
-need to escape the $ with $$
+> need to escape the $ with $$
 
 - [docker-compose-command-invalid-interpolation-format-for-command-option-in-ser](https://stackoverflow.com/questions/59158629/docker-compose-command-invalid-interpolation-format-for-command-option-in-ser)
 
